@@ -1,7 +1,7 @@
-Instructions for running the Calo Scouting Dijet Resonance Search from start to finish.
+> Instructions for running the Calo Scouting Dijet Resonance Search from start to finish.
 
 ### Set up DijetRootTreeAnalyzer and Combine Tool
-1. Set up CMSSW/DijetRootTreeAnalyzer/combine
+1. Set up CMSSW / DijetRootTreeAnalyzer / combineTool
 
 ```sh
 cmsrel CMSSW_10_2_13
