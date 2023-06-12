@@ -17,7 +17,7 @@ cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer
 
 ## Create Reduced Trees (Reduced nTuples)
 ### Local Production
-> Please first change dataset year and era information `std::string dataYear = "2018D";` inside the `src/analysisClass_mainDijetCaloScoutingSelection_RunII.C`script!
+> Please first change dataset year and era information `std::string dataYear = "2018D";` inside the `src/analysisClass_mainDijetCaloScoutingSelection_RunII.C`script! (for JEC files)
 
 ```sh
 ./scripts/make_rootNtupleClass.sh -f root://cmseos.fnal.gov//store/group/lpcjj/CaloScouting/rootTrees_big/2018/ScoutingCaloCommissioning/ScoutingCaloCommissioning/crab_ScoutingCaloCommissioning__Run2018D-v1__RAW/230129_231233/0000/ScoutingCaloCommissioning__Run2018D-v1__RAW_1.root -t dijetscouting/events
@@ -60,12 +60,22 @@ python3 submit_all.py
 
 ##### 2016
 ```sh
-
+source plotterCondor_DatavsMC4.sh CaloScoutingHT2016B_DatavsQDCMC_11June2023_2245 ../lists/CaloScoutingHT/CaloScoutingHT2016B-v2_reduced.txt ../lists/QCD2017-v1_reduced_new.txt 5704.216707
+source plotterCondor_DatavsMC4.sh CaloScoutingHT2016C_DatavsQDCMC_11June2023_2245 ../lists/CaloScoutingHT/CaloScoutingHT2016C-v2_reduced.txt ../lists/QCD2017-v1_reduced_new.txt 2572.903489
+source plotterCondor_DatavsMC4.sh CaloScoutingHT2016D_DatavsQDCMC_11June2023_2245 ../lists/CaloScoutingHT/CaloScoutingHT2016D-v2_reduced.txt ../lists/QCD2017-v1_reduced_new.txt 4242.291557
+source plotterCondor_DatavsMC4.sh CaloScoutingHT2016E_DatavsQDCMC_11June2023_2245 ../lists/CaloScoutingHT/CaloScoutingHT2016E-v2_reduced.txt ../lists/QCD2017-v1_reduced_new.txt 4025.228137
+source plotterCondor_DatavsMC4.sh CaloScoutingHT2016F_DatavsQDCMC_11June2023_2245 ../lists/CaloScoutingHT/CaloScoutingHT2016F-v1_reduced.txt ../lists/QCD2017-v1_reduced_new.txt 3104.509132
+source plotterCondor_DatavsMC4.sh CaloScoutingHT2016G_DatavsQDCMC_11June2023_2245 ../lists/CaloScoutingHT/CaloScoutingHT2016G-v1_reduced.txt ../lists/QCD2017-v1_reduced_new.txt 7575.824256
+source plotterCondor_DatavsMC4.sh CaloScoutingHT2016ALL_DatavsQDCMC_11June2023_2245 ../lists/CaloScoutingHT/CaloScoutingHT2016ALL_reduced.txt ../lists/QCD2017-v1_reduced_new.txt 27224.973278
 ```
 
 ##### 2017
 ```sh
-
+source plotterCondor_DatavsMC4.sh CaloScoutingHT2017C_DatavsQDCMC_11June2023_2245 ../lists/CaloScoutingHT/CaloScoutingHT2017C-v1_reduced.txt ../lists/QCD2017-v1_reduced_new.txt 8377.067561
+source plotterCondor_DatavsMC4.sh CaloScoutingHT2017D_DatavsQDCMC_11June2023_2245 ../lists/CaloScoutingHT/CaloScoutingHT2017D-v1_reduced.txt ../lists/QCD2017-v1_reduced_new.txt 4247.682094
+source plotterCondor_DatavsMC4.sh CaloScoutingHT2017E_DatavsQDCMC_11June2023_2245 ../lists/CaloScoutingHT/CaloScoutingHT2017E-v1_reduced.txt ../lists/QCD2017-v1_reduced_new.txt 9285.786621
+source plotterCondor_DatavsMC4.sh CaloScoutingHT2017F_DatavsQDCMC_11June2023_2245 ../lists/CaloScoutingHT/CaloScoutingHT2017F-v1_reduced.txt ../lists/QCD2017-v1_reduced_new.txt 13539.378492
+source plotterCondor_DatavsMC4.sh CaloScoutingHT2017ALL_DatavsQDCMC_11June2023_2245 ../lists/CaloScoutingHT/CaloScoutingHT2017ALL_reduced.txt ../lists/QCD2017-v1_reduced_new.txt 35449.914768
 ```
 
 ##### 2018
