@@ -15,7 +15,7 @@ cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer
 ```
 
 
-## Create Reduced Trees (Reduced nTuples)
+## Reduced NTuple Production (Reduced Tree)
 ### Local Production
 > Please first change dataset year and era information `std::string dataYear = "2018D";` inside the `src/analysisClass_mainDijetCaloScoutingSelection_RunII.C`script! (for JEC files)
 
@@ -55,7 +55,7 @@ python3 submit_all.py
 ```
 
 
-### Create Kinematic Plots
+## Kinematic Plots
 > Change EOS path inside the `plotterCondor_DatavsMC4.sh` script before sending jobs to condor!
 
 ##### 2016
