@@ -45,7 +45,7 @@ Interval=10
 ```sh
 cmsenv
 voms-proxy-init --voms cms --valid 300:00
-python condor_submit_Data.py
+python3 condor_submit_Data.py --config CaloScoutingHT_2018D_cfg.txt
 ```
 
 
