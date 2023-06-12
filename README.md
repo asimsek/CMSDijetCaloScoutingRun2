@@ -39,7 +39,7 @@ vi CaloScoutingHT_2018D_cfg.txt
 
 ```sh
 Dataset=/ScoutingCaloHT/Run2018D-v1/RAW
-InputList=../lists/CaloScoutingHT/CaloScoutingHT2018D-v1_reduced.txt
+InputList=../lists/bigNTuples/CaloScoutingHT/CaloScoutingHT2018D-v1.txt
 Interval=10 
 ```
 
