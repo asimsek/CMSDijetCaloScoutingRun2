@@ -34,6 +34,7 @@ make
 
 ```sh
 cd dijetCondor
+vi CaloScoutingHT_2018D_cfg.txt
 ```
 
 ```sh
