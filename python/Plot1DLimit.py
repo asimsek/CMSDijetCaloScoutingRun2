@@ -706,7 +706,7 @@ if __name__ == '__main__':
     else:
         h_limit.GetXaxis().SetLimits(options.massMin,options.massMax)
     if options.doSignificance:
-        h_limit.SetMaximum(4)
+        h_limit.SetMaximum(6)
         h_limit.SetMinimum(0)
     else:
         if 'PF' in Box:
@@ -718,7 +718,7 @@ if __name__ == '__main__':
             
     h_limit.Draw("a3")
     if options.doSignificance:
-        h_limit.GetYaxis().SetNdivisions(405,True)
+        h_limit.GetYaxis().SetNdivisions(415,True)
 
     for Box in Boxes:
         for model in models:    
@@ -837,6 +837,7 @@ if __name__ == '__main__':
             #leg.AddEntry(None,"95% CL limits","")
             #leg.AddEntry(None,"90% CL limits","")
             leg.AddEntry(gr_observedLimit[(Box,model)], "Observed","lp")
+	
         if not options.doSignificance:
             leg.AddEntry(gr_expectedLimit[(Box,model)], "Expected","l")    
             leg.AddEntry(gr_expectedLimit1sigma[(Box,model)], "#pm 1 s.d.","f")    
@@ -926,9 +927,12 @@ if __name__ == '__main__':
             #yOffset = 5.25e-6 # for 1e-5 min
             yOffset = 5.25e-8 # for 1e-5 min
 	    xOffset = 0.000005
-        for i in range(1,10):
-            if i*1000>=options.massMin:
-                xLab.DrawLatex(i*1000, xOffset, "%g"%i)
+        #for i in range(1,10):
+	for i in range(2,12):
+            #if i*1000>=options.massMin:
+	    if i*200.>=options.massMin:
+                #xLab.DrawLatex(i*1000, xOffset, "%g"%i)
+		xLab.DrawLatex(i*200., xOffset, "%0.1f"%(i/5.))
 
     else:
         print "++++++++ not PF in Box ++++++++++++++"
@@ -993,12 +997,12 @@ if __name__ == '__main__':
                 c.SaveAs(options.outDir+"/limits_bayes_"+options.model+"_"+options.box.lower()+".C")
         else:
             if options.noSys:
-                c.SaveAs(options.outDir+"/limits_freq_nosys_"+options.model+"_"+options.box.lower()+".pdf")
-                c.SaveAs(options.outDir+"/limits_freq_nosys_"+options.model+"_"+options.box.lower()+".C")
+                c.SaveAs(options.outDir+"/limits_freq_nosys_"+options.model+"_"+options.box+".pdf")
+                c.SaveAs(options.outDir+"/limits_freq_nosys_"+options.model+"_"+options.box+".C")
             else:
-                c.SaveAs(options.outDir+"/limits_freq_"+options.model+"_"+options.box.lower()+".pdf")
-                c.SaveAs(options.outDir+"/limits_freq_"+options.model+"_"+options.box.lower()+".C")
-                outFile = rt.TFile.Open(options.outDir+"/limits_freq_"+options.model+"_"+options.box.lower()+".root","recreate")
+                c.SaveAs(options.outDir+"/limits_freq_"+options.model+"_"+options.box+".pdf")
+                c.SaveAs(options.outDir+"/limits_freq_"+options.model+"_"+options.box+".C")
+                outFile = rt.TFile.Open(options.outDir+"/limits_freq_"+options.model+"_"+options.box+".root","recreate")
                 outFile.cd()
                 c.Write()
                 graphDict = {}

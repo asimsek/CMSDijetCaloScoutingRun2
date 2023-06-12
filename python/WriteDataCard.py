@@ -143,7 +143,9 @@ def initializeWorkspace(w,cfg,box,scaleFactor=1.,penalty=False,multi=False,x=Non
                 arglist.append(mypdfs)                
                         
             args = tuple(arglist)
+	    print ("myClass: %s" %(str(myclass)) )
             pdf = getattr(rt,myclass)(*args)
+	    print ("PDF: %s" % (str(pdf)) )
             if hasattr(pdf,'setTH1Binning'):
                 pdf.setTH1Binning(emptyHist1D)
             rootTools.Utils.importToWS(w,pdf)
@@ -171,6 +173,10 @@ def writeDataCard(box,model,txtfileName,bkgs,paramNames,w,penalty,fixed,shapes=[
                         lumiErrs = [1.027 for sig in model.split('p')]
                 elif '2016' in box:
                         lumiErrs = [1.062 for sig in model.split('p')]                  
+		elif '2017' in box:
+                        lumiErrs = [1.062 for sig in model.split('p')]
+		elif '2018' in box:
+                        lumiErrs = [1.062 for sig in model.split('p')]
         else:
                 rates = [w.data("%s_%s"%(box,model)).sumEntries()]
                 processes = ["%s_%s"%(box,model)]
@@ -178,6 +184,10 @@ def writeDataCard(box,model,txtfileName,bkgs,paramNames,w,penalty,fixed,shapes=[
                         lumiErrs = [1.027]
                 elif '2016' in box:
                         lumiErrs = [1.062]            
+		elif '2017' in box:
+			lumiErrs = [1.062]
+		elif '2018' in box:
+                        lumiErrs = [1.062]
         rates.extend([w.var('Ntot_%s_%s'%(bkg,box)).getVal() for bkg in bkgs])
         processes.extend(["%s_%s"%(box,bkg) for bkg in bkgs])
         lumiErrs.extend([1.00 for bkg in bkgs])
@@ -263,19 +273,31 @@ def writeDataCardMC(box,model,txtfileName,bkgs,paramNames,w):
                 if '2015' in box:
                         lumiErrs = [1.027 for sig in model.split('p')]
                 elif '2016' in box:
-                        lumiErrs = [1.062 for sig in model.split('p')]                  
+                        lumiErrs = [1.062 for sig in model.split('p')]
+		elif '2017' in box:
+                        lumiErrs = [1.062 for sig in model.split('p')] 
+		elif '2018' in box:
+                        lumiErrs = [1.062 for sig in model.split('p')]
         else:
                 rates = [w.data("%s_%s"%(box,model)).sumEntries()]
                 processes = ["%s_%s"%(box,model)]
                 if '2015' in box:
                         lumiErrs = [1.027]
                 elif '2016' in box:
-                        lumiErrs = [1.062]            
+                        lumiErrs = [1.062]
+		elif '2017' in box:
+                        lumiErrs = [1.062]
+		elif '2018' in box:
+                        lumiErrs = [1.062]
         rates.extend([w.var('Ntot_%s_%s'%(bkg,box)).getVal() for bkg in bkgs])
         processes.extend(["%s_%s"%(box,bkg) for bkg in bkgs])
         if '2015' in box:
                 lumiErrs.extend([1.027 for bkg in bkgs])
         elif '2016' in box:
+                lumiErrs.extend([1.062 for bkg in bkgs])
+	elif '2017' in box:
+                lumiErrs.extend([1.062 for bkg in bkgs])
+	elif '2018' in box:
                 lumiErrs.extend([1.062 for bkg in bkgs])
         divider = "------------------------------------------------------------\n"
         datacard = "imax 1 number of channels\n" + \
@@ -428,7 +450,8 @@ if __name__ == '__main__':
             if f.lower().find('resonanceshapes')!=-1:
                 signalFileName = f
             else:
-                rootFile = rt.TFile(f)                
+                rootFile = rt.TFile(f)
+		print ("f: ",f) 
                 names = [k.GetName() for k in rootFile.GetListOfKeys()]
                 if histoName in names:
                     myTH1 = rootFile.Get(histoName)
@@ -443,9 +466,11 @@ if __name__ == '__main__':
     
     if myTH1 is None:
         print "give a background root file as input"        
-    
+   
+     
     x = array('d', cfg.getBinning(box)[0]) # mjj binning
-        
+    print(x)
+    print("LenX: %d" % len(x))    
     myTH1.Rebin(len(x)-1,'data_obs_rebin',x)
     myRebinnedTH1 = rt.gDirectory.Get('data_obs_rebin')
     myRebinnedTH1.SetDirectory(0)

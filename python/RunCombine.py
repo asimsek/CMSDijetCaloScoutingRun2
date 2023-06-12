@@ -189,12 +189,15 @@ def main(options,args):
             if box=='CaloDijet2015' or box=='CaloDijet20152016':
                 signalSys  =   '--jesUp inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring15_JESUP.root --jesDown inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring15_JESDOWN.root'%(model,model)
                 signalSys += ' --jerUp inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring15_JERUP.root --jerDown inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring15_JERDOWN.root'%(model,model)
-            elif box=='CaloDijet2016':
+            elif box=='CaloDijet2016' or box=='CaloDijet2017' or box=='CaloDijet2018' or box=='CaloDijet2016p2017p2018':
                 signalSys  =   '--jesUp inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JESUP.root --jesDown inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JESDOWN.root'%(model,model)
                 signalSys += ' --jerUp inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JERUP.root --jerDown inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JERDOWN.root'%(model,model)
             elif box=='PFDijet2016':
                 signalSys  =   '--jesUp inputs/ResonanceShapes_%s_13TeV_Spring16_JESUP.root --jesDown inputs/ResonanceShapes_%s_13TeV_Spring16_JESDOWN.root'%(model,model)
                 signalSys += ' --jerUp inputs/ResonanceShapes_%s_13TeV_Spring16_JERUP.root'%(model)
+	    elif 'CaloDijetSep2016' in options.box.split('_') or 'CaloDijetSep2017' in options.box.split('_') or 'CaloDijetSep2018' in options.box.split('_'):
+		signalSys  =   '--jesUp inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JESUP.root --jesDown inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JESDOWN.root'%(model,model)
+                signalSys += ' --jerUp inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JERUP.root --jerDown inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JERDOWN.root'%(model,model)
         
         penaltyString = ''
         if options.penalty:
@@ -207,16 +210,28 @@ def main(options,args):
         
         if box=='CaloDijet2015' or box=='CaloDijet20152016':
             signalDsName = 'inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring15.root'%model
-        elif box=='CaloDijet2016':
+        elif box=='CaloDijet2016' or box=='CaloDijet2017' or box=='CaloDijet2018' or box=='CaloDijet2016p2017p2018':
             signalDsName = 'inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16.root'%model
         elif box=='PFDijet2016':
             signalDsName = 'inputs/ResonanceShapes_%s_13TeV_Spring16.root'%model
         elif 'PFDijetbb2016' in box:
             signalDsName = 'inputs/ResonanceShapes_%s_bb_13TeV_Spring16.root'%model
-            
+	elif 'CaloDijetSep2016' in box or 'CaloDijetSep2017' in box or 'CaloDijetSep2018' in box:
+	    signalDsName = 'inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16.root'%model
         backgroundDsName = {'CaloDijet2015':'inputs/data_CaloScoutingHT_Run2015D_BiasCorrected_CaloDijet2015.root',
                             #'CaloDijet2016':'inputs/data_CaloScoutingHT_Run2016BCD_NewBiasCorrectedFlat_Golden12910pb_CaloDijet2016.root',
-                            'CaloDijet2016':'inputs/data_CaloScoutingHT_Run2016BCDEFG_BiasCorrected_Mjj300_Golden27637pb_CaloDijet2016.root',
+                            #'CaloDijet2016':'inputs/data_CaloScoutingHT_Run2016BCDEFG_BiasCorrected_Mjj300_Golden27637pb_CaloDijet2016.root',
+			    'CaloDijet2016':'histo_data_mjj_scaled_2016.root',
+			    #'CaloDijetSep%s'%options.yr:"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_12March2021_1930/histo_data_mjj_fromTree.root"%options.yr,
+                            #'CaloDijetSep%s'%options.yr:"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root"%options.yr,
+                            'CaloDijetSep%s'%options.yr:"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root"%options.yr,
+			    #'CaloDijetSep2016':"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_12March2021_1930/histo_data_mjj_fromTree.root"%options.yr,
+			    #'CaloDijetSep2017':"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root"%options.yr,
+			    #'CaloDijetSep2018':"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root"%options.yr,
+                            'CaloDijet2017':'histo_data_mjj_scaled_2017.root',
+                            'CaloDijet2018':'histo_data_mjj_scaled_2018.root',
+                            'CaloDijetRunII':'histo_data_mjj_scaled_RunII.root',
+                            'CaloDijet2016p2017p2018':'histo_data_mjj_scaled_RunII.root',
                             #'PFDijet2016':'inputs/data_PFRECOHT_Run2016BCD_Golden12910pb_PFDijet2016.root',
                             'CaloDijet20152016':'inputs/data_CaloScoutingHT_Run2015D2016B_CaloDijet20152016.root',
                             'PFDijet2016':'inputs/JetHT_run2016_moriond17_red_cert_v2.root',
@@ -227,6 +242,9 @@ def main(options,args):
                             'PFDijetbb20161mm':'inputs/JetHT_run2016_moriond17_red_cert_v2.root',
                             'PFDijetbb20162mm':'inputs/JetHT_run2016_moriond17_red_cert_v2.root'
                             }
+
+	#backgroundDsName['CaloDijetSep2016']="inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_12March2021_1930/histo_data_mjj_fromTree.root"%options.yr
+	print ( " ->> BackgroundDsName: %s" % (backgroundDsName[box]) )
 
         blindString = ''
         if options.blind:
@@ -259,7 +277,8 @@ def main(options,args):
         for massPoint in massIterable(options.mass):
             exec_me('python python/WriteDataCard.py -m %s --mass %s -i %s -l %f -c %s -b %s -d %s %s %s %s %s %s %s %s'%(model, massPoint, options.inputFitFile,1000*lumi,options.config,box,options.outDir,signalDsName,backgroundDsName[box],penaltyString,signalSys,xsecString,decoString,multiString),options.dryRun)    
             if options.bayes:
-                rRangeString =  '--setPhysicsModelParameterRanges '
+                #rRangeString =  '--setPhysicsModelParameterRanges '
+		rRangeString =  '--setParameterRanges '
                 if options.deco:
                     rRangeString += 'shapeBkg_%s_bkg_deco_%s__norm=%f,%f'%(box,box,1-NSIGMA*paramDict['Ntot_bkg_%s'%box][1]/paramDict['Ntot_bkg_%s'%box][0],1+NSIGMA*paramDict['Ntot_bkg_%s'%box][1]/paramDict['Ntot_bkg_%s'%box][0])
                     rRangeString += ':deco_%s_eig1=%f,%f'%(box,-1.0*NSIGMA,NSIGMA)
@@ -283,7 +302,8 @@ def main(options,args):
                 if signif:
                     rRangeString = ''               
                     if options.rMax>-1:
-                        rRangeString = '--setPhysicsModelParameterRanges r=0,%f'%(options.rMax)
+                        #rRangeString = '--setPhysicsModelParameterRanges r=0,%f'%(options.rMax)
+			rRangeString = '--setParameterRanges r=0,%f'%(options.rMax)
                         rRangeStringList.append(rRangeString)
                     if len(boxes)==1:
                         exec_me('combine -M ProfileLikelihood --signif %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt -n %s_%s_lumi-%.3f_%s %s %s'%(options.outDir,model,massPoint,lumi,box,model,massPoint,lumi,box,rRangeString,sysString),options.dryRun)
@@ -291,11 +311,15 @@ def main(options,args):
                 else:
                     rRangeString = ''
                     if options.rMax>-1:                
-                        rRangeString =  '--setPhysicsModelParameterRanges r=0,%f'%(options.rMax)                
+                        #rRangeString =  '--setPhysicsModelParameterRanges r=0,%f'%(options.rMax)
+			rRangeString =  '--setParameterRanges r=0,%f'%(options.rMax)
                         rRangeStringList.append(rRangeString)
                     if len(boxes)==1:
-                        exec_me('combine -M Asymptotic -H ProfileLikelihood %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt -n %s_%s_lumi-%.3f_%s --minimizerTolerance %f --minimizerStrategy %i %s --saveWorkspace %s %s'%(options.outDir,model,massPoint,lumi,box,model,massPoint,lumi,box,options.min_tol,options.min_strat,rRangeString,blindString,sysString),options.dryRun)
-                        exec_me('mv higgsCombine%s_%s_lumi-%.3f_%s.Asymptotic.mH120.root %s/'%(model,massPoint,lumi,box,options.outDir),options.dryRun)
+                        #exec_me('combine -M Asymptotic -H ProfileLikelihood %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt -n %s_%s_lumi-%.3f_%s --minimizerTolerance %f --minimizerStrategy %i %s --saveWorkspace %s %s'%(options.outDir,model,massPoint,lumi,box,model,massPoint,lumi,box,options.min_tol,options.min_strat,rRangeString,blindString,sysString),options.dryRun)
+                        #exec_me('mv higgsCombine%s_%s_lumi-%.3f_%s.Asymptotic.mH120.root %s/'%(model,massPoint,lumi,box,options.outDir),options.dryRun)
+			exec_me('combine -M AsymptoticLimits -d %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt -n %s_%s_lumi-%.3f_%s --cminDefaultMinimizerTolerance %f --cminDefaultMinimizerStrategy %i %s --saveWorkspace %s %s'%(options.outDir,model,massPoint,lumi,box,model,massPoint,lumi,box,options.min_tol,options.min_strat,rRangeString,blindString,sysString),options.dryRun)
+			exec_me('mv higgsCombine%s_%s_lumi-%.3f_%s.AsymptoticLimits.mH120.root %s/higgsCombine%s_%s_lumi-%.3f_%s.Asymptotic.mH120.root'%(model,massPoint,lumi,box,options.outDir,model,massPoint,lumi,box),options.dryRun)
+			
     if len(boxes)>1:
         lumiTotal = sum(lumiFloat)
         for box,lumi in zip(boxes,lumiFloat): exec_me('cp %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt .'%(options.outDir,model,massPoint,lumi,box),options.dryRun)        
@@ -310,7 +334,7 @@ def main(options,args):
             paramRangeList = list(set(paramRangeList))
             rRangeStringTotal = ''
             if options.deco or rMax>=-1:
-                rRangeStringTotal = '--setPhysicsModelParameterRanges ' + ','.join(paramRangeList)
+                rRangeStringTotal = '--setParameterRanges ' + ','.join(paramRangeList)
                 
             sysStringListMod = [sysString.replace('-S 0 --freezeNuisances=','') for sysString in sysStringList ]
             paramFreezeList = []
@@ -326,15 +350,18 @@ def main(options,args):
             if signif:
                 rRangeString = ''               
                 if options.rMax>-1:
-                    rRangeString = '--setPhysicsModelParameterRanges r=0,%f'%(options.rMax)
+                    #rRangeString = '--setPhysicsModelParameterRanges r=0,%f'%(options.rMax)
+		    rRangeString = '--setParameterRanges r=0,%f'%(options.rMax)
                 exec_me('combine -M ProfileLikelihood --signif %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt -n %s_%s_lumi-%.3f_%s %s %s'%(options.outDir,model,massPoint,lumiTotal,options.box,model,massPoint,lumiTotal,options.box,rRangeString,sysString),options.dryRun)
                 exec_me('mv higgsCombine%s_%s_lumi-%.3f_%s.ProfileLikelihood.mH120.root %s/'%(model,massPoint,lumiTotal,options.box,options.outDir),options.dryRun)
             else:
                 rRangeString = ''
                 if options.rMax>-1:                
                     rRangeString =  '--setPhysicsModelParameterRanges r=0,%f'%(options.rMax)
-                exec_me('combine -M Asymptotic -H ProfileLikelihood %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt -n %s_%s_lumi-%.3f_%s --minimizerTolerance %f --minimizerStrategy %i %s --saveWorkspace %s %s'%(options.outDir,model,massPoint,lumiTotal,options.box,model,massPoint,lumiTotal,options.box,options.min_tol,options.min_strat,rRangeString,blindString,sysString),options.dryRun)
-                exec_me('mv higgsCombine%s_%s_lumi-%.3f_%s.Asymptotic.mH120.root %s/'%(model,massPoint,lumiTotal,options.box,options.outDir),options.dryRun)
+                #exec_me('combine -M Asymptotic -H ProfileLikelihood %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt -n %s_%s_lumi-%.3f_%s --minimizerTolerance %f --minimizerStrategy %i %s --saveWorkspace %s %s'%(options.outDir,model,massPoint,lumiTotal,options.box,model,massPoint,lumiTotal,options.box,options.min_tol,options.min_strat,rRangeString,blindString,sysString),options.dryRun)
+                #exec_me('mv higgsCombine%s_%s_lumi-%.3f_%s.Asymptotic.mH120.root %s/'%(model,massPoint,lumiTotal,options.box,options.outDir),options.dryRun)
+		exec_me('combine -M AsymptoticLimits %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt -n %s_%s_lumi-%.3f_%s --cminDefaultMinimizerTolerance %f --cminDefaultMinimizerStrategy %i %s --saveWorkspace %s %s'%(options.outDir,model,massPoint,lumiTotal,options.box,model,massPoint,lumiTotal,options.box,options.min_tol,options.min_strat,rRangeString,blindString,sysString),options.dryRun)
+		exec_me('mv higgsCombine%s_%s_lumi-%.3f_%s.AsymptoticLimits.mH120.root %s/higgsCombine%s_%s_lumi-%.3f_%s.Asymptotic.mH120.root'%(model,massPoint,lumiTotal,options.box,options.outDir,model,massPoint,lumiTotal,options.box),options.dryRun)
             for box,lumi in zip(boxes,lumiFloat): exec_me('rm dijet_combine_%s_%s_lumi-%.3f_%s.txt'%(model,massPoint,lumi,box),options.dryRun)
     
 if __name__ == '__main__':
@@ -390,6 +417,8 @@ if __name__ == '__main__':
                   help="using RooMultiPdf for total background")
     parser.add_option('--fit-pdf',dest="fitPdf", default="all", choices=['all','modexp','fiveparam','atlas'],
                   help="pdf for fitting")
+    parser.add_option('--yr', default='B',type="string",
+                  help="separate years")
 
 
     (options,args) = parser.parse_args()

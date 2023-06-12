@@ -1,2 +1,0 @@
-/cmshome/gdimperi/Dijet/CMSDIJETrepo/CMSSW_7_1_0_pre9_DiJet/src/CMSDIJET/DijetRootTreeMaker/entuples/RSGravToJJ_kMpl01_M-5000_Tune4C_13TeV-pythia8__Spring14miniaod-PU20bx25_POSTLS170_V5-v1__MINIAODSIM.root
-

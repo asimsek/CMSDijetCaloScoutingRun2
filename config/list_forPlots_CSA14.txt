@@ -1,9 +1,0 @@
-/cmshome/gdimperi/Dijet/CMSDIJETrepo/CMSSW_7_2_1_DiJet/src/CMSDIJET/DijetRootTreeAnalyzer/output_CSA14/rootfile_inputListJets_QCD_Pt-300to470_reduced_skim.root   7475	  
-/cmshome/gdimperi/Dijet/CMSDIJETrepo/CMSSW_7_2_1_DiJet/src/CMSDIJET/DijetRootTreeAnalyzer/output_CSA14/rootfile_inputListJets_QCD_Pt-470to600_reduced_skim.root	  587.	  
-/cmshome/gdimperi/Dijet/CMSDIJETrepo/CMSSW_7_2_1_DiJet/src/CMSDIJET/DijetRootTreeAnalyzer/output_CSA14/rootfile_inputListJets_QCD_Pt-600to800_reduced_skim.root	  167	  
-/cmshome/gdimperi/Dijet/CMSDIJETrepo/CMSSW_7_2_1_DiJet/src/CMSDIJET/DijetRootTreeAnalyzer/output_CSA14/rootfile_inputListJets_QCD_Pt-800to1000_reduced_skim.root  28.25 	  
-/cmshome/gdimperi/Dijet/CMSDIJETrepo/CMSSW_7_2_1_DiJet/src/CMSDIJET/DijetRootTreeAnalyzer/output_CSA14/rootfile_inputListJets_QCD_Pt-1000to1400_reduced_skim.root  8.195	  
-/cmshome/gdimperi/Dijet/CMSDIJETrepo/CMSSW_7_2_1_DiJet/src/CMSDIJET/DijetRootTreeAnalyzer/output_CSA14/rootfile_inputListJets_QCD_Pt-1400to1800_reduced_skim.root  0.7346	  
-/cmshome/gdimperi/Dijet/CMSDIJETrepo/CMSSW_7_2_1_DiJet/src/CMSDIJET/DijetRootTreeAnalyzer/output_CSA14/rootfile_inputListJets_QCD_Pt-1800to2400_reduced_skim.root   0.102	  
-/cmshome/gdimperi/Dijet/CMSDIJETrepo/CMSSW_7_2_1_DiJet/src/CMSDIJET/DijetRootTreeAnalyzer/output_CSA14/rootfile_inputListJets_QCD_Pt-2400to3200_reduced_skim.root   0.00644 
-/cmshome/gdimperi/Dijet/CMSDIJETrepo/CMSSW_7_2_1_DiJet/src/CMSDIJET/DijetRootTreeAnalyzer/output_CSA14/rootfile_inputListJets_QCD_Pt-3200_reduced_skim.root	    0.000163

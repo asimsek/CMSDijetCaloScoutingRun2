@@ -17,13 +17,13 @@ if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option('-c','--config',dest="config",type="string",default="config/dijet_bias.config",
                   help="Name of the config file to use")
-    parser.add_option('-b','--box',dest="box", default="CaloDijet2016",type="string",
+    parser.add_option('-b','--box',dest="box", default="CaloDijet2016p2017p2018",type="string",
                   help="box name")
-    parser.add_option('-m','--model',dest="model", default="qq",type="string",
+    parser.add_option('-m','--model',dest="model", default="gg",type="string",
                   help="signal model name")
-    parser.add_option('--mass',dest="mass", default='750',type="string",
+    parser.add_option('--mass',dest="mass", default='800',type="string",
                   help="mass of resonance")
-    parser.add_option('-l','--lumi',dest="lumi", default="12.910",type="string",
+    parser.add_option('-l','--lumi',dest="lumi", default="122.207",type="string",
                   help="lumi in fb^-1, e.g.: 12.910")
     parser.add_option('--dry-run',dest="dryRun",default=False,action='store_true',
                   help="Just print out commands to run")
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     
     (options,args) = parser.parse_args()
 
-    pdfIndexMap = {#'fourparam': 0,
+    pdfIndexMap = {'fourparam': 0,
                    'modexp': 0,
                    'fiveparam': 1,
                    'atlas': 2,
@@ -64,7 +64,8 @@ if __name__ == '__main__':
                         #'CaloDijet2016':'inputs/data_CaloScoutingHT_Run2016BCD_NewBiasCorrectedFlat_Golden12910pb_CaloDijet2016.root',
                         'CaloDijet2016':'inputs/data_CaloScoutingHT_Run2016BCDEFG_BiasCorrected_Mjj300_Golden27637pb_CaloDijet2016.root',
                         'PFDijet2016':'inputs/data_PFRECOHT_Run2016BCD_Golden12910pb_PFDijet2016.root',
-                        'CaloDijet20152016':'inputs/data_CaloScoutingHT_Run2015D2016B_CaloDijet20152016.root'
+                        'CaloDijet20152016':'inputs/data_CaloScoutingHT_Run2015D2016B_CaloDijet20152016.root',
+			'CaloDijet2016p2017p2018':'inputs/CaloScoutingHT_ALLRunII_DatavsQDCMC_DE13_M489_17June2021_1130/histo_data_mjj_fromTree.root'
                         }
 
     signalDsName = ''
@@ -75,7 +76,7 @@ if __name__ == '__main__':
 
     
     signalSys = ''    
-    if box=='CaloDijet2016':
+    if box=='CaloDijet2016' or 'CaloDijet2016p2017p2018':
         signalSys  =   '--jesUp inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JESUP.root --jesDown inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JESDOWN.root'%(model,model)
         signalSys += ' --jerUp inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JERUP.root --jerDown inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JERDOWN.root'%(model,model)
     elif box=='PFDijet2016':

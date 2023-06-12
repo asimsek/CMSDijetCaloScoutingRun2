@@ -1,6 +1,0 @@
-config/lists2/QCD_HT-500To1000_13TeV-madgraph__Phys14DR-PU20bx25_PHYS14_25_V1-v1__MINIAODSIM.txt
-config/lists2/QCD_HT-500To1000_13TeV-madgraph__Phys14DR-PU20bx25_PHYS14_25_V1_ext1-v1__MINIAODSIM.txt
-config/lists2/QCD_HT_1000ToInf_13TeV-madgraph__Phys14DR-PU20bx25_PHYS14_25_V1-v1__MINIAODSIM.txt
-config/lists2/QCD_HT_1000ToInf_13TeV-madgraph__Phys14DR-PU20bx25_PHYS14_25_V1_ext1-v1__MINIAODSIM.txt
-config/lists2/QCD_HT_250To500_13TeV-madgraph__Phys14DR-PU20bx25_PHYS14_25_V1-v1__MINIAODSIM.txt
-config/lists2/QCD_HT_250To500_13TeV-madgraph__Phys14DR-PU20bx25_PHYS14_25_V1_ext1-v2__MINIAODSIM.txt
