@@ -3,20 +3,32 @@ Instructions for running the Calo Scouting Dijet Resonance Search from start to 
 ### Set up DijetRootTreeAnalyzer and Combine Tool
 1. Set up CMSSW/DijetRootTreeAnalyzer/combine
 
-    ```sh
-    cmsrel CMSSW_10_2_13
-    cd CMSSW_10_2_13/src
-    cmsenv
-    git clone https://github.com/asimsek/CMSDijetCaloScoutingRun2 CMSDIJET/DijetRootTreeAnalyzer
-    git clone -b dijetpdf_102X https://github.com/RazorCMS/HiggsAnalysis-CombinedLimit HiggsAnalysis/CombinedLimit
-    cd HiggsAnalysis/CombinedLimit
-    scram b -j 4
-    cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer
-    ```
+```sh
+cmsrel CMSSW_10_2_13
+cd CMSSW_10_2_13/src
+cmsenv
+git clone https://github.com/asimsek/CMSDijetCaloScoutingRun2 CMSDIJET/DijetRootTreeAnalyzer
+git clone -b dijetpdf_102X https://github.com/RazorCMS/HiggsAnalysis-CombinedLimit HiggsAnalysis/CombinedLimit
+cd HiggsAnalysis/CombinedLimit
+scram b -j 4
+cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer
+voms-proxy-init --voms cms --valid 300:00
+```
 
 
-### Create Reduced Trees (Reduced nTuples)
+## Create Reduced Trees (Reduced nTuples)
+### Local Production
+> Please first change dataset year and era information `std::string dataYear = "2018D";` inside the `src/analysisClass_mainDijetCaloScoutingSelection_RunII.C`script!
 
+```sh
+./scripts/make_rootNtupleClass.sh -f root://cmseos.fnal.gov//store/group/lpcjj/CaloScouting/rootTrees_big/2018/ScoutingCaloCommissioning/ScoutingCaloCommissioning/crab_ScoutingCaloCommissioning__Run2018D-v1__RAW/230129_231233/0000/ScoutingCaloCommissioning__Run2018D-v1__RAW_1.root -t dijetscouting/events
+
+ln -sf analysisClass_mainDijetCaloScoutingSelection_RunII.C src/analysisClass.C
+make clean
+make
+
+./main lists/CaloScoutingHT/CaloScoutingHT2018D-v1_reduced.txt config/cutFile_mainDijetCaloScoutingSelection.txt rootTupleTree/tree ScoutingCaloCommissioning2018D_n0 ScoutingCaloCommissioning2018D_n0
+```
 
 ### Create Kinematic Plots
 
