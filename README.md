@@ -56,6 +56,7 @@ python3 submit_all.py
 
 
 ### Create Kinematic Plots
+> Change EOS path inside the `plotterCondor_DatavsMC4.sh` script before sending jobs to condor!
 
 ##### 2016
 ```sh
