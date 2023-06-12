@@ -12,7 +12,6 @@ git clone -b dijetpdf_102X https://github.com/RazorCMS/HiggsAnalysis-CombinedLim
 cd HiggsAnalysis/CombinedLimit
 scram b -j 4
 cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer
-voms-proxy-init --voms cms --valid 300:00
 ```
 
 
@@ -29,6 +28,26 @@ make
 
 ./main lists/CaloScoutingHT/CaloScoutingHT2018D-v1_reduced.txt config/cutFile_mainDijetCaloScoutingSelection.txt rootTupleTree/tree ScoutingCaloCommissioning2018D_n0 ScoutingCaloCommissioning2018D_n0
 ```
+
+### Production on Condor
+> Please first define global variables inside the `condor_submit_Data.py` according to your account and need! Also create a config submission file which includes information for condor job!
+
+```sh
+cd dijetCondor
+```
+
+```sh
+Dataset=/ScoutingCaloHT/Run2018D-v1/RAW
+InputList=../lists/CaloScoutingHT/CaloScoutingHT2018D-v1_reduced.txt
+Interval=10 
+```
+
+```sh
+cmsenv
+voms-proxy-init --voms cms --valid 300:00
+python condor_submit_Data.py
+```
+
 
 ### Create Kinematic Plots
 
