@@ -7,11 +7,13 @@ from optparse import OptionParser
 
 def getThyXsecDict():    
     thyXsecDict = {}
+    workDir = os.environ['CMSSW_BASE'] + "/src/CMSDIJET/DijetRootTreeAnalyzer/"
     xsecFiles = ['data/all_lowmass_lhc13TeV.txt','data/rsg_gg_lhc13TeV.txt','data/S8_13TeV_narrow.txt','data/string_total_13TeV.txt','data/axi_lhc13TeV_NLO.txt','data/dm_xsec.txt','data/Zprimebb_xsec.txt','data/dmbb_xsec.txt']
     print xsecFiles
     for xsecFile in xsecFiles:
         moreThyModels = []
-        f = open(xsecFile)
+        xsecFileWithPath = workDir + xsecFile
+        f = open(xsecFileWithPath)
         for i,line in enumerate(f.readlines()):
             if line[0]=='#': continue
             line = line.replace('\n','')
