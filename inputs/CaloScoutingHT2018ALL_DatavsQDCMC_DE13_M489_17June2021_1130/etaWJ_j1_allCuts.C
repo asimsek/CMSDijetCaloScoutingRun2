@@ -1,7 +1,7 @@
 void etaWJ_j1_allCuts()
 {
 //=========Macro generated from canvas: can_allCuts_etaWJ_j1/can_allCuts_etaWJ_j1
-//=========  (Tue May 23 08:06:04 2023) by ROOT version 6.12/07
+//=========  (Mon Jun 12 09:30:27 2023) by ROOT version 6.12/07
    TCanvas *can_allCuts_etaWJ_j1 = new TCanvas("can_allCuts_etaWJ_j1", "can_allCuts_etaWJ_j1",0,0,600,900);
    gStyle->SetOptStat(0);
    gStyle->SetOptTitle(0);
@@ -284,7 +284,7 @@ tex->SetNDC();
    tex->SetTextSize(0.051);
    tex->SetLineWidth(2);
    tex->Draw();
-      tex = new TLatex(0.19555,0.85045,"Preliminary");
+      tex = new TLatex(0.19555,0.85045,"");
 tex->SetNDC();
    tex->SetTextAlign(13);
    tex->SetTextFont(52);

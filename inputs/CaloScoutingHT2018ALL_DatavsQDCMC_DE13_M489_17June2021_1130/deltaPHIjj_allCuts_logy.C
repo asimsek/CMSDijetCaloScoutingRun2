@@ -1,7 +1,7 @@
 void deltaPHIjj_allCuts_logy()
 {
 //=========Macro generated from canvas: can_allCuts_deltaPHIjj/can_allCuts_deltaPHIjj
-//=========  (Tue May 23 08:05:21 2023) by ROOT version 6.12/07
+//=========  (Mon Jun 12 09:24:34 2023) by ROOT version 6.12/07
    TCanvas *can_allCuts_deltaPHIjj = new TCanvas("can_allCuts_deltaPHIjj", "can_allCuts_deltaPHIjj",0,0,600,900);
    gStyle->SetOptStat(0);
    gStyle->SetOptTitle(0);
@@ -313,7 +313,7 @@ tex->SetNDC();
    tex->SetTextSize(0.051);
    tex->SetLineWidth(2);
    tex->Draw();
-      tex = new TLatex(0.19555,0.85045,"Preliminary");
+      tex = new TLatex(0.19555,0.85045,"");
 tex->SetNDC();
    tex->SetTextAlign(13);
    tex->SetTextFont(52);
