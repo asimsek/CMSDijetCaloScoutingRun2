@@ -1,0 +1,2 @@
+#rMax,signalType,configFile,date,year,lumi,config,inputmjj
+5.0,gg,dijetSep,17June2021,2018D,26524.906306,CaloDijetSep2018D,CaloScoutingHT2018D_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130

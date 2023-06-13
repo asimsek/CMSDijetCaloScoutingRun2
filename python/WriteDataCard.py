@@ -166,28 +166,29 @@ def writeDataCard(box,model,txtfileName,bkgs,paramNames,w,penalty,fixed,shapes=[
         nBkgd = len(bkgs)
         rootFileName = txtfileName.replace('.txt','.root')
         signals = len(model.split('p'))
+        ## https://twiki.cern.ch/twiki/bin/viewauth/CMS/TWikiLUM?rev=167
         if signals>1:
                 rates = [w.data("%s_%s"%(box,sig)).sumEntries() for sig in model.split('p')]
                 processes = ["%s_%s"%(box,sig) for sig in model.split('p')]
                 if '2015' in box:
-                        lumiErrs = [1.027 for sig in model.split('p')]
+                        lumiErrs = [1.016 for sig in model.split('p')]
                 elif '2016' in box:
-                        lumiErrs = [1.062 for sig in model.split('p')]                  
+                        lumiErrs = [1.012 for sig in model.split('p')]                  
 		elif '2017' in box:
-                        lumiErrs = [1.062 for sig in model.split('p')]
+                        lumiErrs = [1.023 for sig in model.split('p')]
 		elif '2018' in box:
-                        lumiErrs = [1.062 for sig in model.split('p')]
+                        lumiErrs = [1.025 for sig in model.split('p')]
         else:
                 rates = [w.data("%s_%s"%(box,model)).sumEntries()]
                 processes = ["%s_%s"%(box,model)]
                 if '2015' in box:
-                        lumiErrs = [1.027]
+                        lumiErrs = [1.016]
                 elif '2016' in box:
-                        lumiErrs = [1.062]            
+                        lumiErrs = [1.012]            
 		elif '2017' in box:
-			lumiErrs = [1.062]
+			lumiErrs = [1.023]
 		elif '2018' in box:
-                        lumiErrs = [1.062]
+                        lumiErrs = [1.025]
         rates.extend([w.var('Ntot_%s_%s'%(bkg,box)).getVal() for bkg in bkgs])
         processes.extend(["%s_%s"%(box,bkg) for bkg in bkgs])
         lumiErrs.extend([1.00 for bkg in bkgs])
@@ -271,34 +272,34 @@ def writeDataCardMC(box,model,txtfileName,bkgs,paramNames,w):
                 rates = [w.data("%s_%s"%(box,sig)).sumEntries() for sig in model.split('p')]
                 processes = ["%s_%s"%(box,sig) for sig in model.split('p')]
                 if '2015' in box:
-                        lumiErrs = [1.027 for sig in model.split('p')]
+                        lumiErrs = [1.016 for sig in model.split('p')]
                 elif '2016' in box:
-                        lumiErrs = [1.062 for sig in model.split('p')]
+                        lumiErrs = [1.012 for sig in model.split('p')]
 		elif '2017' in box:
-                        lumiErrs = [1.062 for sig in model.split('p')] 
+                        lumiErrs = [1.023 for sig in model.split('p')] 
 		elif '2018' in box:
-                        lumiErrs = [1.062 for sig in model.split('p')]
+                        lumiErrs = [1.025 for sig in model.split('p')]
         else:
                 rates = [w.data("%s_%s"%(box,model)).sumEntries()]
                 processes = ["%s_%s"%(box,model)]
                 if '2015' in box:
-                        lumiErrs = [1.027]
+                        lumiErrs = [1.016]
                 elif '2016' in box:
-                        lumiErrs = [1.062]
+                        lumiErrs = [1.012]
 		elif '2017' in box:
-                        lumiErrs = [1.062]
+                        lumiErrs = [1.023]
 		elif '2018' in box:
-                        lumiErrs = [1.062]
+                        lumiErrs = [1.025]
         rates.extend([w.var('Ntot_%s_%s'%(bkg,box)).getVal() for bkg in bkgs])
         processes.extend(["%s_%s"%(box,bkg) for bkg in bkgs])
         if '2015' in box:
-                lumiErrs.extend([1.027 for bkg in bkgs])
+                lumiErrs.extend([1.016 for bkg in bkgs])
         elif '2016' in box:
-                lumiErrs.extend([1.062 for bkg in bkgs])
+                lumiErrs.extend([1.012 for bkg in bkgs])
 	elif '2017' in box:
-                lumiErrs.extend([1.062 for bkg in bkgs])
+                lumiErrs.extend([1.023 for bkg in bkgs])
 	elif '2018' in box:
-                lumiErrs.extend([1.062 for bkg in bkgs])
+                lumiErrs.extend([1.025 for bkg in bkgs])
         divider = "------------------------------------------------------------\n"
         datacard = "imax 1 number of channels\n" + \
                    "jmax %i number of processes minus 1\n"%(nBkgd+signals-1) + \

@@ -207,24 +207,18 @@ def main(options,args):
     
         xsecString = '--xsec %f'%(options.xsec)    
 
-        
-        if box=='CaloDijet2015' or box=='CaloDijet20152016':
-            signalDsName = 'inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring15.root'%model
-        elif box=='CaloDijet2016' or box=='CaloDijet2017' or box=='CaloDijet2018' or box=='CaloDijet2016p2017p2018':
-            signalDsName = 'inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16.root'%model
-        elif box=='PFDijet2016':
-            signalDsName = 'inputs/ResonanceShapes_%s_13TeV_Spring16.root'%model
-        elif 'PFDijetbb2016' in box:
-            signalDsName = 'inputs/ResonanceShapes_%s_bb_13TeV_Spring16.root'%model
+        workDir = os.environ['CMSSW_BASE'] + "/src/CMSDIJET/DijetRootTreeAnalyzer" 
+        if box=='CaloDijet2016' or box=='CaloDijet2017' or box=='CaloDijet2018' or box=='CaloDijet2016p2017p2018':
+            signalDsName = '%s/inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16.root' % (workDir, model)
 	elif 'CaloDijetSep2016' in box or 'CaloDijetSep2017' in box or 'CaloDijetSep2018' in box:
-	    signalDsName = 'inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16.root'%model
+	    signalDsName = '%s/inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16.root' % (workDir, model)
         backgroundDsName = {'CaloDijet2015':'inputs/data_CaloScoutingHT_Run2015D_BiasCorrected_CaloDijet2015.root',
                             #'CaloDijet2016':'inputs/data_CaloScoutingHT_Run2016BCD_NewBiasCorrectedFlat_Golden12910pb_CaloDijet2016.root',
                             #'CaloDijet2016':'inputs/data_CaloScoutingHT_Run2016BCDEFG_BiasCorrected_Mjj300_Golden27637pb_CaloDijet2016.root',
 			    'CaloDijet2016':'histo_data_mjj_scaled_2016.root',
 			    #'CaloDijetSep%s'%options.yr:"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_12March2021_1930/histo_data_mjj_fromTree.root"%options.yr,
                             #'CaloDijetSep%s'%options.yr:"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root"%options.yr,
-                            'CaloDijetSep%s'%options.yr:"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root"%options.yr,
+                            'CaloDijetSep%s'%options.yr:"%s/inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root" % (workDir, options.yr),
 			    #'CaloDijetSep2016':"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_12March2021_1930/histo_data_mjj_fromTree.root"%options.yr,
 			    #'CaloDijetSep2017':"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root"%options.yr,
 			    #'CaloDijetSep2018':"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root"%options.yr,
@@ -275,7 +269,8 @@ def main(options,args):
             decoString  ='--multi'
 
         for massPoint in massIterable(options.mass):
-            exec_me('python python/WriteDataCard.py -m %s --mass %s -i %s -l %f -c %s -b %s -d %s %s %s %s %s %s %s %s'%(model, massPoint, options.inputFitFile,1000*lumi,options.config,box,options.outDir,signalDsName,backgroundDsName[box],penaltyString,signalSys,xsecString,decoString,multiString),options.dryRun)    
+            workDir = os.environ['CMSSW_BASE'] + "/src/CMSDIJET/DijetRootTreeAnalyzer"
+            exec_me('python %s/python/WriteDataCard.py -m %s --mass %s -i %s -l %f -c %s -b %s -d %s %s %s %s %s %s %s %s'%(workDir, model, massPoint, options.inputFitFile,1000*lumi,options.config,box,options.outDir,signalDsName,backgroundDsName[box],penaltyString,signalSys,xsecString,decoString,multiString),options.dryRun)    
             if options.bayes:
                 #rRangeString =  '--setPhysicsModelParameterRanges '
 		rRangeString =  '--setParameterRanges '
