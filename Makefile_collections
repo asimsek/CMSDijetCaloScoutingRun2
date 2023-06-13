@@ -25,6 +25,7 @@ all: ${EXE}
 main: $(SRC)/main.o $(SELECTIONLIB) $(COLLECTIONLIB) $(PHYOBJECTSLIB) $(IDOBJECTSLIB) $(TOOLSLIB) 
 	$(COMP) $(INC) $(ROOTINC) $(LIBS) $(FLAGS) -o $@  $(SELECTIONLIB) $(COLLECTIONLIB) $(PHYOBJECTSLIB) $(IDOBJECTSLIB) $(TOOLSLIB) $(SRC)/$@.o
 
+
 clean:
 	rm -f src/*.o *.lo core core.*
 	rm -f *~
