@@ -14,7 +14,6 @@ SELECTIONLIB=$(SRC)/rootNtupleClass.o $(SRC)/baseClass.o $(SRC)/analysisClass.o 
 EXE = main
 
 
-
 # ********** TEMPLATE *************
 # mainProg: mainProg.o $(SELECTIONLIB)
 #	$(COMP) $(INC) $(ROOTINC) $(LIBS) $(ROOTLIBS) -o $@  $(SELECTIONLIB) $@.o
