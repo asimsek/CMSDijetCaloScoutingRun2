@@ -23,24 +23,24 @@ def execute_commands(args, rMax, signalType, configFile, date, year, lumi, confi
     print(" -> Cross-Section Fit process has been started! \n")
     fitCommandLine = "python " + workDir + "/python/BinnedFit.py -c " + workDir + "/config/"+ configFile + ".config -l " + str(lumi) + " --mass 750_1200_1600 -m gg_qg_qq --xsec 9.5_8.2e-1_2.2e-1 -s " + signalShapes + " " + inputmjj + " -b " + config + " -d " + outputFitFolder + " --fit-spectrum"
     #print (fitCommandLine)
-    #os.system(fitCommandLine)
+    os.system(fitCommandLine)
 
     if not args.bf:
         os.makedirs(outputLimitFolder + f"/cards_{signalType}_w2016Sig_DE13_M{mass}_{date}_rmax{rMax}", exist_ok=True)
         print(" -> RunCombine process has been started! \n")
-        #subprocess.run([
-        #    "python", f"{workDir}/python/RunCombine.py", "-c", f"{workDir}/config/{configFile}.config", "-m", signalType, "-d",
-        #    outputLimitFolder + f"/cards_{signalType}_w2016Sig_DE13_M{mass}_{date}_rmax{rMax}", "--mass",
-        #    "range(500,2350,50)", "-i", outputFitFolder + f"/DijetFitResults_{config}.root", "-b", config,
-        #    "--rMax", str(rMax), "--xsec", str(xsecSignal), "-l", str(lumi2), "--yr", year
-        #])
+        subprocess.run([
+            "python", f"{workDir}/python/RunCombine.py", "-c", f"{workDir}/config/{configFile}.config", "-m", signalType, "-d",
+            outputLimitFolder + f"/cards_{signalType}_w2016Sig_DE13_M{mass}_{date}_rmax{rMax}", "--mass",
+            "range(500,2350,50)", "-i", outputFitFolder + f"/DijetFitResults_{config}.root", "-b", config,
+            "--rMax", str(rMax), "--xsec", str(xsecSignal), "-l", str(lumi2), "--yr", year
+        ])
 
         print(" -> GetCombine process has been started! \n")
-        #subprocess.run([
-        #    "python", f"{workDir}/python/GetCombine.py", "-d",
-        #    outputLimitFolder + f"/cards_{signalType}_w2016Sig_DE13_M{mass}_{date}_rmax{rMax}", "-m", signalType, "--mass",
-        #    "range(500,2350,50)", "-b", config, "--xsec", str(xsecSignal), "-l", str(lumi2)
-        #])
+        subprocess.run([
+            "python", f"{workDir}/python/GetCombine.py", "-d",
+            outputLimitFolder + f"/cards_{signalType}_w2016Sig_DE13_M{mass}_{date}_rmax{rMax}", "-m", signalType, "--mass",
+            "range(500,2350,50)", "-b", config, "--xsec", str(xsecSignal), "-l", str(lumi2)
+        ])
 
         print(" -> Plotting process has been started! \n")
         subprocess.run([
