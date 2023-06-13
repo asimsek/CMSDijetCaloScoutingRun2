@@ -1,5 +1,5 @@
 Dataset=/ScoutingCaloHT/Run2018D-v1/RAW
 InputList=../lists/bigNTuples/CaloScoutingHT/CaloScoutingHT2018D-v1.txt
-Interval=50
+Interval=5
 analyzerScript=analysisClass_mainDijetCaloScoutingSelection_RunII.C
 era=2018D
