@@ -87,4 +87,35 @@ source plotterCondor_DatavsMC4.sh CaloScoutingHT2018D_withOutProblematicHLTKey_D
 source plotterCondor_DatavsMC4.sh CaloScoutingHT2018ALL_withOutProblematicHLTKey_DatavsQDCMC_11June2023_2245 ../lists/CaloScoutingHT/CaloScoutingHT2018ALL_reduced.txt ../lists/QCD2017-v1_reduced_new.txt 54451.729361
 ```
 
+## Fits & Limits
+
+
+##### 2018
+> Create an input/config file `limit2018_cfg.txt` for all 2018 fits & limits.
+> Script is looping over the cfg file lines and each line represent one fit/limit production
+
+```sh
+rMax,signalType,configFile,date,year,lumi,config,inputmjj
+5.0,gg,dijetSep,17June2021,2018D,26524.906306,CaloDijetSep2018D,CaloScoutingHT2018D_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130
+```
+
+> Produce ONLY BG-Only cross-section fit results (by adding --bf argument)
+
+```sh
+python3 createFitsAndLimits.py --config_path limit2018_cfg.txt --bf
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
