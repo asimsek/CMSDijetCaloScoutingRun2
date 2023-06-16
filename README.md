@@ -91,8 +91,14 @@ source plotterCondor_DatavsMC4.sh CaloScoutingHT2018ALL_withOutProblematicHLTKey
 
 
 ##### 2018
-> Create an input/config file `limit2018_cfg.txt` for all 2018 fits & limits.
+> Create an input(config) file `cfgFiles/limit2018_cfg.txt` for all 2018 fits & limits.
 > Script is looping over the cfg file lines and each line represent one fit/limit production
+
+```sh
+mkdir -p cfgFiles
+vi cfgFiles/limit2018_cfg.txt
+```
+
 
 ```sh
 rMax,signalType,configFile,date,year,lumi,config,inputmjj
@@ -102,12 +108,14 @@ rMax,signalType,configFile,date,year,lumi,config,inputmjj
 > Produce ONLY BG-Only cross-section fit results (by adding --bf argument)
 
 ```sh
-python3 createFitsAndLimits.py --config_path limit2018_cfg.txt --bf
+python3 createFitsAndLimits.py --config_path cfgFiles/limit2018_cfg.txt --bf
 ```
 
+> If you would like to calibrate dataset and match the cros section of each individual year/era, to a reference cross section (default 2016 full dataset cross section), use the following command line and give the same config file as an argument
 
-
-
+```sh
+python calibrateDatasetsToSmoothFit.py --cfgPath cfgFiles/limit2018_cfg.txt
+```
 
 
 
