@@ -116,12 +116,14 @@ python3 createFitsAndLimits.py --config_path inputFiles/limit2018_cfg.txt --bf
 > Again give `--bf`argument if you want to perform ONLY BG-Only cross-section fit
 > If you want to set also the limits, remove `--bf` from the following command line
 
+> Do NOT forget to set config name and mjj root file path inside the `python/RunCombine.py` script for the limits!
+> Find `backgroundDsName` variable, give apropriate config name (`CaloDijetSep2018D`) and `histo_data_mjj_fromTree.root` path!
+
 ```sh
 python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/limit2018_cfg.txt --bf
 ```
 
-> Do NOT forget to set config name and mjj root file path inside the `python/RunCombine.py` script for the limits!
-> Find `backgroundDsName` variable, give apropriate config name (`CaloDijetSep2018D`) and `histo_data_mjj_fromTree.root` path!
+
 
 
 
