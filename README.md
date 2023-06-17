@@ -112,6 +112,7 @@ python3 createFitsAndLimits.py --config_path inputFiles/limit2018_cfg.txt --bf
 ```
 
 > If you would like to calibrate dataset and match the cros section of each individual year/era, to a reference cross section (default 2016 full dataset cross section), use the following command line and give the same config file as an argument
+
 > Again give `--bf`argument if you want to perform ONLY BG-Only cross-section fit
 > If you want to set also the limits, remove `--bf` from the following command line
 
