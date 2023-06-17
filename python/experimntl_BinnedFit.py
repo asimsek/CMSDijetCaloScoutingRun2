@@ -114,8 +114,28 @@ def convertFunctionToHisto(background_,name_,N_massBins_,massBins_):
 
     return background_hist_
 
+def scale_bin(graph, bin, scale_factor):
+    # Get number of points
+    n = graph.GetN()
+
+    # Create empty arrays of the correct size
+    x = array('d', [0.]*n)
+    y = array('d', [0.]*n)
+
+    # Fill the arrays with the x and y values
+    for i in range(n):
+	x[i], y[i] = graph.GetX(i), graph.GetY(i)
+        graph.GetPoint(i, x[i], y[i])
+
+    # Scale the y value in the given bin
+    y[bin] *= scale_factor
+
+    new_graph = ROOT.TGraph(n, x, y)
+
+    return new_graph
+
 def calculateChi2AndFillResiduals(data_obs_TGraph_,background_hist_,hist_fit_residual_vsMass_,workspace_,prinToScreen_=0,effFit_=False):
-    
+  
     N_massBins_ = data_obs_TGraph_.GetN()
     MinNumEvents = 10
     nParFit = 4
@@ -144,7 +164,6 @@ def calculateChi2AndFillResiduals(data_obs_TGraph_,background_hist_,hist_fit_res
     N_PlotRangeAll = 0
     N_PlotRangeNonZero = 0
     N_PlotRangeMinNumEvents = 0
-
     for bin in range (0,N_massBins_):
         ## Values and errors
         value_data = data_obs_TGraph_.GetY()[bin]
@@ -156,18 +175,18 @@ def calculateChi2AndFillResiduals(data_obs_TGraph_,background_hist_,hist_fit_res
         binWidth_current = xbinHigh - xbinLow
         #value_fit = background_.Integral(xbinLow , xbinHigh) / binWidth_current
         value_fit = background_hist_.GetBinContent(bin+1)
-        
         ## Fit residuals
         err_tot_data = 0
         if (value_fit > value_data):
             err_tot_data = err_high_data  
         else:
             err_tot_data = err_low_data
-	if (box == "CaloDijet2016p2017p2018"):
-                err_tot_data = FitMultipliers[bin] / 1000.
+	#err_tot_data = err_tot_data * math.sqrt(xSecScaleFactor)
+	#if (box == "CaloDijet2016p2017p2018"):
+        #        err_tot_data = FitMultipliers[bin] / 1000.
                 #err_tot_data = err_tot_data
-        else:
-                err_tot_data = err_tot_data * math.sqrt(FitMultipliers[bin])
+        #else:
+        #        err_tot_data = err_tot_data * math.sqrt(FitMultipliers[bin])
         plotRegions = plotRegion.split(',')
         checkInRegions = [xbinCenter>workspace_.var('mjj').getMin(reg) and xbinCenter<workspace_.var('mjj').getMax(reg) for reg in plotRegions]
         if effFit_: checkInRegions = [xbinCenter>workspace_.var('mjj').getMin('Eff') and xbinCenter<workspace_.var('mjj').getMax('Eff')]
@@ -280,6 +299,10 @@ if __name__ == '__main__':
     plotRegion = options.plotRegion
     histoName = cfg.getVariables(box, "histoName")
     FitMultipliers = cfg.getVariables(box, "FitMultipliers")
+    signal_mjj = cfg.getVariables(box, "signal_mjj")
+    fitPrediction2016_ForxSecScale = cfg.getVariables(box, "fitPrediction2016_ForxSecScale")
+    refLumi = float(cfg.getVariables(box, "refLumi"))
+    xSecScaleFactors = []
     for xj in FitMultipliers:
         print ("FitMultipliers: %f - Sqrt: %f" % (xj, math.sqrt(xj)))
 
@@ -446,7 +469,28 @@ if __name__ == '__main__':
     myTH1.Rebin(len(x)-1,'data_obs_rebin',x)
     myRebinnedTH1 = rt.gDirectory.Get('data_obs_rebin')
     myRebinnedTH1.SetDirectory(0)
-    
+
+    ctr = - 1
+    for massPo in signal_mjj:
+        if ctr < len(signal_mjj)-2:
+            ctr += 1
+        binWidth = myRebinnedTH1.GetBinWidth(massPo)
+        print(binWidth)
+        refxSec = fitPrediction2016_ForxSecScale[ctr] / (refLumi*binWidth)
+        xBin = myRebinnedTH1.GetBinContent(massPo)
+        print (xBin)
+        targetxSec = xBin / (binWidth * (lumi/1000))
+        xSecScaleFactor = float(refxSec/targetxSec)
+        print(xSecScaleFactor)
+        xSecScaleFactors.append(xSecScaleFactor)
+        nBins_ = float(xBin) * float(xSecScaleFactors)
+        myRebinnedTH1.SetBinContent(massPo, nBins_)
+        afBin = myRebinnedTH1.GetBinContent(massPo)
+        print ("Mass: %d | BinWidth: %f | Before: %f | After: %f" % (massPo, binWidth, xBin, afBin) ) 
+
+
+
+
     myRealTH1 = convertToTh1xHist(myRebinnedTH1)        
     
     dataHist = rt.RooDataHist("data_obs","data_obs",rt.RooArgList(th1x), rt.RooFit.Import(myRealTH1))
@@ -591,8 +635,7 @@ if __name__ == '__main__':
         predYield = asimov.weight(rt.RooArgSet(th1x))
         dataYield = dataHist_reduce.weight(rt.RooArgSet(th1x))
         rss += float(predYield-dataYield) * float(predYield-dataYield)
-        print "FitPred,%i,%i,%i" % (x[i],predYield,(x[i+1]-x[i]))
-        print "%i <= mjj < %i; prediction: %.0f; data %i"  % (x[i],x[i+1],predYield,dataYield)
+        print "%i <= mjj < %i; prediction: %.2f; data %i"  % (x[i],x[i+1],predYield,dataYield)
     print "RSS = ", rss 
         
     rt.TH1D.SetDefaultSumw2()
@@ -821,12 +864,19 @@ if __name__ == '__main__':
             L = rt.Math.gamma_quantile(alpha/2,N,1.)
         U = rt.Math.gamma_quantile_c(alpha/2,N+1,1)
 
+        #refxSec = fitPrediction2016_ForxSecScale[i] / (refLumi*binWidth)
+        #targetxSec = N/(binWidth * (lumi/1000))
+        #xSecScaleFactor = refxSec/targetxSec
+        #xSecScaleFactors.append(xSecScaleFactor)
+        #print ("Data: %f | Fit: %f | RefXSec: %f | targetXSec: %f | xSecScaleFactor: %f" % (value_data*lumi*binWidth_current, value_fit*lumi*binWidth_current, refxSec, targetxSec, xSecScaleFactor))
+        #print ("Fit Scale Factor (%d - %d): %f | sqrt(SF)=%f" % (signal_mjj[i], signal_mjj[i+1], xSecScaleFactor, math.sqrt(xSecScaleFactor)) )
+
         #g_data.SetPointEYlow(i, (N-L))
         #g_data.SetPointEYhigh(i, (U-N))
         #g_data.SetPoint(i, g_data.GetX()[i], N)
         g_data.SetPointEYlow(i, (N-L)/(binWidth * lumi))
         g_data.SetPointEYhigh(i, (U-N)/(binWidth * lumi))
-        g_data.SetPoint(i, g_data.GetX()[i], N/(binWidth * lumi))
+        g_data.SetPoint(i, g_data.GetX()[i], (N/(binWidth * lumi)))
        
 
         plotRegions = plotRegion.split(',')
@@ -1265,6 +1315,10 @@ if __name__ == '__main__':
 
     sigHistResiduals = []
     g_signal_residuals = []
+    print (" -> Here is fit prediction of 2016 ALL data for xSec scaling!")
+    print (" -> Don't forget to change this prediction values from config file if you want to scale to another dataset!")
+    print (signal_mjj)
+    print (fitPrediction2016_ForxSecScale)
     for model, mass, xsec, signalFileName, sigHist, color, style in zip(models,masses,xsecs,signalFileNames,signalHistosRebin,colors,styles):        
         sigHistResidual = sigHist.Clone(sigHist.GetName()+"_residual")
         sigHistResidual.SetLineColor(color)
@@ -1275,11 +1329,14 @@ if __name__ == '__main__':
             err_tot_data = g_data.GetEYhigh()[bin]
             binWidth = g_data.GetEXlow()[i] + g_data.GetEXhigh()[i]
             value_signal = sigHist.GetBinContent(bin+1)/(binWidth*lumi)
-	    if (box == "CaloDijet2016p2017p2018"):
-                err_tot_data = FitMultipliers[bin] / 1000.
+            #err_tot_data = err_tot_data * math.sqrt(xSecScaleFactors[bin])
+	    #if (box == "CaloDijet2016p2017p2018"):
+            #    err_tot_data = FitMultipliers[bin] / 1000.
                 #err_tot_data = err_tot_data
-            else:
-                err_tot_data = err_tot_data * math.sqrt(FitMultipliers[bin]) 
+            #else:
+                ### Cross Section Scaling added by Ali Eren
+                #err_tot_data = err_tot_data * math.sqrt(FitMultipliers[bin])
+                 
             ## Signal residuals
             if err_tot_data>0:                
                 sig_residual = (value_signal) / err_tot_data

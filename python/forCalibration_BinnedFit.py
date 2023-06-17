@@ -12,7 +12,6 @@ import sys
 import math
 
 densityCorr = False
-#rtio_ = 0.0
 
 def binnedFit(pdf, data, fitRange='Full',useWeight=False):
 
@@ -131,10 +130,6 @@ def calculateChi2AndFillResiduals(data_obs_TGraph_,background_hist_,hist_fit_res
         else:
             nParFit = 5
 
-    if workspace_.var('nPar_%s'%box).getVal() != None or workspace_.var('nPar_%s'%box).getVal() > 0:
-        nParFit = int(workspace_.var('nPar_%s'%box).getVal())
-        print ("nParFit: %d" % (nParFit))
-
     chi2_FullRangeAll = 0
     chi2_PlotRangeAll = 0
     chi2_PlotRangeNonZero = 0
@@ -163,11 +158,6 @@ def calculateChi2AndFillResiduals(data_obs_TGraph_,background_hist_,hist_fit_res
             err_tot_data = err_high_data  
         else:
             err_tot_data = err_low_data
-	if (box == "CaloDijet2016p2017p2018"):
-                err_tot_data = FitMultipliers[bin] / 1000.
-                #err_tot_data = err_tot_data
-        else:
-                err_tot_data = err_tot_data * math.sqrt(FitMultipliers[bin])
         plotRegions = plotRegion.split(',')
         checkInRegions = [xbinCenter>workspace_.var('mjj').getMin(reg) and xbinCenter<workspace_.var('mjj').getMax(reg) for reg in plotRegions]
         if effFit_: checkInRegions = [xbinCenter>workspace_.var('mjj').getMin('Eff') and xbinCenter<workspace_.var('mjj').getMax('Eff')]
@@ -279,9 +269,6 @@ if __name__ == '__main__':
     fitRegion = options.fitRegion
     plotRegion = options.plotRegion
     histoName = cfg.getVariables(box, "histoName")
-    FitMultipliers = cfg.getVariables(box, "FitMultipliers")
-    for xj in FitMultipliers:
-        print ("FitMultipliers: %f - Sqrt: %f" % (xj, math.sqrt(xj)))
 
     if options.signalFileName==None:
         signalFileNames = []
@@ -303,12 +290,6 @@ if __name__ == '__main__':
     print masses
     print xsecs
 
-    ch1 = os.path.exists(options.outDir)
-    if not ch1:
-	os.makedirs(options.outDir)
-        print ("%s folder created!" % options.outDir)
-    else:
-        print ("%s folder exists!" % options.outDir)
 
     myTH1 = None
     for f in args:
@@ -591,8 +572,7 @@ if __name__ == '__main__':
         predYield = asimov.weight(rt.RooArgSet(th1x))
         dataYield = dataHist_reduce.weight(rt.RooArgSet(th1x))
         rss += float(predYield-dataYield) * float(predYield-dataYield)
-        print "FitPred,%i,%i,%i" % (x[i],predYield,(x[i+1]-x[i]))
-        print "%i <= mjj < %i; prediction: %.0f; data %i"  % (x[i],x[i+1],predYield,dataYield)
+        print "%i <= mjj < %i; prediction: %.2f; data %i"  % (x[i],x[i+1],predYield,dataYield)
     print "RSS = ", rss 
         
     rt.TH1D.SetDefaultSumw2()
@@ -867,7 +847,7 @@ if __name__ == '__main__':
     #paper 
     pad_1.SetPad(0.01,0.37,0.99,0.98)
     pad_1.SetLogy()
-    if 'PF' in box or w.var('mjj').getMax() > 2332:
+    if 'PF' in box or w.var('mjj').getMax() > 2037:
         if not options.linearX: 
             pad_1.SetLogx()
     pad_1.SetRightMargin(0.05)
@@ -887,7 +867,7 @@ if __name__ == '__main__':
     pad_2.SetRightMargin(0.05)
     #pad_2.SetGridx()
     #pad_2.SetGridy()
-    if 'PF' in box or w.var('mjj').getMax() > 2332:
+    if 'PF' in box or w.var('mjj').getMax() > 2037:
         if not options.linearX: 
           pad_2.SetLogx()
 
@@ -919,8 +899,8 @@ if __name__ == '__main__':
         myRebinnedDensityTH1.SetMaximum(20)
         myRebinnedDensityTH1.SetMinimum(2e-8)
     elif 'Calo' in box:
-        myRebinnedDensityTH1.SetMaximum(2e4)
-        if w.var('mjj').getMax() > 2332:            
+        myRebinnedDensityTH1.SetMaximum(2e3)
+        if w.var('mjj').getMax() > 2037:            
             myRebinnedDensityTH1.SetMaximum(20)
             myRebinnedDensityTH1.SetMinimum(2e-8)
         else:
@@ -1014,7 +994,7 @@ if __name__ == '__main__':
         if 'PF' in box:
             leg.AddEntry(g_signal,"%s (%.1f TeV)"%(model,float(mass)/1000.),"l")
         elif 'Calo' in box:
-            if w.var('mjj').getMax() > 2332:
+            if w.var('mjj').getMax() > 2037:
                 leg.AddEntry(g_signal,"%s (%.1f TeV)"%(model,float(mass)/1000.),"l")
             else:    
                 leg.AddEntry(g_signal,"%s (%.2f TeV)"%(model,float(mass)/1000.),"l")   
@@ -1031,13 +1011,13 @@ if __name__ == '__main__':
     pave_sel.SetTextFont(42)
     pave_sel.SetTextSize(0.045)
     pave_sel.SetTextAlign(11)
-    pave_sel.AddText("#chi^{{2}} / NDF = {0:.1f} / {1:d} = {2:.2f}".format(
+    pave_sel.AddText("#chi^{{2}} / NDF = {0:.1f} / {1:d} = {2:.1f}".format(
                           list_chi2AndNdf_background[4], list_chi2AndNdf_background[5],
-                          list_chi2AndNdf_background[4]/(list_chi2AndNdf_background[5])))
+                          list_chi2AndNdf_background[4]/list_chi2AndNdf_background[5]))
 
     if 'Calo' in box:
         pave_sel.AddText("Wide Calo-jets")
-        if w.var('mjj').getMax() > 2332:
+        if w.var('mjj').getMax() > 2037:
             #pave_sel.AddText("%.1f < m_{jj} < %.1f TeV"%(w.var('mjj').getMin('Low')/1000.,w.var('mjj').getMax('High')/1000.))
             pave_sel.AddText("m_{jj} > %.2f TeV"%(w.var('mjj').getMin('Low')/1000.))
         else:
@@ -1053,7 +1033,7 @@ if __name__ == '__main__':
     list_parameter = [p0_b, p0_b*(w.var('Ntot_bkg_%s'%box).getErrorHi() - w.var('Ntot_bkg_%s'%box).getErrorLo())/(2.0*w.var('Ntot_bkg_%s'%box).getVal()),                      
                       w.var('p1_%s'%box).getVal(), (w.var('p1_%s'%box).getErrorHi() - w.var('p1_%s'%box).getErrorLo())/2.0,
                       w.var('p2_%s'%box).getVal(), (w.var('p2_%s'%box).getErrorHi() - w.var('p2_%s'%box).getErrorLo())/2.0,
-                      #w.var('p3_%s'%box).getVal(), (w.var('p3_%s'%box).getErrorHi() - w.var('p3_%s'%box).getErrorLo())/2.0,
+                      w.var('p3_%s'%box).getVal(), (w.var('p3_%s'%box).getErrorHi() - w.var('p3_%s'%box).getErrorLo())/2.0,
                       w.var('meff_%s'%box).getVal(), (w.var('meff_%s'%box).getErrorHi() - w.var('meff_%s'%box).getErrorLo())/2.0,
                       w.var('seff_%s'%box).getVal(), (w.var('seff_%s'%box).getErrorHi() - w.var('seff_%s'%box).getErrorLo())/2.0]
 
@@ -1068,10 +1048,10 @@ if __name__ == '__main__':
     pave_param.AddText("p_{0}"+" = {0:.2g} #pm {1:.2g}".format(list_parameter[0], list_parameter[1]))
     pave_param.AddText("p_{1}"+" = {0:.2f} #pm {1:.2f}".format(list_parameter[2], list_parameter[3]))
     pave_param.AddText("p_{2}"+" = {0:.2f} #pm {1:.2f}".format(list_parameter[4], list_parameter[5]))
-    #pave_param.AddText("p_{3}"+" = {0:.2f} #pm {1:.2f}".format(list_parameter[6], list_parameter[7]))
+    pave_param.AddText("p_{3}"+" = {0:.2f} #pm {1:.2f}".format(list_parameter[6], list_parameter[7]))
     if w.var('meff_%s'%box).getVal()>0 and w.var('seff_%s'%box).getVal()>0 and (options.doTriggerFit or options.doSimultaneousFit):
-        pave_param.AddText("m_{eff}"+" = {0:.2f} #pm {1:.2f}".format(list_parameter[6], list_parameter[7]))
-        pave_param.AddText("#sigma_{eff}"+" = {0:.2f} #pm {1:.2f}".format(list_parameter[8], list_parameter[9]))
+        pave_param.AddText("m_{eff}"+" = {0:.2f} #pm {1:.2f}".format(list_parameter[8], list_parameter[9]))
+        pave_param.AddText("#sigma_{eff}"+" = {0:.2f} #pm {1:.2f}".format(list_parameter[10], list_parameter[11]))
     elif w.var('eff_bin%02d'%(0)) != None:
         effValList = []
         effErrHiList = []
@@ -1194,7 +1174,7 @@ if __name__ == '__main__':
     line = rt.TLine(h_fit_residual_vs_mass.GetXaxis().GetXmin(),0,h_fit_residual_vs_mass.GetXaxis().GetXmax(),0) 
     line.Draw("same")
     
-    if 'PF' in box or w.var('mjj').getMax() > 2332:        
+    if 'PF' in box or w.var('mjj').getMax() > 2037:        
         # PAS
         #h_fit_residual_vs_mass.GetXaxis().SetTitle('Dijet Mass [TeV]')
         # paper
@@ -1259,7 +1239,6 @@ if __name__ == '__main__':
         xLab.DrawLatex(1600, -4, "1.6")
         xLab.DrawLatex(1800, -4, "1.8")
         xLab.DrawLatex(2000, -4, "2")
-	xLab.DrawLatex(2200, -4, "2.2")
         #rt.gPad.RedrawAxis()
         #rt.gPad.Update()
 
@@ -1275,11 +1254,7 @@ if __name__ == '__main__':
             err_tot_data = g_data.GetEYhigh()[bin]
             binWidth = g_data.GetEXlow()[i] + g_data.GetEXhigh()[i]
             value_signal = sigHist.GetBinContent(bin+1)/(binWidth*lumi)
-	    if (box == "CaloDijet2016p2017p2018"):
-                err_tot_data = FitMultipliers[bin] / 1000.
-                #err_tot_data = err_tot_data
-            else:
-                err_tot_data = err_tot_data * math.sqrt(FitMultipliers[bin]) 
+        
             ## Signal residuals
             if err_tot_data>0:                
                 sig_residual = (value_signal) / err_tot_data
@@ -1327,36 +1302,21 @@ if __name__ == '__main__':
 
         
     #c.RedrawAxis() # request from David
-
-    rtio_ = list_chi2AndNdf_background[4]/list_chi2AndNdf_background[5]
-    print ("#chi^{{2}} / NDF = %0.2f" % (rtio_) )
-    print ("#chi^2 / NDF = %0.2f" % (rtio_) )
-    if rtio_ > 0:
-	print (" -> Fit Succesfull!!")
- 
-    	if not options.linearX:
-        	c.Print(options.outDir+"/fit_mjj_%s_%s.pdf"%(fitRegion.replace(',','_'),box))
-        	c.Print(options.outDir+"/fit_mjj_%s_%s.C"%(fitRegion.replace(',','_'),box))
-    	else:
-        	c.Print(options.outDir+"/fit_mjj_%s_%s_linearX.pdf"%(fitRegion.replace(',','_'),box))
-        	c.Print(options.outDir+"/fit_mjj_%s_%s_linearX.C"%(fitRegion.replace(',','_'),box))
+   
+    if not options.linearX:
+        c.Print(options.outDir+"/fit_mjj_%s_%s.pdf"%(fitRegion.replace(',','_'),box))
+        c.Print(options.outDir+"/fit_mjj_%s_%s.C"%(fitRegion.replace(',','_'),box))
+    else:
+        c.Print(options.outDir+"/fit_mjj_%s_%s_linearX.pdf"%(fitRegion.replace(',','_'),box))
+        c.Print(options.outDir+"/fit_mjj_%s_%s_linearX.C"%(fitRegion.replace(',','_'),box))
         
-    	tdirectory.cd()
-    	c.Write()
+    tdirectory.cd()
+    c.Write()
     
 
-    	outFileName = "DijetFitResults_%s.root"%(box)
-    	outFile = rt.TFile.Open(options.outDir+"/"+outFileName,'recreate')
-    	print("root created")
-    	outFile.cd()
-    	print("root opened")
-    	w.Write()
-    	print("histo written")
-    	outFile.Close()
-    	print("outfile closed")
+    outFileName = "DijetFitResults_%s.root"%(box)
+    outFile = rt.TFile.Open(options.outDir+"/"+outFileName,'recreate')
+    outFile.cd()
+    w.Write()
+    outFile.Close()
 
-    else:
-	print (" -> Fit Failed!!")
-
-
-#sys.exit(str(rtio_))

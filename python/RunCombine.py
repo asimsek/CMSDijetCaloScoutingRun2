@@ -212,13 +212,15 @@ def main(options,args):
             signalDsName = '%s/inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16.root' % (workDir, model)
 	elif 'CaloDijetSep2016' in box or 'CaloDijetSep2017' in box or 'CaloDijetSep2018' in box:
 	    signalDsName = '%s/inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16.root' % (workDir, model)
+        histRootFile = "%s/Limits/scaledDijetMassHistoRoots/histo_data_mjj_scaled_%s.root" % (workDir, options.yr) if options.scaled else "%s/inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root" % (workDir, options.yr)
         backgroundDsName = {'CaloDijet2015':'inputs/data_CaloScoutingHT_Run2015D_BiasCorrected_CaloDijet2015.root',
                             #'CaloDijet2016':'inputs/data_CaloScoutingHT_Run2016BCD_NewBiasCorrectedFlat_Golden12910pb_CaloDijet2016.root',
                             #'CaloDijet2016':'inputs/data_CaloScoutingHT_Run2016BCDEFG_BiasCorrected_Mjj300_Golden27637pb_CaloDijet2016.root',
 			    'CaloDijet2016':'histo_data_mjj_scaled_2016.root',
 			    #'CaloDijetSep%s'%options.yr:"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_12March2021_1930/histo_data_mjj_fromTree.root"%options.yr,
                             #'CaloDijetSep%s'%options.yr:"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root"%options.yr,
-                            'CaloDijetSep%s'%options.yr:"%s/inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root" % (workDir, options.yr),
+                            #'CaloDijetSep%s'%options.yr:"%s/inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root" % (workDir, options.yr),
+                            'CaloDijetSep%s'%options.yr:"%s" % (histRootFile),
 			    #'CaloDijetSep2016':"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_12March2021_1930/histo_data_mjj_fromTree.root"%options.yr,
 			    #'CaloDijetSep2017':"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root"%options.yr,
 			    #'CaloDijetSep2018':"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root"%options.yr,
@@ -226,15 +228,6 @@ def main(options,args):
                             'CaloDijet2018':'histo_data_mjj_scaled_2018.root',
                             'CaloDijetRunII':'histo_data_mjj_scaled_RunII.root',
                             'CaloDijet2016p2017p2018':'histo_data_mjj_scaled_RunII.root',
-                            #'PFDijet2016':'inputs/data_PFRECOHT_Run2016BCD_Golden12910pb_PFDijet2016.root',
-                            'CaloDijet20152016':'inputs/data_CaloScoutingHT_Run2015D2016B_CaloDijet20152016.root',
-                            'PFDijet2016':'inputs/JetHT_run2016_moriond17_red_cert_v2.root',
-                            'PFDijetbb20160mt':'inputs/JetHT_run2016_moriond17_red_cert_v2.root',
-                            'PFDijetbb20161mt':'inputs/JetHT_run2016_moriond17_red_cert_v2.root',
-                            'PFDijetbb20162mt':'inputs/JetHT_run2016_moriond17_red_cert_v2.root',
-                            'PFDijetbb20160mm':'inputs/JetHT_run2016_moriond17_red_cert_v2.root',
-                            'PFDijetbb20161mm':'inputs/JetHT_run2016_moriond17_red_cert_v2.root',
-                            'PFDijetbb20162mm':'inputs/JetHT_run2016_moriond17_red_cert_v2.root'
                             }
 
 	#backgroundDsName['CaloDijetSep2016']="inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_12March2021_1930/histo_data_mjj_fromTree.root"%options.yr
@@ -414,6 +407,8 @@ if __name__ == '__main__':
                   help="pdf for fitting")
     parser.add_option('--yr', default='B',type="string",
                   help="separate years")
+    parser.add_option('--scaled',dest="scaled",default=False,action='store_true',
+                  help="use scaled input mjj file if this argument given")
 
 
     (options,args) = parser.parse_args()
