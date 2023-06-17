@@ -123,7 +123,7 @@ python3 createFitsAndLimits.py --config_path inputFiles/limit2018_cfg.txt --bf
 python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/limit2018_cfg.txt --bf
 ```
 
-
+> Basically, this script is calibrating the given root file which includes a dijet mass distribution (mjj) to the given reference dataset (in our case it's Full 2016 dataset). The reference values are coming from a smooth fit which can be extracted by executing the `python/BinnedFit.py` with correct arguments! You can also create an input file for the reference dataset (such as; `inputFiles/limit2016_cfg.txt`) and execute the `createFitsAndLimits.py` script as described above, to get the smooth fit values for each mass points!
 
 
 
