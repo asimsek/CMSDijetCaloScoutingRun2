@@ -105,19 +105,22 @@ rMax,signalType,configFile,date,year,lumi,config,inputmjj
 5.0,gg,dijetSep,17June2021,2018D,26524.906306,CaloDijetSep2018D,CaloScoutingHT2018D_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130
 ```
 
-> Produce ONLY BG-Only cross-section fit results (by adding --bf argument)
+> Perform ONLY BG-Only cross-section fit (by adding `--bf` argument)
 
 ```sh
 python3 createFitsAndLimits.py --config_path inputFiles/limit2018_cfg.txt --bf
 ```
 
 > If you would like to calibrate dataset and match the cros section of each individual year/era, to a reference cross section (default 2016 full dataset cross section), use the following command line and give the same config file as an argument
+> Again give `--bf`argument if you want to perform ONLY BG-Only cross-section fit
+> If you want to set also the limits, remove `--bf` from the following command line
 
 ```sh
-python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/limit2018_cfg.txt
+python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/limit2018_cfg.txt --bf
 ```
 
-
+> Do NOT forget to set config name and mjj root file path inside the `python/RunCombine.py` script for the limits!
+> Find `backgroundDsName` variable, give apropriate config name (`CaloDijetSep2018D`) and `histo_data_mjj_fromTree.root` path!
 
 
 
