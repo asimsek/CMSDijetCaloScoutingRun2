@@ -57,7 +57,8 @@ def main():
 
             os.chdir("{0}/..".format(cmssw_dir))
             print("Creating tar file for condor jobs. This process might take a while!..")
-            subprocess.call(['tar', '--exclude-vcs', '-zcf', "{0}.tar.gz".format(cmssw_Ver), cmssw_Ver, '--exclude=tmp', '--exclude="*.tar.gz"', '--exclude="*.pdf"', '--exclude="*.png"', '--exclude=.git'])
+            tarCommandLine = 'tar --exclude-vcs -zcf {0}.tar.gz {0} --exclude=tmp --exclude="*.tar.gz" --exclude="*.tar.gz" --exclude="*.pdf" --exclude="*.png" --exclude=.git'.format(cmssw_Ver)
+            os.system(tarCommandLine)
             subprocess.call(['mv', "{0}.tar.gz".format(cmssw_Ver), "{0}/{1}.tar.gz".format(condorDIRPath, cmssw_Ver)])
             os.chdir(workDir+"/Limits")
             print("Created tar file: {}.tar.gz".format(cmssw_Ver))
