@@ -57,7 +57,7 @@ def main():
 
             os.chdir("{0}/..".format(cmssw_dir))
             print("Creating tar file for condor jobs. This process might take a while!..")
-            subprocess.call(['tar', '--exclude-vcs', '-zcf', "{0}.tar.gz".format(cmssw_Ver), cmssw_Ver, '--exclude=tmp', '--exclude="*.tar.gz"'])
+            subprocess.call(['tar', '--exclude-vcs', '-zcf', "{0}.tar.gz".format(cmssw_Ver), cmssw_Ver, '--exclude=tmp', '--exclude="*.tar.gz"', '--exclude="*.pdf"', '--exclude="*.png"', '--exclude=.git'])
             subprocess.call(['mv', "{0}.tar.gz".format(cmssw_Ver), "{0}/{1}.tar.gz".format(condorDIRPath, cmssw_Ver)])
             os.chdir(workDir+"/Limits")
             print("Created tar file: {}.tar.gz".format(cmssw_Ver))
@@ -132,15 +132,11 @@ Queue 1
 
 def create_submit_file_content():
     submit_content = '''import os
-import subprocess
 
-def main():
-    for file in os.listdir("."):
-        if file.endswith(".jdl"):
-            subprocess.call(['condor_submit', file])
+for file in os.listdir("."):
+    if file.endswith(".jdl"):
+        os.system("condor_submit %s" % (file))
 
-if __name__ == "__main__":
-    main()
 '''
     return submit_content
 

@@ -1,2 +1,4 @@
 #rMax,signalType,configFile,date,year,lumi,config,inputmjj
+3.5,gg,dijetSep,17June2023,2018D,26524.906306,CaloDijetSep2018D,CaloScoutingHT2018D_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130
+5.0,qg,dijetSep,17June2023,2018D,26524.906306,CaloDijetSep2018D,CaloScoutingHT2018D_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130
 5.0,qq,dijetSep,17June2023,2018D,26524.906306,CaloDijetSep2018D,CaloScoutingHT2018D_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130
