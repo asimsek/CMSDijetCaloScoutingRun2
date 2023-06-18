@@ -9,11 +9,11 @@ def execute_commands(args, rMax, signalType, configFile, date, year, lumi, confi
     mass = "489"
     lumi2 = lumi / 1000
     xsecSignal = 10.0
-
+    cfg_foo = configFile.split("/")[-1] if "/" in configFile else configFile
     workDir = os.environ['CMSSW_BASE'] + "/src/CMSDIJET/DijetRootTreeAnalyzer"
     inputmjjTrue = f"{workDir}/inputs/{inputmjj1}/histo_data_mjj_fromTree.root" if not scaled else inputmjj
-    outputFitFolder = f"fits_{date}_{year}_DE13_M{mass}_w2016Signals/{config}_{configFile}"
-    outputLimitFolder = f"{workDir}/Limits/AllLimits{year}_{signalType}_{configFile}"
+    outputFitFolder = f"fits_{date}_{year}_DE13_M{mass}_w2016Signals/{config}_{cfg_foo}"
+    outputLimitFolder = f"{workDir}/Limits/AllLimits{year}_{signalType}_{cfg_foo}"
     signalShapes = f"{workDir}/inputs/ResonanceShapes_gg_13TeV_CaloScouting_Spring16.root,{workDir}/inputs/ResonanceShapes_qg_13TeV_CaloScouting_Spring16.root,{workDir}/inputs/ResonanceShapes_qq_13TeV_CaloScouting_Spring16.root"
     cfgFilePath = workDir+"/config/"+configFile+".config" if not scaled else configFile+".config"
 

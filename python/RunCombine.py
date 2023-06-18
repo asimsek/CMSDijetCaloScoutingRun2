@@ -181,23 +181,18 @@ def main(options,args):
                 paramDict[p.GetName()] = [p.getVal(), p.getError()]
             print "grabbing parameter ranges +-%gsigma for bayesian"%NSIGMA
     
-
+        workDir = os.environ['CMSSW_BASE'] + "/src/CMSDIJET/DijetRootTreeAnalyzer"
         signalSys = ''
         if options.noSignalSys or options.noSys:
             signalSys = '--no-signal-sys'
         else:
-            if box=='CaloDijet2015' or box=='CaloDijet20152016':
-                signalSys  =   '--jesUp inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring15_JESUP.root --jesDown inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring15_JESDOWN.root'%(model,model)
-                signalSys += ' --jerUp inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring15_JERUP.root --jerDown inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring15_JERDOWN.root'%(model,model)
-            elif box=='CaloDijet2016' or box=='CaloDijet2017' or box=='CaloDijet2018' or box=='CaloDijet2016p2017p2018':
-                signalSys  =   '--jesUp inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JESUP.root --jesDown inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JESDOWN.root'%(model,model)
-                signalSys += ' --jerUp inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JERUP.root --jerDown inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JERDOWN.root'%(model,model)
-            elif box=='PFDijet2016':
-                signalSys  =   '--jesUp inputs/ResonanceShapes_%s_13TeV_Spring16_JESUP.root --jesDown inputs/ResonanceShapes_%s_13TeV_Spring16_JESDOWN.root'%(model,model)
-                signalSys += ' --jerUp inputs/ResonanceShapes_%s_13TeV_Spring16_JERUP.root'%(model)
-	    elif 'CaloDijetSep2016' in options.box.split('_') or 'CaloDijetSep2017' in options.box.split('_') or 'CaloDijetSep2018' in options.box.split('_'):
-		signalSys  =   '--jesUp inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JESUP.root --jesDown inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JESDOWN.root'%(model,model)
-                signalSys += ' --jerUp inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JERUP.root --jerDown inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JERDOWN.root'%(model,model)
+            print ("options.box.split('_'): %s" % (options.box.split('_')[0]))
+            if box=='CaloDijet2016' or box=='CaloDijet2017' or box=='CaloDijet2018' or box=='CaloDijet2016p2017p2018':
+                signalSys  =   '--jesUp %s/inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JESUP.root --jesDown %s/inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JESDOWN.root'%(workDir,model,workDir,model)
+                signalSys += ' --jerUp %s/inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JERUP.root --jerDown %s/inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JERDOWN.root'%(workDir,model,workDir,model)
+	    elif 'CaloDijetSep2016' in options.box.split('_')[0] or 'CaloDijetSep2017' in options.box.split('_')[0] or 'CaloDijetSep2018' in options.box.split('_')[0]:
+		signalSys  =   '--jesUp %s/inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JESUP.root --jesDown %s/inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JESDOWN.root'%(workDir,model,workDir,model)
+                signalSys += ' --jerUp %s/inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JERUP.root --jerDown %s/inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16_JERDOWN.root'%(workDir,model,workDir,model)
         
         penaltyString = ''
         if options.penalty:
@@ -207,27 +202,19 @@ def main(options,args):
     
         xsecString = '--xsec %f'%(options.xsec)    
 
-        workDir = os.environ['CMSSW_BASE'] + "/src/CMSDIJET/DijetRootTreeAnalyzer" 
         if box=='CaloDijet2016' or box=='CaloDijet2017' or box=='CaloDijet2018' or box=='CaloDijet2016p2017p2018':
             signalDsName = '%s/inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16.root' % (workDir, model)
 	elif 'CaloDijetSep2016' in box or 'CaloDijetSep2017' in box or 'CaloDijetSep2018' in box:
 	    signalDsName = '%s/inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16.root' % (workDir, model)
+
         histRootFile = "%s/Limits/scaledDijetMassHistoRoots/histo_data_mjj_scaled_%s.root" % (workDir, options.yr) if options.scaled else "%s/inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root" % (workDir, options.yr)
-        backgroundDsName = {'CaloDijet2015':'inputs/data_CaloScoutingHT_Run2015D_BiasCorrected_CaloDijet2015.root',
-                            #'CaloDijet2016':'inputs/data_CaloScoutingHT_Run2016BCD_NewBiasCorrectedFlat_Golden12910pb_CaloDijet2016.root',
-                            #'CaloDijet2016':'inputs/data_CaloScoutingHT_Run2016BCDEFG_BiasCorrected_Mjj300_Golden27637pb_CaloDijet2016.root',
-			    'CaloDijet2016':'histo_data_mjj_scaled_2016.root',
-			    #'CaloDijetSep%s'%options.yr:"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_12March2021_1930/histo_data_mjj_fromTree.root"%options.yr,
-                            #'CaloDijetSep%s'%options.yr:"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root"%options.yr,
-                            #'CaloDijetSep%s'%options.yr:"%s/inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root" % (workDir, options.yr),
+        histRootFileFull = "%s/Limits/scaledDijetMassHistoRoots/histo_data_mjj_scaled_%s.root" % (workDir, options.yr) if options.scaled else "%s/inputs/CaloScoutingHT%sALL_DatavsQDCMC_DE13_M489_17June2021_1130/histo_data_mjj_fromTree.root" % (workDir, options.yr)
+        backgroundDsName = {'CaloDijet%s'%options.yr:"%s" % (histRootFileFull),
                             'CaloDijetSep%s'%options.yr:"%s" % (histRootFile),
+                            #'CaloDijet2016':'inputs/data_CaloScoutingHT_Run2016BCDEFG_BiasCorrected_Mjj300_Golden27637pb_CaloDijet2016.root',
 			    #'CaloDijetSep2016':"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_12March2021_1930/histo_data_mjj_fromTree.root"%options.yr,
 			    #'CaloDijetSep2017':"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root"%options.yr,
 			    #'CaloDijetSep2018':"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root"%options.yr,
-                            'CaloDijet2017':'histo_data_mjj_scaled_2017.root',
-                            'CaloDijet2018':'histo_data_mjj_scaled_2018.root',
-                            'CaloDijetRunII':'histo_data_mjj_scaled_RunII.root',
-                            'CaloDijet2016p2017p2018':'histo_data_mjj_scaled_RunII.root',
                             }
 
 	#backgroundDsName['CaloDijetSep2016']="inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_12March2021_1930/histo_data_mjj_fromTree.root"%options.yr

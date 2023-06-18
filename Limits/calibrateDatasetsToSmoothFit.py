@@ -15,7 +15,6 @@ def parse_config(line):
 
 # Part 2: Execute fit script and parse the output
 def execute_and_parse(script_path, cfgPath, inputmjjNoCalib, configFile, rMax, signalType, date, year, lumi, config):
-    workDir = os.environ['CMSSW_BASE'] + "/src/CMSDIJET/DijetRootTreeAnalyzer"
     command = "python3 %s --config_path %s --inputmjj %s --cfgFile ../config/%s --rMax %s --signalType %s --date %s --year %s --lumi %s --config %s --scaled --bf" % (script_path, cfgPath, inputmjjNoCalib, configFile, rMax, signalType, date, year, lumi, config)
     print (command)
     proc = subprocess.Popen(command, shell=True, stderr=open(os.devnull, 'w'), stdout=subprocess.PIPE)
@@ -94,28 +93,12 @@ def delete_latest_directory(prefix, dir_path='.'):
     shutil.rmtree(os.path.join(dir_path, latest_dir))
 
 # Part 8: Create new config file for the process
-def create_config_file_(year, calibration_ratio_dict, configFile):
+def create_config_file(year, calibration_ratio_dict, configFile, config):
     # Initialize the ConfigParser object
     cfg = ConfigParser.ConfigParser()
     # Read the original config file
     cfg.read("../config/%s.config" % (configFile))
-    cfgName = "CaloDijetSep%s" % (year)
-    # Check if the cfgName exists in the config file
-    if not cfg.has_section(cfgName):
-        raise ValueError("The given cfgName does not exist in the config file.")
-    # Update the FitMultipliers list with calibration_ratio_dict values
-    fit_multipliers = ", ".join(map(str, calibration_ratio_dict.values()))
-    cfg.set(cfgName, 'FitMultipliers', "[%s]" % (fit_multipliers))
-    # Write the updated config data to a new config file in the current directory
-    with open("{}.config".format(configFile), "w") as configfile:
-        cfg.write(configfile)
-
-def create_config_file(year, calibration_ratio_dict, configFile):
-    # Initialize the ConfigParser object
-    cfg = ConfigParser.ConfigParser()
-    # Read the original config file
-    cfg.read("../config/%s.config" % (configFile))
-    cfgName = "CaloDijetSep%s" % (year)
+    cfgName = config
     # Check if the cfgName exists in the config file
     if not cfg.has_section(cfgName):
         raise ValueError("The given cfgName does not exist in the config file.")
@@ -188,7 +171,7 @@ if __name__ == "__main__":
             apply_calibration(histFile1, calibration_ratio_dict, year, outRootFilePath)
             delete_latest_directory('fits_')
             print (" -> Executing the %s script!" % (script_path))
-            create_config_file(year, calibration_ratio_dict, configFile)
+            create_config_file(year, calibration_ratio_dict, configFile, config)
 
             run_createFitsAndLimits(script_path, cfgPath, outFolder, outRootFile, configFile, rMax, signalType, date, year, lumi, config, args.bf)
 
