@@ -127,9 +127,11 @@ python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/limit2018_cfg.txt --
 
 
 
+> If the limits are problematic, send multiple jobs to condor and try different rMax values at the same time
+> This script will loop all the lines of given inputFile and create condor jobs for each line for multiple rMax values between 0.5-20.0 with 0.1 interval
+> Then it'll send all the jobs to condor
 
-
-
-
-
+```sh
+python condorLimitProdForMultiRMax.py --cfgPath inputFiles/limit2018D_cfg.txt
+```
 
