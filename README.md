@@ -104,6 +104,9 @@ vi inputFiles/limit2018_cfg.txt
 rMax,signalType,configFile,date,year,lumi,config,inputmjj
 5.0,gg,dijetSep,17June2021,2018D,26524.906306,CaloDijetSep2018D,CaloScoutingHT2018D_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130
 ```
+> `configFile` name is from `$CMSSW_BASE/src/CMSDIJET/DijetRootTreeAnalyzer/config/`
+> `config` name is a box inside the `configFile` such as; `CaloDijetSep2018D`
+
 
 > Perform ONLY BG-Only cross-section fit (by adding `--bf` argument)
 
