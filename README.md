@@ -141,3 +141,23 @@ python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/limit2018_cfg.txt --
 python condorLimitProdForMultiRMax.py --cfgPath inputFiles/limit2018_cfg.txt
 ```
 
+
+
+### Useful Links
+
+- [CMSDIJET Main Github Repo & Instruction](https://github.com/CMSDIJET/DijetRootTreeAnalyzer/blob/scouting_94X/README_caloscouting_analysis.md "CMSDIJET Main Github Repo & Instruction")
+- [Recommended Uncertainties](https://twiki.cern.ch/twiki/bin/viewauth/CMS/TWikiLUM?rev=167 "Recommended Uncertainties")
+- [Run 2 JEC](https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC "Run 2 JEC")
+- [Run 3 JEC](https://cms-jerc.web.cern.ch/ "Run 3 JEC")
+- [JEC Viewer](https://cmsjetmettools.web.cern.ch/cmsjetmettools/JECViewer "JEC Viewer")
+- [BrilCalc - Lumi Calculation](https://cms-service-lumi.web.cern.ch/cms-service-lumi/brilwsdoc.html "BrilCalc - Lumi Calculation")
+- [CMS DAS - Dataset Search](https://cmsweb.cern.ch/das "CMS DAS - Dataset Search")
+- [Golden JSON](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideGoodLumiSectionsJSONFile "Golden JSON")
+
+
+
+
+
+
+
+
