@@ -39,6 +39,7 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+combine_logger.out
 
 # Pictures and plots #
 ######################
@@ -60,3 +61,5 @@ Thumbs.db
 ###########
 batch
 cjobs_*
+AllLimits*
+fits_*

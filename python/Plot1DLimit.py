@@ -30,7 +30,7 @@ def getThyXsecDict():
                 for j, thyModel in enumerate(moreThyModels):
                     thyXsecDict[thyModel][int(float(lineList[0]))] = float(lineList[j+1])
         f.close()
-
+ 
         thyXsecDict['AxigluonkNLO'] = {}
     for (mass,thyXsec) in thyXsecDict['Axigluon'].iteritems():
         thyXsecDict['AxigluonkNLO'][mass] = 1.08 * thyXsec
@@ -120,7 +120,8 @@ def getHybridCLsArraysRSG(directory, Box):
     
     dict_RSG_BR_qq = {}
     dict_RSG_BR_gg = {}
-    rsg_br_file = open("data/rsg_lhc13TeV.out")
+    workDir = os.environ['CMSSW_BASE'] + "/src/CMSDIJET/DijetRootTreeAnalyzer/"
+    rsg_br_file = open("%s/data/rsg_lhc13TeV.out" % (workDir))
     for line in rsg_br_file:
       if not line.startswith("#"):
         massRSG = float(line.split()[0])
@@ -196,7 +197,8 @@ def getHybridCLsArraysRSG_average(directory, Box):
     
     dict_RSG_BR_qq = {}
     dict_RSG_BR_gg = {}
-    rsg_br_file = open("data/rsg_lhc13TeV.out")
+    workDir = os.environ['CMSSW_BASE'] + "/src/CMSDIJET/DijetRootTreeAnalyzer/"
+    rsg_br_file = open("%s/data/rsg_lhc13TeV.out" % (workDir))
     for line in rsg_br_file:
       if not line.startswith("#"):
         massRSG = float(line.split()[0])
@@ -507,7 +509,6 @@ if __name__ == '__main__':
     elif 'rsg' in options.model:        
         thyModelsToDraw = ['RSGraviton']            
 
-
     lineStyle = {'RSGravitonGG':4,
                  'RSGraviton':2,
                  'Axigluon':3,
@@ -698,7 +699,7 @@ if __name__ == '__main__':
                 h_limit.Add(gr_expectedLimit1sigma[(Box,model)])
             h_limit.Add(gr_observedLimit[(Box,model)])
 
-        
+
     for thyModel in thyModelsToDraw:
         h_limit.Add(xsec_gr_nom[thyModel])
         
