@@ -142,6 +142,41 @@ python condorLimitProdForMultiRMax.py --cfgPath inputFiles/limit2018_cfg.txt
 ```
 
 
+> After producing all the data cards for all eras (2016B, 2016C, 2017C, 2017D, 2018A, 2018B, etc.), you need to combine them simultaneously to set limits to each dataset year (2016, 2017, 2018).
+
+> You need to create an input file for this process.
+
+```sh
+mkdir -p combineInputFiles
+vi combineInputFiles/combineDataCards_allYears.txt
+```
+
+> Here is a sample for this intput file. Script will ignore the empty lines and lines starts with `#`
+
+```sh
+#total_year,total_lumi,box,date,new_confFile,signal,new_rMax
+
+2016,27.224973278,CaloDijet2016,17June2023,dijet,gg,5.0
+2016,27.224973278,CaloDijet2016,17June2023,dijet,qg,5.0
+2016,27.224973278,CaloDijet2016,17June2023,dijet,qq,5.0
+
+2017,35.449914768,CaloDijet2017,17June2023,dijet,gg,5.0
+2017,35.449914768,CaloDijet2017,17June2023,dijet,qg,5.0
+2017,35.449914768,CaloDijet2017,17June2023,dijet,qq,5.0
+
+2018,54.451729361,CaloDijet2018,17June2023,dijet,gg,5.0
+2018,54.451729361,CaloDijet2018,17June2023,dijet,qg,5.0
+2018,54.451729361,CaloDijet2018,17June2023,dijet,qq,5.0
+```
+
+> After you have the files, run the data card combine script as;
+
+```sh
+python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_cfg.txt --total_cfgFile combineInputFiles/combineDataCards_allYears.txt
+```
+
+
+
 
 ### Useful Links
 
@@ -158,7 +193,7 @@ python condorLimitProdForMultiRMax.py --cfgPath inputFiles/limit2018_cfg.txt
 - [2017 Golden JSON](https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmV2017Analysis "2017 Golden JSON")
 - [2018 Golden JSON](https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmV2018Analysis "2018 Golden JSON")
 - [Physics Data And Monte Carlo Validation (PdmV)](https://twiki.cern.ch/twiki/bin/view/CMS/PdmV "Physics Data And Monte Carlo Validation (PdmV)")
-
+- [Combine Data Cards](https://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/part2/settinguptheanalysis/#combination-of-multiple-datacards "Combine Data Cards")
 
 
 
