@@ -62,7 +62,7 @@ python3 submit_all.py
 
 > eff1 = (HT250&CaloJet40)/CaloJet40
 
-> eff2.= (HT250/L1HTT)/L1HTT
+> eff2.= (HT250&L1HTT)/L1HTT
 
 ```sh
 cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/scripts
