@@ -60,10 +60,6 @@ python3 submit_all.py
 
 > This script produce the trigger turn-on curves (efficiency results) for all years.
 
-> For eff1=(HT250&CaloJet40)/Calojet40 efficiency calculation uncomment the line XXX and comment the line YYY
-
-> For eff2=(HT250&L1HTT)/L1HTT efficiency calculation uncomment the line YYY and comment the line XXX
-
 ```sh
 cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/scripts
 ```
