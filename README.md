@@ -62,7 +62,7 @@ python3 submit_all.py
 
 > For eff1=(HT250&CaloJet40)/Calojet40 efficiency calculation uncomment the line XXX and comment the line YYY
 
-> For the eff2=(HT250&L1HTT)/L1HTT efficiency calculation uncomment the line YYY and comment the line XXX
+> For eff2=(HT250&L1HTT)/L1HTT efficiency calculation uncomment the line YYY and comment the line XXX
 
 ```sh
 cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/scripts
@@ -202,7 +202,7 @@ python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_
 > Run this command inside the Limits folder to find & remove all the given path! For this case its: `/uscms_data/d3/asimsek/Dijet2023_RunII/CMSSW_10_2_13/src/CMSDIJET/DijetRootTreeAnalyzer/Limits/`
 
 ```sh
-find . -name "AllLimits*" -type d -exec find {} -type f -name "*.txt" -exec sed -i 's|/uscms_data/d3/asimsek/Dijet2023_RunII/CMSSW_10_2_13/src/CMSDIJET/DijetRootTreeAnalyzer/Limits/||g' {} \; \;
+find ./AllLimits*/ -name "*.txt" -type f -exec sed -i 's|/uscms_data/d3/asimsek/Dijet2023_RunII/CMSSW_10_2_13/src/CMSDIJET/DijetRootTreeAnalyzer/Limits/||g' {} \;
 ```
 
 > Now you're ready to send all jobs to condor!
