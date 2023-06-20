@@ -180,6 +180,16 @@ python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_
 > Then it will send all the jobs to condor
 
 
+**IMPORTANT!!: Currently, datacards produced with the full path (`/uscms_data/d3/...`) which prevents us to combine these data cards on condor! Therefore, we need to find and replace all the paths and leave just the part after AllLimits...**
+
+> Run this command inside the Limits folder to find & remove all the given path! For this case its: `/uscms_data/d3/asimsek/Dijet2023_RunII/CMSSW_10_2_13/src/CMSDIJET/DijetRootTreeAnalyzer/Limits/`
+
+```sh
+find . -name "AllLimits*" -type d -exec find {} -type f -name "*.txt" -exec sed -i 's|/uscms_data/d3/asimsek/Dijet2023_RunII/CMSSW_10_2_13/src/CMSDIJET/DijetRootTreeAnalyzer/Limits/||g' {} \; \;
+```
+
+> Now you're ready to send all jobs to condor!
+
 ```sh
 python condorCombineDataCardsForMultipRMax.py --cfgPath inputFiles/allRunIILimits_cfg.txt --total_cfgFile combineInputFiles/combineDataCards_allYears.txt
 ```
