@@ -175,8 +175,14 @@ vi combineInputFiles/combineDataCards_allYears.txt
 python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_cfg.txt --total_cfgFile combineInputFiles/combineDataCards_allYears.txt
 ```
 
+> If the combined limits are problematic, send multiple jobs to condor and try different rMax values at the same time
+> This script will loop all the lines of given inputFile and create condor jobs for each line for multiple rMax values between 0.5-20.0 with 0.1 interval
+> Then it will send all the jobs to condor
 
 
+```sh
+python condorCombineDataCardsForMultipRMax.py --cfgPath inputFiles/allRunIILimits_cfg.txt --total_cfgFile combineInputFiles/combineDataCards_allYears.txt
+```
 
 ### Useful Links
 
