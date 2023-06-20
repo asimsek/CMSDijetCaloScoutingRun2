@@ -3,42 +3,52 @@ import argparse
 import subprocess
 
 def main(cfgPath, total_cfgFile):
+
     cmssw_dir = os.environ['CMSSW_BASE']
-    workDir = os.environ['CMSSW_BASE'] + "/src/CMSDIJET/DijetRootTreeAnalyzer"
-    cmssw_Ver = os.environ['CMSSW_BASE'].split("/")[-1]
+    workDir = cmssw_dir + "/src/CMSDIJET/DijetRootTreeAnalyzer"
+    cmssw_Ver = cmssw_dir.split("/")[-1]
     arch = os.environ['SCRAM_ARCH']
 
     with open(total_cfgFile, 'r') as f:
         lines = [line.strip() for line in f if not line.strip().startswith('#') and line.strip()]
 
-    for line in lines[1:]:
-        total_year, total_lumi, box, date, new_confFile, signal, new_rMax = line.split(",")
-        new_rMax = float(new_rMax)
-        rMax_initial = 0.5
-        rMax_final = 20.0
-        rMax_interval = 0.1
-        rMax_current = rMax_initial
+    for line in lines:
+        total_year, total_lumi, box, date, new_confFile, signal, new_rMax1 = line.split(",")
+        print("Processing line: {}".format(line))
 
-        while rMax_current <= rMax_final:
-            newInput_totalcfgFile = "{0}_{1}.txt".format(new_confFile, rMax_current)
-            condorDIR = "cjobs_{0}_{1}_{2}_{3}_{4}".format(total_year, signal, new_confFile, box, date)
-            condorDIRPath = "{0}/Limits/{1}".format(workDir, condorDIR)
+        condorDIR = "cjobs_{0}Combined_{1}_{2}_{3}_{4}".format(total_year, signal, new_confFile, box, date)
+        condorDIRPath = "{0}/Limits/{1}".format(workDir, condorDIR)
 
-            if not os.path.exists(condorDIRPath):
-                os.makedirs(condorDIRPath)
+        if not os.path.exists(condorDIRPath):
+            os.makedirs(condorDIRPath)
+            print("Created directory: {}".format(condorDIR))
 
-            with open("{0}/{1}".format(condorDIRPath, newInput_totalcfgFile), 'w') as newFile:
-                newFile.write(line)
 
-            with open("{0}/Limits_{1}_{2}_{3}_n{4}.csh".format(condorDIRPath, total_year, signal, new_confFile, rMax_current), 'w') as cshFile:
-                cshFile.write(csh_file_content(cmssw_Ver, arch, workDir, cfgPath, condorDIR, total_year, signal, new_confFile, date, rMax_current, box))
+        rMaxStart = 0.5
+        rMaxEnd = 20.0
+        rMaxStep = 0.1
 
-            with open("{0}/Limits_{1}_{2}_{3}_n{4}.jdl".format(condorDIRPath, total_year, signal, new_confFile, rMax_current), 'w') as jdlFile:
-                jdlFile.write(jdl_file_content(workDir, condorDIR, total_year, signal, new_confFile, rMax_current, cmssw_Ver))
+        print("Creating all text, csh and jdl files. Please be patient!..")
+        while rMaxStart <= rMaxEnd:
+            newInput_totalcfgFile = "{0}/{1}_{2}_cfg_rMax{3}.txt".format(condorDIRPath, total_year, signal, rMaxStart)
+            with open(newInput_totalcfgFile, 'w') as newFile:
+                newFile.write(','.join([total_year, total_lumi, box, date, new_confFile, signal, str(rMaxStart)]))
 
-            rMax_current += rMax_interval
+            cshFilePath = "{0}/Limits_{1}_{2}_{3}_n{4}.csh".format(condorDIRPath, total_year, signal, new_confFile, rMaxStart)
+            with open(cshFilePath, 'w') as cshFile:
+                    cshFileContent = create_csh_file_content(cmssw_Ver, arch, condorDIR, cfgPath, newInput_totalcfgFile, total_year, signal, new_confFile, date, rMaxStart, box)
+                    cshFile.write(cshFileContent)
 
-        tarCommandLine = 'tar --exclude-vcs -zcf {0}.tar.gz {0} --exclude=tmp --exclude="*.tar.gz" --exclude="*.tar.gz" --exclude="*.pdf" --exclude="*.png" --exclude=.git'.format(cmssw_Ver)
+            jdlFilePath = "{0}/Limits_{1}_{2}_{3}_n{4}.jdl".format(condorDIRPath, total_year, signal, new_confFile, rMaxStart)
+            with open(jdlFilePath, 'w') as jdlFile:
+                jdlFileContent = create_jdl_file_content(workDir, condorDIR, total_year, signal, new_confFile, rMaxStart, cmssw_Ver)
+                jdlFile.write(jdlFileContent)
+
+            rMaxStart += rMaxStep
+
+        os.chdir("{0}/..".format(cmssw_dir))
+        print("Creating tar file for condor jobs. This process might take a while!..")
+        tarCommandLine = 'tar --exclude-vcs -zcf {0}.tar.gz {0} --exclude=tmp --exclude="*.tar.gz" --exclude="*.tar.gz" --exclude="*.pdf" --exclude="*.png" --exclude="fits_*" --exclude=.git'.format(cmssw_Ver)
         os.system(tarCommandLine)
 
         subprocess.call(['mv', "{0}.tar.gz".format(cmssw_Ver), "{0}/{1}.tar.gz".format(condorDIRPath, cmssw_Ver)])
@@ -50,20 +60,19 @@ def main(cfgPath, total_cfgFile):
 
         print("Created submit file: zz_submitJobs.py")
         print("Done!")
-        # submit_jobs(condorDIR)
+        submit_jobs(condorDIR)
         print("-" * 50)
 
 
-def csh_file_content(cmssw_Ver, arch, workDir, cfgPath, condorDIR, total_year, signal, new_confFile, date, new_rMax, box):
-    return '''#!/bin/tcsh
-
+def create_csh_file_content(cmssw_Ver, arch, condorDIR, cfgPath, newInput_totalcfgFile, total_year, signal, new_confFile, date, rMaxStart, box):
+    content = '''#!/bin/tcsh
 source /cvmfs/cms.cern.ch/cmsset_default.csh
 tar -xf {0}.tar.gz
 rm {0}.tar.gz
 setenv SCRAM_ARCH {1}
 cd {0}/src
 cmsenv
-echo "start renaming"
+echo "strat renaming"
 scramv1 b ProjectRename
 
 echo "next- setting eval"
@@ -75,31 +84,31 @@ ls -lhtr
 
 cmsenv
 
-python combineDataCardsFromSplitDatasets.py --cfgFile {2}/Limits/{3} --total_cfgFile {2}/Limits/{4}/{5}
+python combineDataCardsFromSplitDatasets.py --cfgFile {3} --total_cfgFile {2}/{5}_{6}_cfg_rMax{9}.txt
 
-xrdcp AllLimits${6}Combined_{7}_{8}/cards_{7}_w2016Sig_DE13_M489_{9}_rmax{10}/limits_freq_{7}_{11}.pdf root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits${6}_{7}_{8}/limits_freq_{7}_{11}_M489_{6}_rMax{10}.pdf
-xrdcp AllLimits${6}Combined_{7}_{8}/cards_{7}_w2016Sig_DE13_M489_{9}_rmax{10}/limits_freq_{7}_{11}.root root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits${6}_{7}_{8}/limits_freq_{7}_{11}_M489_{6}_rMax{10}.root
+xrdcp AllLimits{5}Combined_{6}_{7}/cards_{6}_w2016Sig_DE13_M489_{8}_rmax{9}/limits_freq_{6}_{10}.pdf root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{5}_{6}_{7}/limits_freq_{6}_{10}_M489_rMax{9}.pdf
+xrdcp AllLimits{5}Combined_{6}_{7}/cards_{6}_w2016Sig_DE13_M489_{8}_rmax{9}/limits_freq_{6}_{10}.root root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{5}_{6}_{7}/limits_freq_{6}_{10}_M489_rMax{9}.root
 
 echo "starting cleanup..."
-ls -lhtr AllLimits${6}_{7}_{8}/
-rm -r AllLimits${6}_{7}_{8}
+ls -lhtr AllLimits{5}Combined_{6}_{7}/
+rm -r AllLimits{5}Combined_{6}_{7}
 
 echo "DONE!"
-'''.format(cmssw_Ver, arch, workDir, cfgPath, condorDIR, total_year, signal, new_confFile, date, new_rMax, box)
+'''.format(cmssw_Ver, arch, condorDIR, cfgPath, newInput_totalcfgFile, total_year, signal, new_confFile, date, rMaxStart, box)
+    return content
 
 
-def jdl_file_content(workDir, condorDIR, total_year, signal, new_confFile, new_rMax, cmssw_Ver):
+def create_jdl_file_content(workDir, condorDIR, total_year, signal, new_confFile, rMaxStart, cmssw_Ver):
     return '''universe = vanilla
-Executable = {0}/Limits/{1}/Limits_${2}_${3}_${4}_n${5}.csh
+Executable = {0}/Limits/{1}/Limits_{2}_{3}_{4}_n{5}.csh
 Should_Transfer_Files = YES
 WhenToTransferOutput = ON_EXIT_OR_EVICT
 Transfer_Input_Files = {0}/Limits/{1}/{6}.tar.gz
 Output = cjob_$(Cluster)_$(Process).stdout
 Error = cjob_$(Cluster)_$(Process).stderr
 Log = cjob_$(Cluster)_$(Process).log
-notify_user = ${LOGNAME}@FNAL.GOV
 Queue 1
-'''.format(workDir, condorDIR, total_year, signal, new_confFile, new_rMax, cmssw_Ver)
+'''.format(workDir, condorDIR, total_year, signal, new_confFile, rMaxStart, cmssw_Ver)
 
 
 def create_submit_file_content():
