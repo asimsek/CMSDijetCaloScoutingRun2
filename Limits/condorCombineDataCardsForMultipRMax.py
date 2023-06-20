@@ -34,12 +34,12 @@ def main(cfgPath, total_cfgFile):
             with open(newInput_totalcfgFile, 'w') as newFile:
                 newFile.write(','.join([total_year, total_lumi, box, date, new_confFile, signal, str(rMaxStart)]))
 
-            cshFilePath = "{0}/Limits_{1}_{2}_{3}_n{4}.csh".format(condorDIRPath, total_year, signal, new_confFile, rMaxStart)
+            cshFilePath = "{0}/Limits_{1}Combined_{2}_{3}_n{4}.csh".format(condorDIRPath, total_year, signal, new_confFile, rMaxStart)
             with open(cshFilePath, 'w') as cshFile:
                     cshFileContent = create_csh_file_content(cmssw_Ver, arch, condorDIR, cfgPath, newInput_totalcfgFile, total_year, signal, new_confFile, date, rMaxStart, box)
                     cshFile.write(cshFileContent)
 
-            jdlFilePath = "{0}/Limits_{1}_{2}_{3}_n{4}.jdl".format(condorDIRPath, total_year, signal, new_confFile, rMaxStart)
+            jdlFilePath = "{0}/Limits_{1}Combined_{2}_{3}_n{4}.jdl".format(condorDIRPath, total_year, signal, new_confFile, rMaxStart)
             with open(jdlFilePath, 'w') as jdlFile:
                 jdlFileContent = create_jdl_file_content(workDir, condorDIR, total_year, signal, new_confFile, rMaxStart, cmssw_Ver)
                 jdlFile.write(jdlFileContent)
@@ -100,7 +100,7 @@ echo "DONE!"
 
 def create_jdl_file_content(workDir, condorDIR, total_year, signal, new_confFile, rMaxStart, cmssw_Ver):
     return '''universe = vanilla
-Executable = {0}/Limits/{1}/Limits_{2}_{3}_{4}_n{5}.csh
+Executable = {0}/Limits/{1}/Limits_{2}Combined_{3}_{4}_n{5}.csh
 Should_Transfer_Files = YES
 WhenToTransferOutput = ON_EXIT_OR_EVICT
 Transfer_Input_Files = {0}/Limits/{1}/{6}.tar.gz
