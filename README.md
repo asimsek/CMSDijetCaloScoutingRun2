@@ -56,6 +56,23 @@ cd cjobs_***
 python3 submit_all.py
 ```
 
+## Trigger Efficiency
+
+> This script produce the trigger turn-on curves (efficiency results) for all years.
+
+> For eff1=(HT250&CaloJet40)/Calojet40 efficiency calculation uncomment the line XXX and comment the line YYY
+
+> For the eff2=(HT250&L1HTT)/L1HTT efficiency calculation uncomment the line YYY and comment the line XXX
+
+```sh
+cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/scripts
+```
+
+```sh
+python doTriggerCurves_dataCaloScouting.py --inputList ../lists/ScoutingCaloCommissioning/ScoutingCaloCommissioning2016ALL_reduced.txt --year 2016 --lumi 27.225
+python doTriggerCurves_dataCaloScouting.py --inputList ../lists/ScoutingCaloCommissioning/ScoutingCaloCommissioning2017ALL_reduced.txt --year 2017 --lumi 35.449
+python doTriggerCurves_dataCaloScouting.py --inputList ../lists/ScoutingCaloCommissioning/ScoutingCaloCommissioning2018ALL_reduced.txt --year 2018 --lumi 54.451
+```
 
 ## Kinematic Plots
 > Change EOS path inside the `plotterCondor_DatavsMC4.sh` script before sending jobs to condor!
