@@ -62,16 +62,16 @@ python3 submit_all.py
 
 > eff1 = (HT250&CaloJet40)/CaloJet40
 
-> eff2.= (HT250&L1HTT)/L1HTT
+> eff2 = (HT250&L1HTT)/L1HTT
 
 ```sh
 cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/scripts
 ```
 
 ```sh
-python doTriggerCurves_dataCaloScouting.py --inputList ../lists/ScoutingCaloCommissioning/ScoutingCaloCommissioning2016ALL_reduced.txt --year 2016 --lumi 27.225
-python doTriggerCurves_dataCaloScouting.py --inputList ../lists/ScoutingCaloCommissioning/ScoutingCaloCommissioning2017ALL_reduced.txt --year 2017 --lumi 35.449
-python doTriggerCurves_dataCaloScouting.py --inputList ../lists/ScoutingCaloCommissioning/ScoutingCaloCommissioning2018ALL_reduced.txt --year 2018 --lumi 54.451
+python doTriggerCurves_dataCaloScouting.py --inputList ../lists/ScoutingCaloCommissioning/ScoutingCaloCommissioning2016ALL_reduced.txt --inputListCaloHT ../lists/CaloScoutingHT/CaloScoutingHT2016ALL_reduced.txt --year 2016 --lumi 27.225
+python doTriggerCurves_dataCaloScouting.py --inputList ../lists/ScoutingCaloCommissioning/ScoutingCaloCommissioning2017ALL_reduced.txt --inputListCaloHT ../lists/CaloScoutingHT/CaloScoutingHT2017ALL_reduced.txt --year 2017 --lumi 35.449
+python doTriggerCurves_dataCaloScouting.py --inputList ../lists/ScoutingCaloCommissioning/ScoutingCaloCommissioning2018ALL_reduced.txt --inputListCaloHT ../lists/CaloScoutingHT/CaloScoutingHT2018ALL_reduced.txt --year 2018 --lumi 54.451
 ```
 
 ## Kinematic Plots
@@ -210,6 +210,12 @@ find ./AllLimits*/ -name "*.txt" -type f -exec sed -i 's|/uscms_data/d3/asimsek/
 ```sh
 python condorCombineDataCardsForMultipRMax.py --cfgPath inputFiles/allRunIILimits_cfg.txt --total_cfgFile combineInputFiles/combineDataCards_allYears.txt
 ```
+
+
+
+
+
+
 
 ### Useful Links
 
