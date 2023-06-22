@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
+
 import os
 import argparse
+import subprocess
 import pandas as pd
 
 def parse_args():
@@ -10,6 +13,9 @@ def parse_args():
     return parser.parse_args()
 
 def main(args):
+
+    cmssw_dir = os.environ['CMSSW_BASE']
+    workDir = cmssw_dir + "/src/CMSDIJET/DijetRootTreeAnalyzer"
 
     # Load the config file into a dataframe
     df = pd.read_csv(args.cfgFile, comment='#', header=None)
@@ -34,19 +40,21 @@ def main(args):
         dataC = " ".join(dataCards)
 
         # Execute the combineCards.py command
-        NewDataCard = "%s/dijet_combine_%s_%d_lumi-%s_%s.txt" % (FolderNew, args.signal, mass, args.total_lumi, args.box)
+        NewDataCard = "%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (FolderNew, args.signal, mass, args.total_lumi, args.box)
         combineCommand = "python combineCards.py %s > %s" % (dataC, NewDataCard)
         os.system("%s" % (combineCommand))
 
-        cmdCombine = "combine -M AsymptoticLimits -d %s -n %s_%d_lumi-%s_%s --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 2 --setParameterRanges r=0,%s --saveWorkspace" % (NewDataCard, args.signal, mass, args.total_lumi, args.box, args.new_rMax)
-        cmdMoveCombinedRoot = "mv higgsCombine%s_%d_lumi-%s_%s.AsymptoticLimits.mH120.root %s/higgsCombine%s_%d_lumi-%s_%s.mH120.root" % (args.signal, mass, args.total_lumi, args.box, FolderNew, args.signal, mass, args.total_lumi, args.box)
+        cmdCombine = "combine -M AsymptoticLimits -d %s -n %s_%d_lumi-%.3f_%s --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 2 --setParameterRanges r=0,%s --saveWorkspace" % (NewDataCard, args.signal, mass, args.total_lumi, args.box, args.new_rMax)
+        cmdMoveCombinedRoot = "mv higgsCombine%s_%d_lumi-%.3f_%s.AsymptoticLimits.mH120.root %s/higgsCombine%s_%d_lumi-%.3f_%s.Asymptotic.mH120.root" % (args.signal, mass, args.total_lumi, args.box, FolderNew, args.signal, mass, args.total_lumi, args.box)
         os.system(cmdCombine)
         os.system(cmdMoveCombinedRoot)
 
-    cmdRest1 = "python python/GetCombine.py -d %s -m %s --mass range\\(500,2350,50\\) -b %s --xsec 10 -l %s" % (FolderNew, args.signal, args.box, args.total_lumi)
-    cmdRest2 = "python python/Plot1DLimit.py -d %s -m %s -b %s -l %s --massMin 600 --massMax 1800 --xsecMin 1e-5 --xsecMax 1e5" % (FolderNew, args.signal, args.box, args.total_lumi)
+    
+    cmdRest1 = "python {0}/python/GetCombine.py -d {0}/Limits/{1} -m {2} --mass range\\(500,2350,50\\) -b {3} --xsec 10.0 -l {4}".format(workDir, FolderNew, args.signal, args.box, str(args.total_lumi))
+    cmdRest2 = "python {0}/python/Plot1DLimit.py -d {0}/Limits/{1} -m {2} -b {3} -l {4} --massMin 600 --massMax 1800 --xsecMin 1e-5 --xsecMax 1e5".format(workDir, FolderNew, args.signal, args.box, str(args.total_lumi))
     os.system(cmdRest1)
     os.system(cmdRest2)
+
 
 
 if __name__ == "__main__":

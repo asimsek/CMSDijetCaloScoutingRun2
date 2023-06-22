@@ -1,13 +1,13 @@
 #total_year,total_lumi,box,date,new_confFile,signal,new_rMax
 
-2016,27.224973278,CaloDijet2016,17June2023,dijet,gg,5.0
-2016,27.224973278,CaloDijet2016,17June2023,dijet,qg,5.0
-2016,27.224973278,CaloDijet2016,17June2023,dijet,qq,5.0
+2016,27.224973278,CaloDijet2016,17June2023,dijet,gg,3.0
+2016,27.224973278,CaloDijet2016,17June2023,dijet,qg,1.1
+2016,27.224973278,CaloDijet2016,17June2023,dijet,qq,9.2
 
-2017,35.449914768,CaloDijet2017,17June2023,dijet,gg,5.0
-2017,35.449914768,CaloDijet2017,17June2023,dijet,qg,5.0
-2017,35.449914768,CaloDijet2017,17June2023,dijet,qq,5.0
+2017,35.449914768,CaloDijet2017,17June2023,dijet,gg,2.2
+2017,35.449914768,CaloDijet2017,17June2023,dijet,qg,1.8
+2017,35.449914768,CaloDijet2017,17June2023,dijet,qq,10.7
 
-2018,54.451729361,CaloDijet2018,17June2023,dijet,gg,5.0
-2018,54.451729361,CaloDijet2018,17June2023,dijet,qg,5.0
-2018,54.451729361,CaloDijet2018,17June2023,dijet,qq,5.0
+2018,54.451729361,CaloDijet2018,17June2023,dijet,gg,3.1
+2018,54.451729361,CaloDijet2018,17June2023,dijet,qg,2.9
+2018,54.451729361,CaloDijet2018,17June2023,dijet,qq,1.5

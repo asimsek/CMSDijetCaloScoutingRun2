@@ -48,7 +48,7 @@ def main(cfgPath, total_cfgFile):
 
         os.chdir("{0}/..".format(cmssw_dir))
         print("Creating tar file for condor jobs. This process might take a while!..")
-        tarCommandLine = 'tar --exclude-vcs -zcf {0}.tar.gz {0} --exclude=tmp --exclude="*.tar.gz" --exclude="*.pdf" --exclude="*.png" --exclude=.git'.format(cmssw_Ver)
+        tarCommandLine = 'tar --exclude-vcs -zcf {0}.tar.gz {0} --exclude=tmp --exclude="*.tar.gz" --exclude="*.pdf" --exclude="*.png" --exclude="scripts" --exclude=.git'.format(cmssw_Ver)
         os.system(tarCommandLine)
 
         subprocess.call(['mv', "{0}.tar.gz".format(cmssw_Ver), "{0}/{1}.tar.gz".format(condorDIRPath, cmssw_Ver)])

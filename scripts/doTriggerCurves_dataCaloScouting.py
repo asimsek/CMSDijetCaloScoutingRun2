@@ -12,14 +12,15 @@ gROOT.SetBatch(True)
 execfile('tdrstyle.py')
 
 
-## usage = "python doTriggerCurves_dataCaloScouting.py --inputList ScoutingCaloCommissioning2016ALL_reduced.txt --year 2016 --lumi 27.225"
-## usage = "python doTriggerCurves_dataCaloScouting.py --inputList ScoutingCaloCommissioning2017ALL_reduced.txt --year 2017 --lumi 35.449"
-## usage = "python doTriggerCurves_dataCaloScouting.py --inputList ScoutingCaloCommissioning2018ALL_reduced.txt --year 2018 --lumi 59.533"
+## usage = "python doTriggerCurves_dataCaloScouting.py --inputList ../lists/ScoutingCaloCommissioning/ScoutingCaloCommissioning2016ALL_reduced.txt --inputListCaloHT ../lists/CaloScoutingHT/CaloScoutingHT2016ALL_reduced.txt --year 2016 --lumi 27.225"
+## usage = "python doTriggerCurves_dataCaloScouting.py --inputList ../lists/ScoutingCaloCommissioning/ScoutingCaloCommissioning2017ALL_reduced.txt --inputListCaloHT ../lists/CaloScoutingHT/CaloScoutingHT2017ALL_reduced.txt --year 2017 --lumi 35.449"
+## usage = "python doTriggerCurves_dataCaloScouting.py --inputList ../lists/ScoutingCaloCommissioning/ScoutingCaloCommissioning2018ALL_reduced.txt --inputListCaloHT ../lists/CaloScoutingHT/CaloScoutingHT2018ALL_reduced.txt --year 2018 --lumi 54.451"
 
 
 ################# Arguments ###############
 parser = argparse.ArgumentParser()
 parser.add_argument("--inputList", type=str, help="", default="ScoutingCaloCommissioning2017ALL_reduced.txt")
+parser.add_argument("--inputListCaloHT", type=str, help="", default="")
 parser.add_argument("--year", type=str, help="", default="CaloScoutingHT2017_CDEF_TriggerTurnOn_12Dec2022_1457")
 parser.add_argument("--lumi", type=str, help="", default="35.45")
 parser.add_argument("--mode", type=int, help="", default=1)
@@ -28,6 +29,7 @@ parser.add_argument("--golden", action="store_true", default=True, dest="golden"
 
 args = parser.parse_args()
 inputList = args.inputList
+inputListCaloHT = args.inputListCaloHT
 year = args.year
 lumi = args.lumi
 mode = args.mode
@@ -60,7 +62,7 @@ bins = 13999
 xmin = 1.
 xmax = 14000.
 #baseCut = "deltaETAjj<1.3 && mjj>230 && "
-baseCut = "deltaETAjj<1.3 && "
+baseCut = "deltaETAjj<1.3"
 #baseCut = ""
 massMin, massMax = 280., 1300. #0., 1300. #280., 1300.
 minFit, maxFit = 280., 900.
@@ -80,6 +82,13 @@ for line in lines_data:
   print "\033[1;31m ->> %s \033[0;0m" % (line)
 
 
+chainHT = TChain("rootTupleTree/tree")
+lines_data_HT = [lineHT.strip() for lineHT in open(inputListCaloHT)]
+for lineHT in lines_data_HT:
+  chainHT.Add(lineHT)
+  print "\033[1;31m ->> %s \033[0;0m" % (lineHT)
+
+
 ####### New Histograms
 h_mjj_L1HTT = TH1F("h_mjj_L1HTT", "", bins, xmin, xmax)
 h_mjj_L1HTT.Sumw2()
@@ -93,6 +102,11 @@ h_mjj_HT250andCaloJet40 = TH1F("h_mjj_HT250andCaloJet40", "", bins, xmin, xmax)
 h_mjj_HT250andCaloJet40.Sumw2()
 h_mjj_L1HTTandCaloJet40 = TH1F("h_mjj_L1HTTandCaloJet40", "", bins, xmin, xmax)
 h_mjj_L1HTTandCaloJet40.Sumw2()
+h_mjj_ScoutingHT_HLT = TH1F("h_mjj_ScoutingHT_HLT", "", bins, xmin, xmax)
+h_mjj_ScoutingHT_HLT.Sumw2()
+h_mjj_ScoutingHT_L1 = TH1F("h_mjj_ScoutingHT_L1", "", bins, xmin, xmax)
+h_mjj_ScoutingHT_L1.Sumw2()
+
 
 if rebin:
   h_mjj_L1HTT_rebin = h_mjj_L1HTT.Rebin(len(massBins_list)-1, "h_mjj_L1HTT_rebin", massBins)
@@ -101,22 +115,29 @@ if rebin:
   h_mjj_HT250andL1HTT_rebin = h_mjj_HT250andL1HTT.Rebin(len(massBins_list)-1, "h_mjj_HT250andL1HTT_rebin", massBins)
   h_mjj_HT250andCaloJet40_rebin = h_mjj_HT250andCaloJet40.Rebin(len(massBins_list)-1, "h_mjj_HT250andCaloJet40_rebin", massBins)
   h_mjj_L1HTTandCaloJet40_rebin = h_mjj_L1HTTandCaloJet40.Rebin(len(massBins_list)-1, "h_mjj_L1HTTandCaloJet40_rebin", massBins)
-
+  h_mjj_ScoutingHT_HLT_rebin = h_mjj_ScoutingHT_HLT.Rebin(len(massBins_list)-1, "h_mjj_ScoutingHT_HLT_rebin", massBins)
+  h_mjj_ScoutingHT_L1_rebin = h_mjj_ScoutingHT_L1.Rebin(len(massBins_list)-1, "h_mjj_ScoutingHT_L1_rebin", massBins)
 
 # Problem between 321712 & 322040
 ####### Cuts
 if rebin: rebinText = "_rebin"
-jetIDCuts = "!(run >= 321712 && run <= 322040) && IdTight_j1>0.5 && IdTight_j1<1.5 && IdTight_j2>0.5 && IdTight_j2<1.5 && nJet>1 && pTWJ_j1>60 && pTWJ_j2>30 && HadEnFrac_j1<0.95 && HadEnFrac_j1>0.05 && EmEnFrac_j1<0.95 && EmEnFrac_j1>0.05 && HadEnFrac_j2<0.95 && HadEnFrac_j2>0.05 && EmEnFrac_j2<0.95 && EmEnFrac_j2>0.05 && "
+jetIDCuts = "!(run >= 321712 && run <= 322040) && IdTight_j1>0.5 && IdTight_j1<1.5 && IdTight_j2>0.5 && IdTight_j2<1.5 && nJet>1 && pTWJ_j1>60 && pTWJ_j2>30 && HadEnFrac_j1<0.95 && HadEnFrac_j1>0.05 && EmEnFrac_j1<0.95 && EmEnFrac_j1>0.05 && HadEnFrac_j2<0.95 && HadEnFrac_j2>0.05 && EmEnFrac_j2<0.95 && EmEnFrac_j2>0.05"
 #jetIDCuts = ""
-if golden: baseCut = "%s%sPassJSON==1 && " % (jetIDCuts, baseCut)
-chain.Project("h_mjj_HT250andCaloJet40%s" % (rebinText), var, "%spassHLT_CaloScoutingHT250==1 && passHLT_CaloJet40_CaloScouting_PFScouting==1" % (baseCut))
-chain.Project("h_mjj_L1HTTandCaloJet40%s" % (rebinText), var, "%spassHLT_L1HTT_CaloScouting_PFScouting==1 && passHLT_CaloJet40_CaloScouting_PFScouting==1" % (baseCut))
-chain.Project("h_mjj_L1HTT%s" % (rebinText), var, "%spassHLT_L1HTT_CaloScouting_PFScouting==1" % (baseCut))
-chain.Project("h_mjj_CaloJet40%s" % (rebinText), var, "%spassHLT_CaloJet40_CaloScouting_PFScouting==1" % (baseCut))
-chain.Project("h_mjj_HT250%s" % (rebinText), var, "%spassHLT_CaloScoutingHT250==1" % (baseCut))
-chain.Project("h_mjj_HT250andL1HTT%s" % (rebinText), var, "%s(passHLT_CaloScoutingHT250==1 && passHLT_L1HTT_CaloScouting_PFScouting==1)" % (baseCut))
+allCuts = "%s && %s && " % (baseCut, jetIDCuts)
+if golden and year!="2017": allCuts = "%s PassJSON==1 && " % (allCuts)
 
-print ("All Cuts: \n %s" % (baseCut) )
+
+chain.Project("h_mjj_HT250andCaloJet40%s" % (rebinText), var, "%spassHLT_CaloScoutingHT250==1 && passHLT_CaloJet40_CaloScouting_PFScouting==1" % (allCuts))
+chain.Project("h_mjj_L1HTTandCaloJet40%s" % (rebinText), var, "%spassHLT_L1HTT_CaloScouting_PFScouting==1 && passHLT_CaloJet40_CaloScouting_PFScouting==1" % (allCuts))
+chain.Project("h_mjj_L1HTT%s" % (rebinText), var, "%spassHLT_L1HTT_CaloScouting_PFScouting==1" % (allCuts))
+chain.Project("h_mjj_CaloJet40%s" % (rebinText), var, "%spassHLT_CaloJet40_CaloScouting_PFScouting==1" % (allCuts))
+chain.Project("h_mjj_HT250%s" % (rebinText), var, "%spassHLT_CaloScoutingHT250==1" % (allCuts))
+chain.Project("h_mjj_HT250andL1HTT%s" % (rebinText), var, "%s(passHLT_CaloScoutingHT250==1 && passHLT_L1HTT_CaloScouting_PFScouting==1)" % (allCuts))
+
+chainHT.Project("h_mjj_ScoutingHT_HLT%s" % (rebinText), var, "%spassHLT_CaloScoutingHT250==1" % (allCuts))
+chainHT.Project("h_mjj_ScoutingHT_L1%s" % (rebinText), var, "%spassHLT_CaloScoutingHT250==1" % (allCuts))
+
+print ("All Cuts: \n %s" % (allCuts) )
 
 ######## Entry Size
 if rebin:
@@ -126,6 +147,8 @@ if rebin:
   N_HT250 = h_mjj_HT250_rebin.GetEntries()
   N_HT250andL1HTT = h_mjj_HT250andL1HTT_rebin.GetEntries()
   N_HT250andCaloJet40 = h_mjj_HT250andCaloJet40_rebin.GetEntries()
+  N_ScoutingHT_HLT = h_mjj_ScoutingHT_HLT_rebin.GetEntries()
+  N_ScoutingHT_L1 = h_mjj_ScoutingHT_L1_rebin.GetEntries()
 else:
   N_L1HTTandCaloJet40 = h_mjj_L1HTTandCaloJet40.GetEntries()
   N_L1HTT = h_mjj_L1HTT.GetEntries()
@@ -133,12 +156,15 @@ else:
   N_HT250 = h_mjj_HT250.GetEntries()
   N_HT250andL1HTT = h_mjj_HT250andL1HTT.GetEntries()
   N_HT250andCaloJet40 = h_mjj_HT250andCaloJet40.GetEntries()
+  N_ScoutingHT_HLT = h_mjj_ScoutingHT_HLT.GetEntries()
+  N_ScoutingHT_L1 = h_mjj_ScoutingHT_L1.GetEntries()
 
 if N_L1HTT<1: print("L1HTT is empty")
 if N_HT250<1: print("HT250 is empty")
 if N_HT250andL1HTT<1: print("HT250andL1HTT is empty")
 if N_L1HTTandCaloJet40<1: print("N_L1HTTandCaloJet40 is empty")
 if N_HT250andCaloJet40<1: print("HT250andCaloJet40 is empty")
+
 
 ######## Styling
 if rebin:
@@ -160,29 +186,27 @@ else:
 
 g_eff = []
 if rebin:
-   h_mjj_HLTpass = [h_mjj_CaloJet40_rebin, h_mjj_HT250andCaloJet40_rebin, h_mjj_L1HTTandCaloJet40_rebin]
-  #h_mjj_HLTpass = [h_mjj_CaloJet40_rebin, h_mjj_L1HTT_rebin, h_mjj_HT250_rebin]
-  #h_mjj_HLTpass = [h_mjj_HT250andL1HTT_rebin, h_mjj_L1HTT_rebin, h_mjj_HT250_rebin]
-  #h_mjj_HLTpass = [h_mjj_L1HTTandCaloJet40_rebin, h_mjj_CaloJet40_rebin, h_mjj_HT250_rebin]
+   h_mjj_HLTpass = [h_mjj_CaloJet40_rebin, h_mjj_L1HTT_rebin, h_mjj_HT250andCaloJet40_rebin, h_mjj_HT250andL1HTT_rebin]
+   h_mjj_HLTpass_HT = [h_mjj_ScoutingHT_HLT_rebin, h_mjj_ScoutingHT_L1_rebin]
 else:
-  h_mjj_HLTpass = [h_mjj_HT250andL1HTT, h_mjj_L1HTT, h_mjj_HT250]
-
+   h_mjj_HLTpass = [h_mjj_CaloJet40, h_mjj_L1HTT, h_mjj_HT250andCaloJet40, h_mjj_HT250andL1HTT]
+   h_mjj_HLTpass_HT = [h_mjj_ScoutingHT_HLT, h_mjj_ScoutingHT_L1]
 
 
 ############# Efficiency ##############
 p_dict_1, p_dict_2 = {}, {}
 # first value=1, last value=2 ; if range(1, 3)
-for ij in range(1, 3):
-  print ("N1 Hist Name: %s - %d" % (h_mjj_HLTpass[0].GetName(), h_mjj_HLTpass[0].GetEntries()) )
-  print ("N2 Hist Name: %s - %d" % (h_mjj_HLTpass[ij].GetName(), h_mjj_HLTpass[ij].GetEntries()) )
+for ij in range(0, 2):
+  print ("N1 Hist Name: %s - %d" % (h_mjj_HLTpass[ij].GetName(), h_mjj_HLTpass[ij].GetEntries()) )
+  print ("N2 Hist Name: %s - %d" % (h_mjj_HLTpass[ij+2].GetName(), h_mjj_HLTpass[ij+2].GetEntries()) )
   scale=1.
   nMassBins2 = 0
   x, y, exl, exh, eyl, eyh  = [], [], [], [], [], []
   for i in range(0, nMassBins):
   #for i in massBins:
     nMassBins2+=1
-    N1 = h_mjj_HLTpass[0].GetBinContent(i) #* (preScales[0])
-    N2 = h_mjj_HLTpass[ij].GetBinContent(i) #* (preScales[ij])
+    N1 = h_mjj_HLTpass[ij].GetBinContent(i) #* (preScales[0])
+    N2 = h_mjj_HLTpass[ij+2].GetBinContent(i) #* (preScales[ij])
     p  = 0.
     eU = 0.
     eL = 0.
@@ -208,22 +232,27 @@ for ij in range(1, 3):
         eU = UB/(1.0-UB)-p
         eL = p-LB/(1.0-LB)
   
-
-    if rebin: print "\033[1;31m ->> %s | Mass:%s | N1:%s | N2:%s | p:%s | eL:%s | eU:%s \033[0;0m" % ( i, str(massBins[i]), str(N1), str(N2), str(p), str(eL), str(eU) )
-    else: print "\033[1;31m ->> %s | Mass:%s | N1:%s | N2:%s | p:%s | eL:%s | eU:%s \033[0;0m" % ( i, str(i), str(N1), str(N2), str(p), str(eL), str(eU) )
-    if ij == 1 and rebin: p_dict_1[massBins[i]] = p
-    if ij == 2 and rebin: p_dict_2[massBins[i]] = p
+    if (year == "2017" or year=="2018") and int(massBins[i])>550: p=1.0
+    #if rebin: print "\033[1;31m ->> %s | Mass:%s | N1:%s | N2:%s | p:%s | eL:%s | eU:%s \033[0;0m" % ( i, str(massBins[i]), str(N1), str(N2), str(p), str(eL), str(eU) )
+    #else: print "\033[1;31m ->> %s | Mass:%s | N1:%s | N2:%s | p:%s | eL:%s | eU:%s \033[0;0m" % ( i, str(i), str(N1), str(N2), str(p), str(eL), str(eU) )
+    if ij == 0 and rebin: p_dict_1[int(massBins[i])] = p
+    if ij == 1 and rebin: p_dict_2[int(massBins[i])] = p
     eU = 0.
     if rebin:
       x.append(massBins[i])
     else:
       x.append(i)
-    #x.append( h_mjj_HLTpass[0].GetBinCenter(i))
+    #x.append( h_mjj_HLTpass[ij].GetBinCenter(i))
     y.append( p * scale)
-    exl.append( h_mjj_HLTpass[0].GetBinWidth(i)/2)
-    exh.append( h_mjj_HLTpass[0].GetBinWidth(i)/2)
+    exl.append( h_mjj_HLTpass[ij].GetBinWidth(i)/2)
+    exh.append( h_mjj_HLTpass[ij].GetBinWidth(i)/2)
     eyl.append( eL * scale)
     eyh.append( eU * scale)
+
+    N_HT_Events = h_mjj_HLTpass_HT[ij].GetBinContent(i)
+    sqrtN = (1. / sqrt(N_HT_Events)) if N_HT_Events > 0 else 0
+    if rebin: print "\033[1;31m ->> %s | Mass:%s | N1:%s | N2:%s | p:%s | Frac. Err.(δN/N)=1/sqrt(N):%s | eL:%s | eU:%s \033[0;0m" % ( i, str(massBins[i]), str(N1), str(N2), str(p), str(sqrtN), str(eL), str(eU) )
+    else: print "\033[1;31m ->> %s | Mass:%s | N1:%s | N2:%s | p:%s | Frac. Err.(δN/N)=1/sqrt(N):%s | eL:%s | eU:%s \033[0;0m" % ( i, str(i), str(N1), str(N2), str(p), sqrt(sqrtN), str(eL), str(eU) )
 
 
   vx = array("f", x)
@@ -295,10 +324,8 @@ for ix in range(0, len(g_eff)):
 	l.SetBorderSize(0)
 	l.SetTextAlign(12)
 	l.SetTextSize(0.030)
-	#if ix == 0: l.AddEntry(g_eff[ix], "#frac{HT250 && L1HTT}{ L1HTT }", "PE") ## HLT Trig Eff
-	#if ix == 1: l.AddEntry(g_eff[ix], "#frac{HT250 && L1HTT}{ HT250 }", "PE") ## L1 Trig Eff
 	if ix == 0: l.AddEntry(g_eff[ix], "#frac{HT250 && CaloJet40}{ CaloJet40 }", "PE")
-	if ix == 1: l.AddEntry(g_eff[ix], "#frac{L1HTT && CaloJet40}{ CaloJet40 }", "PE") ## L1 Trig Eff
+	if ix == 1: l.AddEntry(g_eff[ix], "#frac{HT250 && L1HTT}{ L1HTT }", "PE") ## L1 Trig Eff
 	l.AddEntry(turnon, "Fit", "l")
 	l.Draw()
 
@@ -356,28 +383,28 @@ for ix in range(0, len(g_eff)):
 
 
 
-for ij in range(1, len(h_mjj_HLTpass)):
-	c2 = TCanvas("c2_%d" % (ij),"",600,600)
+for ij in range(0, 2):
+	c2 = TCanvas("c2_%d" % (ij+2),"",600,600)
 	c2.cd()
 	gStyle.SetOptStat(0)
 	gPad.SetLogy(1)
 	c2.Clear()
 
-	h_mjj_HLTpass[0].SetLineColor(kRed)
-	h_mjj_HLTpass[0].SetLineWidth(2)
-	#h_mjj_HLTpass[ij].SetMarkerColor(kBlack)
-	#h_mjj_HLTpass[ij].SetMarkerStyle(8)
-	h_mjj_HLTpass[ij].SetLineColor(kBlack)
-        h_mjj_HLTpass[ij].SetLineWidth(2)
+	h_mjj_HLTpass[ij].SetLineColor(kRed)
+	h_mjj_HLTpass[ij].SetLineWidth(2)
+	#h_mjj_HLTpass[ij+2].SetMarkerColor(kBlack)
+	#h_mjj_HLTpass[ij+2].SetMarkerStyle(8)
+	h_mjj_HLTpass[ij+2].SetLineColor(kBlack)
+        h_mjj_HLTpass[ij+2].SetLineWidth(2)
 
-	rp1 = ROOT.TRatioPlot(h_mjj_HLTpass[0], h_mjj_HLTpass[ij])
+	rp1 = ROOT.TRatioPlot(h_mjj_HLTpass[ij], h_mjj_HLTpass[ij+2])
 	rp1.Draw()
 
 	rp1.GetUpperRefYaxis().SetTitle("Number Of Entries")
 	rp1.GetUpperRefXaxis().SetTitle("Dijet Mass [GeV]")
 	rp1.GetLowerRefYaxis().SetTitle("Ratio")
-	#if ij == 1: rp1.GetLowerRefYaxis().SetTitle("#frac{HT250 && L1HTT}{ L1HTT }") ## HLT Trigger Eff
-	#if ij == 2: rp1.GetLowerRefYaxis().SetTitle("#frac{HT250 && L1HTT}{ HT250 }") ## L1 Trigger Eff
+	#if ij == 1: rp1.GetLowerRefYaxis().SetTitle("#frac{HT250 && CaloJet40}{ CaloJet40 }") ## HLT Trigger Eff
+	#if ij == 2: rp1.GetLowerRefYaxis().SetTitle("#frac{HT250 && L1HTT}{ L1HTT }") ## L1 Trigger Eff
 
 	rp1.SetGraphDrawOpt("HIST") #P
 	rp1.SetRightMargin(0.03)
@@ -410,9 +437,10 @@ for ij in range(1, len(h_mjj_HLTpass)):
 	l2.SetFillStyle(0)
 	l2.SetTextFont(42)
 	l2.SetTextSize(0.040)
-	l2.AddEntry(h_mjj_HLTpass[0], "CaloJet40", "L")
-	if ij == 1: l2.AddEntry(h_mjj_HLTpass[ij], "HT250 && CaloJet40", "PL")
-	if ij == 2: l2.AddEntry(h_mjj_HLTpass[ij], "L1HTT && CaloJet40", "PL")
+	if ij == 1: l2.AddEntry(h_mjj_HLTpass[ij], "CaloJet40", "L")
+        if ij == 2: l2.AddEntry(h_mjj_HLTpass[ij], "L1HTT", "L")
+	if ij == 1: l2.AddEntry(h_mjj_HLTpass[ij+2], "HT250 && CaloJet40", "PL")
+	if ij == 2: l2.AddEntry(h_mjj_HLTpass[ij+2], "HT250 && L1HTT", "PL")
 	l2.Draw()
 
 	paveLumi = TPaveText(0.60, 0.94, 0.99, 0.97, "blNDC")
@@ -437,7 +465,7 @@ for ij in range(1, len(h_mjj_HLTpass)):
 	gPad.RedrawAxis()
 
 	c2.Update()
-	c2.SaveAs(outputDir+"/Superimpose_%s_%s.pdf" % (h_mjj_HLTpass[ij].GetName(), year) )
+	c2.SaveAs(outputDir+"/Superimpose_%s_%s.pdf" % (h_mjj_HLTpass[ij+2].GetName(), year) )
 
 
 

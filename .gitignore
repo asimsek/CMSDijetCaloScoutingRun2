@@ -63,3 +63,8 @@ batch
 cjobs_*
 AllLimits*
 fits_*
+
+
+# User Init #
+#############
+nameChange.py

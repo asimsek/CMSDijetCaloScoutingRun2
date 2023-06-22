@@ -1,0 +1,1 @@
+root://cmseos.fnal.gov//store/group/lpcjj/CaloScouting/rootTrees_reduced/2017/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2017F-v1/ScoutingCaloCommissioning2017F_JEC_AK4CaloHLTL1L2L3_L2L3Residual_n60_reduced_skim.root
