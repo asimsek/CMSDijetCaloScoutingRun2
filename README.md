@@ -28,7 +28,7 @@ ln -sf analysisClass_mainDijetCaloScoutingSelection_RunII.C src/analysisClass.C
 make clean
 make
 
-./main lists/CaloScoutingHT/CaloScoutingHT2018D-v1_reduced.txt config/cutFile_mainDijetCaloScoutingSelection.txt rootTupleTree/tree ScoutingCaloCommissioning2018D_n0 ScoutingCaloCommissioning2018D_n0
+./main lists/bigNTuples/CaloScoutingHT/CaloScoutingHT2018D-v1.txt config/cutFile_mainDijetCaloScoutingSelection.txt rootTupleTree/tree ScoutingCaloCommissioning2018D_n0 ScoutingCaloCommissioning2018D_n0
 ```
 
 ### Production on Condor
@@ -54,10 +54,23 @@ cmsenv
 voms-proxy-init --voms cms --valid 300:00
 ````
 
+#### Scouting Calo Commissioning
+
+##### 2017
+
+```sh
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2017C_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2017D_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2017E_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2017F_cfg.txt
+```
+
+#### Scouting Calo HT
+
+##### 2018
+
 ```sh
 python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2018D_cfg.txt
-cd cjobs_***
-python3 submit_all.py
 ```
 
 ## Trigger Efficiency
