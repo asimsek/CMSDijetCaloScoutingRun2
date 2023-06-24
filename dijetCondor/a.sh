@@ -5,6 +5,11 @@ python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScouti
 python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2016F_cfg.txt
 python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2016G_cfg.txt
 
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2017C_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2017D_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2017E_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2017F_cfg.txt
+
 
 python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2018A_cfg.txt
 python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2018B_cfg.txt
