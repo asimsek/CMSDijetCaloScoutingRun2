@@ -79,7 +79,7 @@ python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScouti
 python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2017F_cfg.txt
 ```
 
-##### 2017
+##### 2018
 
 ```sh
 python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2018A_cfg.txt
