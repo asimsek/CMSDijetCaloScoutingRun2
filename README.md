@@ -1,6 +1,6 @@
 > Instructions for running the Calo Scouting Dijet Resonance Search from start to finish.
 
-> This instruction & sripts are created for Fermilab LPC machines, and it might needs some adjustment for CERN lxplus!
+> This instruction & sripts are created for Fermilab LPC machines, and it might need some adjustment for CERN lxplus!
 
 > Date: June 2023
 
