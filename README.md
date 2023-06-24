@@ -88,11 +88,35 @@ python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScouti
 
 #### Scouting Calo HT
 
+##### 2016
+
+```sh
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2016B_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2016C_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2016D_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2016E_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2016F_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2016G_cfg.txt
+```
+
+##### 2017
+
+```sh
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2017C_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2017D_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2017E_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2017F_cfg.txt
+```
+
 ##### 2018
 
 ```sh
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2018A_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2018B_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2018C_cfg.txt
 python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2018D_cfg.txt
 ```
+
 
 ## Trigger Efficiency
 
