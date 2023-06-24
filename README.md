@@ -36,13 +36,16 @@ make
 
 ```sh
 cd dijetCondor
-vi CaloScoutingHT_2018D_cfg.txt
+mkdir -p CaloScoutingHTLists
+vi CaloScoutingHTLists/CaloScoutingHT_2018D_cfg.txt
 ```
 
 ```sh
 Dataset=/ScoutingCaloHT/Run2018D-v1/RAW
 InputList=../lists/bigNTuples/CaloScoutingHT/CaloScoutingHT2018D-v1.txt
-Interval=10 
+Interval=5
+analyzerScript=analysisClass_mainDijetCaloScoutingSelection_RunII.C
+era=2018D
 ```
 
 ```sh
@@ -51,7 +54,7 @@ voms-proxy-init --voms cms --valid 300:00
 ````
 
 ```sh
-python3 condor_submit_Data.py --config CaloScoutingHT_2018D_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2018D_cfg.txt
 cd cjobs_***
 python3 submit_all.py
 ```
