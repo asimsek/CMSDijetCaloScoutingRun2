@@ -1,0 +1,30 @@
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2016B_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2016C_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2016D_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2016E_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2016F_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2016G_cfg.txt
+
+
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2018A_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2018B_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2018C_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingCommissioningLists/CaloScoutingCommissioning_2018D_cfg.txt
+
+
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2016B_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2016C_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2016D_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2016E_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2016F_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2016G_cfg.txt
+
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2017C_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2017D_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2017E_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2017F_cfg.txt
+
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2018A_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2018B_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2018C_cfg.txt
+python3 condor_submit_Data.py --config CaloScoutingHTLists/CaloScoutingHT_2018D_cfg.txt

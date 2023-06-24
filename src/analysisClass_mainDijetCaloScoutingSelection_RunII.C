@@ -8,7 +8,7 @@
 #include <TVector2.h>
 #include <TVector3.h>
 
-std::string dataYear = "2018D";
+std::string dataYear = "2016D";
 
 analysisClass::analysisClass(string * inputList, string * cutFile, string * treeName, string * outputFileName, string * cutEfficFile)
   :baseClass(inputList, cutFile, treeName, outputFileName, cutEfficFile)
@@ -42,7 +42,6 @@ analysisClass::analysisClass(string * inputList, string * cutFile, string * tree
     std::string L2L3ResidualPath = "";
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-
     if (dataYear.find("2016") != std::string::npos) {
 
         L1Path = "data/HLT_2017_BX25_83X_V1_MC/HLT_2017_BX25_83X_V1_MC_L1FastJet_AK4Calo.txt";
@@ -71,7 +70,6 @@ analysisClass::analysisClass(string * inputList, string * cutFile, string * tree
     // https://cmsjetmettools.web.cern.ch/cmsjetmettools/JECViewer/
     if (dataYear.find("2017") != std::string::npos || dataYear.find("2018") != std::string::npos) {
 
-
         L1Path = "data/HLT_2017_BX25_83X_V1_MC/HLT_2017_BX25_83X_V1_MC_L1FastJet_AK4Calo.txt";
         L2Path = "data/HLT_2017_BX25_83X_V1_MC/HLT_2017_BX25_83X_V1_MC_L2Relative_AK4Calo.txt";
         L3Path = "data/HLT_2017_BX25_83X_V1_MC/HLT_2017_BX25_83X_V1_MC_L3Absolute_AK4Calo.txt";
@@ -80,12 +78,18 @@ analysisClass::analysisClass(string * inputList, string * cutFile, string * tree
         L2DATAPath = "data/HLT_2017_BX25_83X_V1_MC/HLT_2017_BX25_83X_V1_MC_L2Relative_AK4Calo.txt";
         L3DATAPath = "data/HLT_2017_BX25_83X_V1_MC/HLT_2017_BX25_83X_V1_MC_L3Absolute_AK4Calo.txt";
 
-        if (dataYear.find("2017") != std::string::npos) { L2L3ResidualPath = "data/Fall17_17Nov2017F_V32_DATA/Fall17_17Nov2017F_V32_DATA_L2L3Residual_AK4PF.txt"; }
-        if (dataYear.find("2018") != std::string::npos) { L2L3ResidualPath = "data/HLT_2017_BX25_83X_V1_MC/HLT_2017_BX25_83X_V1_MC_L2L3Residual_AK4Calo.txt"; }
+        if (dataYear.find("2017C") != std::string::npos) { L2L3ResidualPath = "data/Fall17_17Nov2017C_V32_DATA/Fall17_17Nov2017C_V32_DATA_L2L3Residual_AK4PF.txt"; }
+        if (dataYear.find("2017D") != std::string::npos || dataYear.find("2017E") != std::string::npos) { L2L3ResidualPath = "data/Fall17_17Nov2017DE_V32_DATA/Fall17_17Nov2017DE_V32_DATA_L2L3Residual_AK4PF.txt"; }
+        if (dataYear.find("2017F") != std::string::npos) { L2L3ResidualPath = "data/Fall17_17Nov2017F_V32_DATA/Fall17_17Nov2017F_V32_DATA_L2L3Residual_AK4PF.txt"; }
+
+        if (dataYear.find("2018A") != std::string::npos) { L2L3ResidualPath = "data/Autumn18_RunsABCD_V19_DATA/Autumn18_v19_DATA_RunA/Autumn18_RunA_V19_DATA_L2L3Residual_AK4Calo.txt"; }
+        if (dataYear.find("2018B") != std::string::npos) { L2L3ResidualPath = "data/Autumn18_RunsABCD_V19_DATA/Autumn18_v19_DATA_RunB/Autumn18_RunB_V19_DATA_L2L3Residual_AK4Calo.txt"; }
+        if (dataYear.find("2018C") != std::string::npos) { L2L3ResidualPath = "data/Autumn18_RunsABCD_V19_DATA/Autumn18_v19_DATA_RunC/Autumn18_RunC_V19_DATA_L2L3Residual_AK4Calo.txt"; }
+        if (dataYear.find("2018D") != std::string::npos) { L2L3ResidualPath = "data/Autumn18_RunsABCD_V19_DATA/Autumn18_v19_DATA_RunD/Autumn18_RunD_V19_DATA_L2L3Residual_AK4Calo.txt"; }
+
 
         unc = new JetCorrectionUncertainty("data/HLT_2017_BX25_83X_V1_MC/HLT_2017_BX25_83X_V1_MC_Uncertainty_AK4Calo.txt");
     }
-
 
 
     L1Par = new JetCorrectorParameters(L1Path);
@@ -110,7 +114,6 @@ analysisClass::analysisClass(string * inputList, string * cutFile, string * tree
 
     JetCorrector = new FactorizedJetCorrector(vPar);
     JetCorrector_data = new FactorizedJetCorrector(vPar_data);
-
 
   }
   

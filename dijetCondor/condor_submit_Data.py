@@ -10,14 +10,12 @@ CMS_VER = "CMSSW_10_2_13"
 SCRAM_ARCH = "slc7_amd64_gcc700"
 EOS_PATH = "/store/user/lpcjj/CaloScouting/rootTrees_reduced/"
 CUT_FILE = "config/cutFile_mainDijetCaloScoutingSelection.txt"
-JSON_FILE = "Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt"
-GOLDEN_JSON = "/uscms_data/d3/asimsek/Dijet2023_RunII/%s/src/CMSDIJET/DijetRootTreeAnalyzer/data/json/%s" % (str(CMS_VER), str(JSON_FILE))
 
 def change_era_from_mainDijetAnalyzer(c_file_path, ERA, DIJET_ANALYZER):
     for line in fileinput.input(c_file_path, inplace=True):
         # Find the line with eraType and replace the value
-        if 'std::string eraType' in line:
-            line = re.sub(r'(std::string eraType = ").+(";)', r'\1'+ERA+r'\2', line)
+        if 'std::string dataYear' in line:
+            line = 'std::string dataYear = "%s";\n' % (ERA)
         # Print modifies the file in-place
         print(line, end='')
 
@@ -25,6 +23,13 @@ def change_era_from_mainDijetAnalyzer(c_file_path, ERA, DIJET_ANALYZER):
     os.chdir(os.path.dirname(os.getcwd()))    
     subprocess.run(['ln -sf %s src/analysisClass.C' % (DIJET_ANALYZER)], shell=True, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     os.chdir(original_dir)
+
+def change_JSON_path(CUT_FILE, GOLDEN_JSON):
+    for line in fileinput.input("../%s" % (CUT_FILE), inplace=True):
+        if line.startswith("JSON"):
+            line = "JSON %s\n" % (GOLDEN_JSON)
+        # Print modifies the file in-place
+        print(line, end='')
 
 
 def parse_config_file(config_path):
@@ -39,8 +44,9 @@ def parse_config_file(config_path):
         input_list = lines[1].split('=')[1].strip()
         interval = int(lines[2].split('=')[1].strip())
         DIJET_ANALYZER = lines[3].split('=')[1].strip()
-        ERA = lines[4].split('=')[1].strip()
-    return dataset_type, year, reco_type, input_list, interval, year_just_number, DIJET_ANALYZER, ERA
+        GOLDEN_JSON = lines[4].split('=')[1].strip()
+        ERA = lines[5].split('=')[1].strip()
+    return dataset_type, year, reco_type, input_list, interval, year_just_number, DIJET_ANALYZER, ERA, GOLDEN_JSON
 
 
 def split_input_list(input_list, interval):
@@ -84,7 +90,7 @@ def create_condor_folder(dataset_type, year, reco_type):
 def create_sh_content(dataset_type, year, reco_type, date_time, i, list_file_path, year_just_number, test_root_file, DIJET_ANALYZER):
     # Define variable for job name
     job_name = "{0}_{1}_Condor_n{2}".format(dataset_type, year, i)
-    rootPrefix="root://eoscms.cern.ch/"
+    rootPrefix="root://cmseos.fnal.gov/"
 
     sh_content = """#!/bin/bash
 
@@ -121,8 +127,8 @@ echo ""
 echo "Job END!"
 echo ""
 
-mkdir -p "/eos/cms/{4}/{8}/{5}/{5}_{6}"
-echo "/eos/cms/{4}/{8}/{5}/{5}_{6}"
+mkdir -p "/eos/uscms/{4}/{8}/{5}/{5}_{6}"
+echo "/eos/uscms/{4}/{8}/{5}/{5}_{6}"
 
 xrdcp -f  {3}_reduced_skim.root {7}/{4}/{8}/{5}/{5}_{6}/{3}_reduced_skim.root
 xrdcp -f  {3}.root  {7}/{4}/{8}/{5}/{5}_{6}/{3}.root
@@ -156,7 +162,7 @@ def create_jdl_content(dataset_type, year, reco_type, date_time, i, sh_file_path
 Executable = {0}
 Should_Transfer_Files = YES
 WhenToTransferOutput = ON_EXIT_OR_EVICT
-Transfer_Input_Files = {1}.tar.gz, {2}, {3}
+Transfer_Input_Files = {1}.tar.gz, {2}
 Output = cjob_$(Cluster)_$(Process).stdout
 Error = cjob_$(Cluster)_$(Process).stderr
 Log = cjob_$(Cluster)_$(Process).log
@@ -164,7 +170,7 @@ Log = cjob_$(Cluster)_$(Process).log
 stream_output = True
 stream_error = True
 +JobFlavour = "nextweek"
-Queue 1""".format(str(full_path), str(CMS_VER), str(GOLDEN_JSON), str(sh_file_path))
+Queue 1""".format(str(full_path), str(CMS_VER), str(sh_file_path))
     return jdl_content
 
 
@@ -247,8 +253,9 @@ def main():
     parser.add_argument('-c', '--config', help='Path to the configuration file', required=True)
     args = parser.parse_args()
 
-    dataset_type, year, reco_type, input_list, interval, year_just_number, DIJET_ANALYZER, ERA = parse_config_file(args.config)
+    dataset_type, year, reco_type, input_list, interval, year_just_number, DIJET_ANALYZER, ERA, GOLDEN_JSON = parse_config_file(args.config)
     change_era_from_mainDijetAnalyzer("../src/%s" % (DIJET_ANALYZER), ERA, DIJET_ANALYZER)
+    change_JSON_path(CUT_FILE, GOLDEN_JSON)
     chunks, total_files = split_input_list(input_list, interval)
     condor_folder, date_time = create_condor_folder(dataset_type, year, reco_type)
     create_files(dataset_type, year, reco_type, date_time, condor_folder, chunks, year_just_number, DIJET_ANALYZER)
