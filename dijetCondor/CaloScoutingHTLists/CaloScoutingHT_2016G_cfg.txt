@@ -1,6 +1,6 @@
 Dataset=/ScoutingCaloHT/Run2016G-v1/RAW
 InputList=../lists/bigNTuples/CaloScoutingHT/CaloScoutingHT2016G-v1.txt
-Interval=5
+Interval=10
 analyzerScript=analysisClass_mainDijetCaloScoutingSelection_RunII.C
 goldenJSON=data/json/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt
 era=2016G

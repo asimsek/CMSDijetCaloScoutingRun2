@@ -92,9 +92,9 @@ def create_sh_content(dataset_type, year, reco_type, date_time, i, list_file_pat
     job_name = "{0}_{1}_Condor_n{2}".format(dataset_type, year, i)
     rootPrefix="root://cmseos.fnal.gov/"
 
-    sh_content = """#!/bin/bash
+    sh_content = """#!/bin/tcsh
 
-source /cvmfs/cms.cern.ch/cmsset_default.sh
+source /cvmfs/cms.cern.ch/cmsset_default.csh
 tar -xf {0}.tar.gz
 rm {0}.tar.gz
 export SCRAM_ARCH={11}
@@ -104,7 +104,7 @@ echo "strat renaming"
 scramv1 b ProjectRename
 
 echo "next- setting eval"
-eval `scramv1 runtime -sh`
+eval `scramv1 runtime -csh`
 
 cd CMSDIJET/DijetRootTreeAnalyzer
 pwd
@@ -214,7 +214,7 @@ def create_files(dataset_type, year, reco_type, date_time, condor_folder, chunks
             file.write(''.join(chunk))
 
         # Create .sh file
-        sh_file_name = f"{dataset_type}_{year}_{reco_type}_n{i}.sh"
+        sh_file_name = f"{dataset_type}_{year}_{reco_type}_n{i}.csh"
         sh_file_path = os.path.join(condor_folder, sh_file_name)
         with open(sh_file_path, 'w') as file:
             file.write(create_sh_content(dataset_type, year, reco_type, date_time, i, list_file_path, year_just_number, chunks[0][0].replace("\n", ""), DIJET_ANALYZER))
