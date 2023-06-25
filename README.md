@@ -140,7 +140,7 @@ ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/Scouting
 ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2016D_v2/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2016D_reduced.txt
 ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2016E_v2/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2016E_reduced.txt
 ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2016F_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2016F_reduced.txt
-ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2016F_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2016F_reduced.txt
+ls -1v ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2016G_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2016G_reduced.txt
 
 ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2016*/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2016ALL_reduced.txt
 ```
@@ -169,6 +169,54 @@ ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2018/Scouting
 ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2018/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2018*/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2018ALL_reduced.txt
 ```
 
+
+### Scouting Calo HT
+
+
+```sh
+cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/lists/reducedNTuples
+mkdir -p ScoutingCaloHT
+cd ScoutingCaloHT
+```
+
+
+##### 2016
+
+```sh
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloHT/ScoutingCaloHT_Run2016B_v2/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2016B-v2_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloHT/ScoutingCaloHT_Run2016C_v2/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2016C-v2_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloHT/ScoutingCaloHT_Run2016D_v2/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2016D-v2_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloHT/ScoutingCaloHT_Run2016E_v2/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2016E-v2_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloHT/ScoutingCaloHT_Run2016F_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2016F-v1_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloHT/ScoutingCaloHT_Run2016G_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2016G-v1_reduced.txt
+
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloHT/ScoutingCaloHT_Run2016*/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2016ALL_reduced.txt
+```
+
+##### 2017
+
+```sh
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2017/ScoutingCaloHT/ScoutingCaloHT_Run2017C_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2017C-v1_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2017/ScoutingCaloHT/ScoutingCaloHT_Run2017D_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2017D-v1_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2017/ScoutingCaloHT/ScoutingCaloHT_Run2017E_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2017E-v1_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2017/ScoutingCaloHT/ScoutingCaloHT_Run2017F_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2017F-v1_reduced.txt
+
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2017/ScoutingCaloHT/ScoutingCaloHT_Run2017*/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2017ALL_reduced.txt
+```
+
+
+
+
+##### 2018
+
+```sh
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2018/ScoutingCaloHT/ScoutingCaloHT_Run2018A_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2018A-v1_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2018/ScoutingCaloHT/ScoutingCaloHT_Run2018B_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2018B-v1_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2018/ScoutingCaloHT/ScoutingCaloHT_Run2018C_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2018C-v1_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2018/ScoutingCaloHT/ScoutingCaloHT_Run2018D_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2018D-v1_reduced.txt
+
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2018/ScoutingCaloHT/ScoutingCaloHT_Run2018*/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > CaloScoutingHT2018ALL_reduced.txt
+```
 
 
 
