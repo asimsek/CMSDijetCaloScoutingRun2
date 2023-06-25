@@ -120,6 +120,60 @@ python3 condor_submit_Data.py --config inputFiles_CaloScoutingHT/CaloScoutingHT_
 ```
 
 
+## Create Lists of Reduced NTuples
+
+> Before start to analyze the datasets, you need to create list files for each era of the years separately, and for ALL.
+
+#### Scouting Calo Commissioning
+
+```sh
+cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/lists/reducedNTuples
+mkdir -p ScoutingCaloCommissioning
+cd ScoutingCaloCommissioning
+```
+
+##### 2016
+
+```sh
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2016B_v2/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2016B_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2016C_v2/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2016C_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2016D_v2/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2016D_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2016E_v2/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2016E_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2016F_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2016F_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2016F_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2016F_reduced.txt
+
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2016*/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2016ALL_reduced.txt
+```
+
+
+##### 2017
+
+```sh
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2017/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2017C_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2017C_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2017/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2017D_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2017D_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2017/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2017E_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2017E_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2017/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2017F_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2017F_reduced.txt
+
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2017/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2017*/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2017ALL_reduced.txt
+```
+
+
+##### 2018
+
+```sh
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2018/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2018A_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2018A_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2018/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2018B_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2018B_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2018/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2018C_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2018C_reduced.txt
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2018/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2018D_v1/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2018D_reduced.txt
+
+ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2018/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2018*/*_reduced_skim.root | sed -e 's\/eos/uscms\root://cmseos.fnal.gov/\g' > ScoutingCaloCommissioning2018ALL_reduced.txt
+```
+
+
+
+
+
+
 ## Trigger Efficiency
 
 > This script produce the trigger turn-on curves (efficiency results) for all years.
