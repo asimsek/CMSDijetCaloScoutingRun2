@@ -133,9 +133,9 @@ cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/scripts
 ```
 
 ```sh
-python doTriggerCurves_dataCaloScouting.py --inputList ../lists/ScoutingCaloCommissioning/ScoutingCaloCommissioning2016ALL_reduced.txt --inputListCaloHT ../lists/CaloScoutingHT/CaloScoutingHT2016ALL_reduced.txt --year 2016 --lumi 27.225
-python doTriggerCurves_dataCaloScouting.py --inputList ../lists/ScoutingCaloCommissioning/ScoutingCaloCommissioning2017ALL_reduced.txt --inputListCaloHT ../lists/CaloScoutingHT/CaloScoutingHT2017ALL_reduced.txt --year 2017 --lumi 35.449
-python doTriggerCurves_dataCaloScouting.py --inputList ../lists/ScoutingCaloCommissioning/ScoutingCaloCommissioning2018ALL_reduced.txt --inputListCaloHT ../lists/CaloScoutingHT/CaloScoutingHT2018ALL_reduced.txt --year 2018 --lumi 54.451
+python doTriggerCurves_dataCaloScouting.py --inputList ../lists/reducedNTuples/ScoutingCaloCommissioning/ScoutingCaloCommissioning2016ALL_reduced.txt --inputListCaloHT ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2016ALL_reduced.txt --year 2016 --lumi 27.225
+python doTriggerCurves_dataCaloScouting.py --inputList ../lists/reducedNTuples/ScoutingCaloCommissioning/ScoutingCaloCommissioning2017ALL_reduced.txt --inputListCaloHT ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2017ALL_reduced.txt --year 2017 --lumi 35.449
+python doTriggerCurves_dataCaloScouting.py --inputList ../lists/reducedNTuples/ScoutingCaloCommissioning/ScoutingCaloCommissioning2018ALL_reduced.txt --inputListCaloHT ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2018ALL_reduced.txt --year 2018 --lumi 54.451
 ```
 
 ## Kinematic Plots
