@@ -13,18 +13,18 @@ set lumi=$4
 set outputFile=${jobName}
 
 
-#set param_=("python DrawFromTree_data4.py --var mjj --xmin 1 --xmax 14000 --xtitle 'Dijet mass [MeV]' --bins 13999 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy")
+#set param_=("python DrawFromTree_data.py --var mjj --xmin 1 --xmax 14000 --xtitle 'Dijet mass [MeV]' --bins 13999 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy")
 
-set param_=("python DrawFromTree_data4.py --var mjj --xmin 1 --xmax 14000 --xtitle 'Dijet mass [MeV]' --bins 13999 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --rebin -1 --units GeV" \
-"python DrawFromTree_data4.py --var pTWJ_j1 --xmin 30 --xmax 5000 --xtitle 'P_{T}(j1) [GeV]' --bins 200 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --rebin 5 --units GeV" \
-"python DrawFromTree_data4.py --var pTWJ_j2 --xmin 30 --xmax 5000 --xtitle 'P_{T}(j2) [GeV]' --bins 200 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --rebin 5 --units GeV" \
-"python DrawFromTree_data4.py --var etaWJ_j1 --xmin -3 --xmax 3 --xtitle '#eta(j1)' --bins 200 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --rebin 5" \
-"python DrawFromTree_data4.py --var etaWJ_j2 --xmin -3 --xmax 3 --xtitle '#eta(j2)' --bins 200 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --rebin 5" \
-"python DrawFromTree_data4.py --var deltaETAjj --xmin 0 --xmax 1.3 --xtitle '#Delta#eta(jj)' --bins 200 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --rebin 5" \
-"python DrawFromTree_data4.py --var deltaPHIjj --xmin 0 --xmax 3.14 --xtitle '|#Delta#phi(jj)|' --bins 200 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --rebin 5" \
-"python DrawFromTree_data4.py --var phiWJ_j1  --xmin -3.1415 --xmax 3.1415  --xtitle '#phi (j1)' --bins 200  --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --rebin 5" \
-"python DrawFromTree_data4.py --var phiWJ_j2  --xmin -3.1415 --xmax 3.1415  --xtitle '#phi (j2)' --bins 200  --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --rebin 5" \
-"python DrawFromTree_data4.py --var Dijet_MassAK4 --xmin 1 --xmax 14000 --xtitle 'Dijet Mass AK4 [GeV]' --bins 13999 --rebin -1 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --units GeV")
+set param_=("python DrawFromTree_data.py --var mjj --xmin 1 --xmax 14000 --xtitle 'Dijet mass [MeV]' --bins 13999 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --rebin -1 --units GeV" \
+"python DrawFromTree_data.py --var pTWJ_j1 --xmin 30 --xmax 5000 --xtitle 'P_{T}(j1) [GeV]' --bins 200 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --rebin 5 --units GeV" \
+"python DrawFromTree_data.py --var pTWJ_j2 --xmin 30 --xmax 5000 --xtitle 'P_{T}(j2) [GeV]' --bins 200 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --rebin 5 --units GeV" \
+"python DrawFromTree_data.py --var etaWJ_j1 --xmin -3 --xmax 3 --xtitle '#eta(j1)' --bins 200 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --rebin 5" \
+"python DrawFromTree_data.py --var etaWJ_j2 --xmin -3 --xmax 3 --xtitle '#eta(j2)' --bins 200 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --rebin 5" \
+"python DrawFromTree_data.py --var deltaETAjj --xmin 0 --xmax 1.3 --xtitle '#Delta#eta(jj)' --bins 200 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --rebin 5" \
+"python DrawFromTree_data.py --var deltaPHIjj --xmin 0 --xmax 3.14 --xtitle '|#Delta#phi(jj)|' --bins 200 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --rebin 5" \
+"python DrawFromTree_data.py --var phiWJ_j1  --xmin -3.1415 --xmax 3.1415  --xtitle '#phi (j1)' --bins 200  --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --rebin 5" \
+"python DrawFromTree_data.py --var phiWJ_j2  --xmin -3.1415 --xmax 3.1415  --xtitle '#phi (j2)' --bins 200  --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --rebin 5" \
+"python DrawFromTree_data.py --var Dijet_MassAK4 --xmin 1 --xmax 14000 --xtitle 'Dijet Mass AK4 [GeV]' --bins 13999 --rebin -1 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --units GeV")
 
 
 #Necessary arguments for copying result files to EOS area.
