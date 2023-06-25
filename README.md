@@ -166,8 +166,8 @@ source plotterCondor_DatavsMC4.sh CaloScoutingHT2017ALL_DatavsQDCMC_11June2023_2
 source plotterCondor_DatavsMC4.sh CaloScoutingHT2018A_DatavsQDCMC_11June2023_2245 ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2018A-v1_reduced.txt ../lists/reducedNTuples/QCD2017-v1_reduced_new.txt 13974.656080
 source plotterCondor_DatavsMC4.sh CaloScoutingHT2018B_DatavsQDCMC_11June2023_2245 ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2018B-v1_reduced.txt ../lists/reducedNTuples/QCD2017-v1_reduced_new.txt 7057.396004
 source plotterCondor_DatavsMC4.sh CaloScoutingHT2018C_DatavsQDCMC_11June2023_2245 ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2018C-v1_reduced.txt ../lists/reducedNTuples/QCD2017-v1_reduced_new.txt 6894.770971
-source plotterCondor_DatavsMC4.sh CaloScoutingHT2018D_withOutProblematicHLTKey_DatavsQDCMC_11June2023_2245 ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2018D-v1_reduced.txt ../lists/reducedNTuples/QCD2017-v1_reduced_new.txt 26524.906306
-source plotterCondor_DatavsMC4.sh CaloScoutingHT2018ALL_withOutProblematicHLTKey_DatavsQDCMC_11June2023_2245 ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2018ALL_reduced.txt ../lists/reducedNTuples/QCD2017-v1_reduced_new.txt 54451.729361
+source plotterCondor_DatavsMC4.sh CaloScoutingHT2018D_DatavsQDCMC_11June2023_2245 ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2018D-v1_reduced.txt ../lists/reducedNTuples/QCD2017-v1_reduced_new.txt 26524.906306
+source plotterCondor_DatavsMC4.sh CaloScoutingHT2018ALL_DatavsQDCMC_11June2023_2245 ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2018ALL_reduced.txt ../lists/reducedNTuples/QCD2017-v1_reduced_new.txt 54451.729361
 ```
 
 ## Fits & Limits
