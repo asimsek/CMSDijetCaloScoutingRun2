@@ -8,7 +8,7 @@
 #include <TVector2.h>
 #include <TVector3.h>
 
-std::string dataYear = "2016B";
+std::string dataYear = "2018A";
 
 analysisClass::analysisClass(string * inputList, string * cutFile, string * treeName, string * outputFileName, string * cutEfficFile)
   :baseClass(inputList, cutFile, treeName, outputFileName, cutEfficFile)

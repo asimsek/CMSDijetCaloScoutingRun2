@@ -63,8 +63,15 @@ batch
 cjobs_*
 AllLimits*
 fits_*
-
+lists/*
 
 # User Init #
 #############
 nameChange.py
+a.sh
+
+
+# Don't ignore #
+################
+!lists/bigNTuples
+!lists/reducedNTuples
