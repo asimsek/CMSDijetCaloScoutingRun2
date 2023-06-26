@@ -255,9 +255,12 @@ hadd -T ScoutingCaloHT_Run2018ALL_NoTree_reduced_skim.root /eos/uscms/store/user
 ```
 
 ##### Produce Trigger Efficiency Plots
+
 ```sh
 cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/scripts
+```
 
+```sh
 python doTriggerCurves_dataCaloScouting.py --inputRootCommissioning ../inputs/TriggerRootFiles/ScoutingCaloCommissioning_Run2016ALL_NoTree_reduced_skim.root --inputRootHT ../inputs/TriggerRootFiles/ScoutingCaloHT_Run2016ALL_NoTree_reduced_skim.root --year 2016 --lumi 27.225
 python doTriggerCurves_dataCaloScouting.py --inputRootCommissioning ../inputs/TriggerRootFiles/ScoutingCaloCommissioning_Run2017ALL_NoTree_reduced_skim.root --inputRootHT ../inputs/TriggerRootFiles/ScoutingCaloHT_Run2017ALL_NoTree_reduced_skim.root --year 2017 --lumi 35.449
 python doTriggerCurves_dataCaloScouting.py --inputRootCommissioning ../inputs/TriggerRootFiles/ScoutingCaloCommissioning_Run2018ALL_NoTree_reduced_skim.root --inputRootHT ../inputs/TriggerRootFiles/ScoutingCaloHT_Run2018ALL_NoTree_reduced_skim.root --year 2018 --lumi 54.451
