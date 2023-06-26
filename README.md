@@ -241,7 +241,7 @@ python doTriggerCurves_dataCaloScouting.py --inputList ../lists/reducedNTuples/S
 ```
 
 ## Kinematic Plots
-> Change EOS path inside the `plotterCondor_DatavsMC4.sh` script before sending jobs to condor!
+> Change EOS path inside the `plotterCondor_DatavsMC.sh` script before sending jobs to condor!
 
 ##### 2016
 ```sh
