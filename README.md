@@ -254,7 +254,7 @@ hadd -T ScoutingCaloHT_Run2017ALL_NoTree_reduced_skim.root /eos/uscms/store/user
 hadd -T ScoutingCaloHT_Run2018ALL_NoTree_reduced_skim.root /eos/uscms/store/user/lpcjj/CaloScouting/rootTrees_reduced/2018/ScoutingCaloHT/ScoutingCaloHT_Run2018*/*reduced*.root
 ```
 
-
+##### Produce Trigger Efficiency Plots
 ```sh
 cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/scripts
 
