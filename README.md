@@ -230,14 +230,47 @@ ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2018/Scouting
 
 > eff2 = (HT250&L1HTT)/L1HTT
 
-```sh
-cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/scripts
-```
+> First, you need to merge all TH1D trigger histograms from your nTuples by using `hadd -T`command.
 
 ```sh
-python doTriggerCurves_dataCaloScouting.py --inputList ../lists/reducedNTuples/ScoutingCaloCommissioning/ScoutingCaloCommissioning2016ALL_reduced.txt --inputListCaloHT ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2016ALL_reduced.txt --year 2016 --lumi 27.225
-python doTriggerCurves_dataCaloScouting.py --inputList ../lists/reducedNTuples/ScoutingCaloCommissioning/ScoutingCaloCommissioning2017ALL_reduced.txt --inputListCaloHT ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2017ALL_reduced.txt --year 2017 --lumi 35.449
-python doTriggerCurves_dataCaloScouting.py --inputList ../lists/reducedNTuples/ScoutingCaloCommissioning/ScoutingCaloCommissioning2018ALL_reduced.txt --inputListCaloHT ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2018ALL_reduced.txt --year 2018 --lumi 54.451
+cd inputs/
+mkdir -p TriggerRootFiles
+```
+
+
+##### Calo Scouting Commissioning
+
+```sh
+hadd -T ScoutingCaloCommissioning_Run2016ALL_NoTree_reduced_skim.root /eos/uscms/store/user/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2016*/*reduced*.root
+hadd -T ScoutingCaloCommissioning_Run2017ALL_NoTree_reduced_skim.root /eos/uscms/store/user/lpcjj/CaloScouting/rootTrees_reduced/2017/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2017*/*reduced*.root
+hadd -T ScoutingCaloCommissioning_Run2018ALL_NoTree_reduced_skim.root /eos/uscms/store/user/lpcjj/CaloScouting/rootTrees_reduced/2018/ScoutingCaloCommissioning/ScoutingCaloCommissioning_Run2018*/*reduced*.root
+```
+
+
+##### Calo Scouting HT
+```sh
+hadd -T ScoutingCaloHT_Run2016ALL_NoTree_reduced_skim.root /eos/uscms/store/user/lpcjj/CaloScouting/rootTrees_reduced/2016/ScoutingCaloHT/ScoutingCaloHT_Run2016*/*reduced*.root
+hadd -T ScoutingCaloHT_Run2017ALL_NoTree_reduced_skim.root /eos/uscms/store/user/lpcjj/CaloScouting/rootTrees_reduced/2017/ScoutingCaloHT/ScoutingCaloHT_Run2017*/*reduced*.root
+hadd -T ScoutingCaloHT_Run2018ALL_NoTree_reduced_skim.root /eos/uscms/store/user/lpcjj/CaloScouting/rootTrees_reduced/2018/ScoutingCaloHT/ScoutingCaloHT_Run2018*/*reduced*.root
+```
+
+
+```sh
+cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/scripts
+
+python doTriggerCurves_dataCaloScouting.py --inputRootCommissioning ../inputs/TriggerRootFiles/ScoutingCaloCommissioning_Run2016ALL_NoTree_reduced_skim.root --inputRootHT ../inputs/TriggerRootFiles/ScoutingCaloHT_Run2016ALL_NoTree_reduced_skim.root --year 2016 --lumi 27.225
+python doTriggerCurves_dataCaloScouting.py --inputRootCommissioning ../inputs/TriggerRootFiles/ScoutingCaloCommissioning_Run2017ALL_NoTree_reduced_skim.root --inputRootHT ../inputs/TriggerRootFiles/ScoutingCaloHT_Run2017ALL_NoTree_reduced_skim.root --year 2017 --lumi 35.449
+python doTriggerCurves_dataCaloScouting.py --inputRootCommissioning ../inputs/TriggerRootFiles/ScoutingCaloCommissioning_Run2018ALL_NoTree_reduced_skim.root --inputRootHT ../inputs/TriggerRootFiles/ScoutingCaloHT_Run2018ALL_NoTree_reduced_skim.root --year 2018 --lumi 54.451
+```
+
+
+
+> If you have problem with the efficiency script above, please use `doTriggerCurves_dataCaloScouting_Tree.py`script! Please note that this script takes too much time to produce efficiency results.
+
+```sh
+python doTriggerCurves_dataCaloScouting_Tree.py --inputList ../lists/reducedNTuples/ScoutingCaloCommissioning/ScoutingCaloCommissioning2016ALL_reduced.txt --inputListCaloHT ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2016ALL_reduced.txt --year 2016 --lumi 27.225
+python doTriggerCurves_dataCaloScouting_Tree.py --inputList ../lists/reducedNTuples/ScoutingCaloCommissioning/ScoutingCaloCommissioning2017ALL_reduced.txt --inputListCaloHT ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2017ALL_reduced.txt --year 2017 --lumi 35.449
+python doTriggerCurves_dataCaloScouting_Tree.py --inputList ../lists/reducedNTuples/ScoutingCaloCommissioning/ScoutingCaloCommissioning2018ALL_reduced.txt --inputListCaloHT ../lists/reducedNTuples/ScoutingCaloHT/CaloScoutingHT2018ALL_reduced.txt --year 2018 --lumi 54.451
 ```
 
 ## Kinematic Plots
