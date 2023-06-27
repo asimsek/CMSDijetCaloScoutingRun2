@@ -15,7 +15,7 @@ git clone https://github.com/asimsek/CMSDijetCaloScoutingRun2 CMSDIJET/DijetRoot
 git clone -b dijetpdf_102X https://github.com/RazorCMS/HiggsAnalysis-CombinedLimit HiggsAnalysis/CombinedLimit
 cd HiggsAnalysis/CombinedLimit
 source env_standalone.sh
-make -j 8; make
+make -j 8; make  # second make fixes compilation error of first
 cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer
 ```
 
