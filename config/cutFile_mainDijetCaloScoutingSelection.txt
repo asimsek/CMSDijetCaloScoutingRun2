@@ -56,16 +56,16 @@ jetAlgo				AntiKt 		-		-		-		-1
 # The level of the cut (0,1,2 ... n) is provided by the user and can be used in the code to easily determine if
 # groups of same-level cuts have passed or failed.
 #
-#VariableName	      minValue1(<) maxValue1(>=)	minValue2(<)	maxValue2(>=)	level	histoNbinsMinMax  OptionalFlag
+#VariableName	      minValue1(<) maxValue1(<=)	minValue2(<)	maxValue2(<=)	level	histoNbinsMinMax  OptionalFlag
 #------------	      ------------ -------------	------------	-------------	-----	----------------  ------------
-PassJSON                -1             1                -               -               0           2 -0.5   1.5      SAVE  
-nVtx                  -inf          +inf                -               -               1          -2    0    50      SAVE
+PassJSON               0.5             1                -               -               0           2 -0.5   1.5      SAVE  
+nVtx                     0          +inf                -               -               1          -2    0    50      SAVE
 nJet	      	         1     	    +inf		-		-		1	   31 -0.5  30.5      SAVE
-pTWJ_j1	      	        50	    +inf		-	        -	        1	  500    0  5000      SAVE
-pTWJ_j1_noCorr	        50	    +inf		-	        -	        1	  500    0  5000      SAVE
+pTWJ_j1	      	        60	    +inf		-	        -	        1	  500    0  5000      SAVE
+pTWJ_j1_noCorr	        60	    +inf		-	        -	        1	  500    0  5000      SAVE
 etaWJ_j1              -2.5           2.5                -               -               1          50 -2.5   2.5      SAVE
-pTWJ_j2	      	        20	    +inf		-	        -	        1	  500    0  5000      SAVE
-pTWJ_j2_noCorr	        20	    +inf		-	        -	        1	  500    0  5000      SAVE
+pTWJ_j2	      	        30	    +inf		-	        -	        1	  500    0  5000      SAVE
+pTWJ_j2_noCorr	        30	    +inf		-	        -	        1	  500    0  5000      SAVE
 etaWJ_j2              -2.5           2.5                -               -               1          50 -2.5   2.5      SAVE
 deltaETAjj            -inf          +inf               	-               -               1         100    0.   3.      SAVE
 mjj            	      -inf          +inf                -               -               1       10000    0 10000      SAVE 
