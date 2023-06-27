@@ -5,7 +5,7 @@
 > Date: June 2023
 
 ### Set up DijetRootTreeAnalyzer and Combine Tool
-1. Set up CMSSW / DijetRootTreeAnalyzer / combineTool
+1. Set up CMSSW | DijetRootTreeAnalyzer | combineTool
 
 ```sh
 cmsrel CMSSW_10_2_13
@@ -14,7 +14,8 @@ cmsenv
 git clone https://github.com/asimsek/CMSDijetCaloScoutingRun2 CMSDIJET/DijetRootTreeAnalyzer
 git clone -b dijetpdf_102X https://github.com/RazorCMS/HiggsAnalysis-CombinedLimit HiggsAnalysis/CombinedLimit
 cd HiggsAnalysis/CombinedLimit
-scram b -j 4
+source env_standalone.sh
+make -j 8; make
 cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer
 ```
 
