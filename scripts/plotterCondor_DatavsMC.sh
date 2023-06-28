@@ -43,13 +43,12 @@ echo " -> Results directory has been created! : ${resDIR}"
 set scriptDIR=$PWD
 echo " -> scriptDIR : ${scriptDIR}"
 
-
 cd $CMSSW_BASE
 cd ..
 set tarDIR=$PWD
 echo $PWD
 echo " -> making  tar file.  wait..."
-tar --exclude-vcs -zcf CMSSW_10_2_13.tar.gz -C CMSSW_10_2_13/..  CMSSW_10_2_13  --exclude=tmp --exclude="HiggsAnalysis" --exclude="DijetScoutingRootTreeMaker" --exclude="*root" --exclude="*.tar.gz" --exclude="*AllLimits*" --exclude="*fits*"
+tar --exclude-vcs -zcf CMSSW_10_2_13.tar.gz -C CMSSW_10_2_13/..  CMSSW_10_2_13  --exclude=tmp --exclude="HiggsAnalysis" --exclude="Limits" --exclude="dijetCondor" --exclude="DijetScoutingRootTreeMaker" --exclude="*root" --exclude="*.tar.gz" --exclude="*AllLimits*" --exclude="*fits*"
 
 cd $scriptDIR
 echo " -> tar file creation is completed."
@@ -142,6 +141,7 @@ request_memory = 4000
 # Arguments = 60
 Queue 1
 EOF
+
 
 
 

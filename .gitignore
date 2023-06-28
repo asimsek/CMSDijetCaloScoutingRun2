@@ -64,12 +64,13 @@ cjobs_*
 AllLimits*
 fits_*
 lists/*
+inputs/old
 
 # User Init #
 #############
 nameChange.py
-a.sh
-
+dijetCondor/a.sh
+inputs/*/*.C
 
 # Don't ignore #
 ################

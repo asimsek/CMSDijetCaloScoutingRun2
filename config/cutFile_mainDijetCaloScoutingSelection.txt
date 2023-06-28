@@ -1,6 +1,6 @@
 ####Golden J-S-O-N - https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM
 #
-JSON data/json/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt
+JSON data/json/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt
 #
 #
 #
@@ -56,10 +56,10 @@ jetAlgo				AntiKt 		-		-		-		-1
 # The level of the cut (0,1,2 ... n) is provided by the user and can be used in the code to easily determine if
 # groups of same-level cuts have passed or failed.
 #
-#VariableName	      minValue1(<) maxValue1(<=)	minValue2(<)	maxValue2(<=)	level	histoNbinsMinMax  OptionalFlag
+#VariableName	      minValue1(<) maxValue1(>=)	minValue2(<)	maxValue2(>=)	level	histoNbinsMinMax  OptionalFlag
 #------------	      ------------ -------------	------------	-------------	-----	----------------  ------------
 PassJSON               0.5             1                -               -               0           2 -0.5   1.5      SAVE  
-nVtx                     0          +inf                -               -               1          -2    0    50      SAVE
+nVtx                  -inf          +inf                -               -               1          -2    0    50      SAVE
 nJet	      	         1     	    +inf		-		-		1	   31 -0.5  30.5      SAVE
 pTWJ_j1	      	        60	    +inf		-	        -	        1	  500    0  5000      SAVE
 pTWJ_j1_noCorr	        60	    +inf		-	        -	        1	  500    0  5000      SAVE
