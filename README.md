@@ -121,6 +121,33 @@ python3 condor_submit_Data.py --config inputFiles_CaloScoutingHT/CaloScoutingHT_
 ```
 
 
+
+#### QCD MC
+
+> We compared all QCD nTuples for 2016, 2017 and 2018, but there was only a 1-2% difference between them! Therefore, we used 2017 QCD MC for all ScoutingCaloHT dataset kinematics.
+
+##### 2017
+
+```sh
+python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_50to80_2017_cfg.txt
+python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_80to120_2017_cfg.txt
+python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_120to170_2017_cfg.txt
+python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_170to300_2017_cfg.txt
+python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_300to470_2017_cfg.txt
+python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_470to600_2017_cfg.txt
+python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_600to800_2017_cfg.txt
+python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_800to1000_2017_cfg.txt
+python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_1000to1400_2017_cfg.txt
+python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_1400to1800_2017_cfg.txt
+python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_1800to2400_2017_cfg.txt
+python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_2400to3200_2017_cfg.txt
+python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_3200toInf_2017_cfg.txt
+```
+
+
+
+
+
 ## Create Lists of Reduced NTuples
 
 > Before start to analyze the datasets, you need to create list files for each era of the years separately, and for ALL.
