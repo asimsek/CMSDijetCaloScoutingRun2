@@ -144,8 +144,32 @@ python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_2400to3200_2017_c
 python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_3200toInf_2017_cfg.txt
 ```
 
+> When you produce the nTuples, you need to merge them individually! Such as; Merge all the nTuple root files of the `QCD_Pt_50to80` as 1 nTuple root file. 
 
 
+##### xSec Numbers for 2017 QCD MC
+
+> This xsec numbers can be found on CMS DAS `https://cmsweb.cern.ch/das`
+
+> Search your QCD MC dataset as `dataset dataset=/QCD_Pt_***/RunIIFall17DRPremix-*/MINIAOD`
+
+> Click on `XSDB` and it'll direct you to another page. There will be a list of QCDs and you need to find `DAS` column and find your full dataset querry over there! Also (mostly) createdBy column needs to be `cmsxsec`but not required!
+
+```sh
+50to80 15710000.0
+80to120 2336000.0
+120to170 407300.0
+170to300 103500.0
+300to470 6830.0
+470to600 552.1
+600to800 156.5
+800to1000 26.28
+1000to1400 7.47
+1400to1800 0.6484
+1800to2400 0.08743
+2400to3200 0.005236
+3200toInf 0.0001357
+```
 
 
 ## Create Lists of Reduced NTuples
