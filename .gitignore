@@ -71,6 +71,11 @@ inputs/old
 nameChange.py
 dijetCondor/a.sh
 inputs/*/*.C
+a.txt
+b.txt
+TriggerEffResults
+allKinematics.sh
+
 
 # Don't ignore #
 ################

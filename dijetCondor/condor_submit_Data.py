@@ -40,6 +40,7 @@ def parse_config_file(config_path):
         dataset_type = dataset.split('/')[1]
         year = dataset.split('/')[2].replace('-', '_')
         year_just_number = re.findall(r'\d+', year)[0]
+        if len(year_just_number) < 4: year_just_number = re.findall(r'\d+', year)[1] ## For QCD
         reco_type = dataset.split('/')[3]
         input_list = lines[1].split('=')[1].strip()
         interval = int(lines[2].split('=')[1].strip())

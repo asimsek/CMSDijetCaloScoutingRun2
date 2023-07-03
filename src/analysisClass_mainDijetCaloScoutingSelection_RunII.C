@@ -8,7 +8,7 @@
 #include <TVector2.h>
 #include <TVector3.h>
 
-std::string dataYear = "2017F";
+std::string dataYear = "2017";
 
 analysisClass::analysisClass(string * inputList, string * cutFile, string * treeName, string * outputFileName, string * cutEfficFile)
   :baseClass(inputList, cutFile, treeName, outputFileName, cutEfficFile)
@@ -87,10 +87,10 @@ analysisClass::analysisClass(string * inputList, string * cutFile, string * tree
         if (dataYear.find("2018C") != std::string::npos) { L2L3ResidualPath = "data/Autumn18_RunsABCD_V19_DATA/Autumn18_v19_DATA_RunC/Autumn18_RunC_V19_DATA_L2L3Residual_AK4Calo.txt"; }
         if (dataYear.find("2018D") != std::string::npos) { L2L3ResidualPath = "data/Autumn18_RunsABCD_V19_DATA/Autumn18_v19_DATA_RunD/Autumn18_RunD_V19_DATA_L2L3Residual_AK4Calo.txt"; }
 
+	if (dataYear == "2017") { L2L3ResidualPath = "data/Fall17_17Nov2017F_V32_DATA/Fall17_17Nov2017F_V32_DATA_L2L3Residual_AK4PF.txt"; }
 
         unc = new JetCorrectionUncertainty("data/HLT_2017_BX25_83X_V1_MC/HLT_2017_BX25_83X_V1_MC_Uncertainty_AK4Calo.txt");
     }
-
 
     L1Par = new JetCorrectorParameters(L1Path);
     L2Par = new JetCorrectorParameters(L2Path);
@@ -214,7 +214,7 @@ void analysisClass::Loop()
   	     //nominal value of JECs
 	     double correction;//, old_correction, nominal_correction;
 	     //if( int(getPreCutValue1("shiftJECs"))==0 ){
-	     if (isData == 1) correction = JetCorrector_data->getCorrection();
+	     if (isData == 1) correction = JetCorrector_data->getCorrection(); 
 	     else correction = JetCorrector->getCorrection();
 	     //nominal_correction=correction;
 	     //old_correction = jetJecAK4->at(j);

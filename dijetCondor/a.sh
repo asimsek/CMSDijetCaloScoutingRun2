@@ -12,10 +12,10 @@
 
 ##### 2017
 
-python3 condor_submit_Data.py --config inputFiles_CaloScoutingCommissioning/CaloScoutingCommissioning_2017C_cfg.txt
-python3 condor_submit_Data.py --config inputFiles_CaloScoutingCommissioning/CaloScoutingCommissioning_2017D_cfg.txt
-python3 condor_submit_Data.py --config inputFiles_CaloScoutingCommissioning/CaloScoutingCommissioning_2017E_cfg.txt
-python3 condor_submit_Data.py --config inputFiles_CaloScoutingCommissioning/CaloScoutingCommissioning_2017F_cfg.txt
+#python3 condor_submit_Data.py --config inputFiles_CaloScoutingCommissioning/CaloScoutingCommissioning_2017C_cfg.txt
+#python3 condor_submit_Data.py --config inputFiles_CaloScoutingCommissioning/CaloScoutingCommissioning_2017D_cfg.txt
+#python3 condor_submit_Data.py --config inputFiles_CaloScoutingCommissioning/CaloScoutingCommissioning_2017E_cfg.txt
+#python3 condor_submit_Data.py --config inputFiles_CaloScoutingCommissioning/CaloScoutingCommissioning_2017F_cfg.txt
 
 ##### 2018
 
@@ -39,8 +39,8 @@ python3 condor_submit_Data.py --config inputFiles_CaloScoutingCommissioning/Calo
 
 python3 condor_submit_Data.py --config inputFiles_CaloScoutingHT/CaloScoutingHT_2017C_cfg.txt
 python3 condor_submit_Data.py --config inputFiles_CaloScoutingHT/CaloScoutingHT_2017D_cfg.txt
-python3 condor_submit_Data.py --config inputFiles_CaloScoutingHT/CaloScoutingHT_2017E_cfg.txt
-python3 condor_submit_Data.py --config inputFiles_CaloScoutingHT/CaloScoutingHT_2017F_cfg.txt
+#python3 condor_submit_Data.py --config inputFiles_CaloScoutingHT/CaloScoutingHT_2017E_cfg.txt
+#python3 condor_submit_Data.py --config inputFiles_CaloScoutingHT/CaloScoutingHT_2017F_cfg.txt
 
 ##### 2018
 
