@@ -75,6 +75,7 @@ a.txt
 b.txt
 TriggerEffResults
 allKinematics.sh
+.nsf*
 
 
 # Don't ignore #
