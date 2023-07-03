@@ -135,9 +135,6 @@ for ij in range(0, 2):
         eU = UB/(1.0-UB)-p
         eL = p-LB/(1.0-LB)
  
-    if (year == "2018") and int(massBins[i])==526 and ij==0: p=0.99993 
-    if (year == "2017") and int(massBins[i])>550: p=1.0
-
     if ij == 0: p_dict_1[int(massBins[i])] = p
     if ij == 1: p_dict_2[int(massBins[i])] = p
     eU = 0.
