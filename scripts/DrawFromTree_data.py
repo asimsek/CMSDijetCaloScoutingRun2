@@ -289,10 +289,15 @@ hist_allCuts_tot_rebin.GetXaxis().SetLabelOffset(1000)
 hist_allCuts_tot_rebin_MC.GetXaxis().SetLabelOffset(1000)
 hist_allCuts_tot_rebin.GetYaxis().SetTitleSize(0.05)
 hist_allCuts_tot_rebin_MC.GetYaxis().SetTitleSize(0.05)
-hist_allCuts_tot_rebin.GetYaxis().SetTitleOffset(1.45)
-hist_allCuts_tot_rebin_MC.GetYaxis().SetTitleOffset(1.45)
+hist_allCuts_tot_rebin.GetYaxis().SetTitleOffset(1.75)
+hist_allCuts_tot_rebin_MC.GetYaxis().SetTitleOffset(1.75)
 hist_allCuts_tot_rebin.GetYaxis().SetLabelSize(0.05)
 hist_allCuts_tot_rebin_MC.GetYaxis().SetLabelSize(0.05)
+
+#if (var=="mjj" or var=="Dijet_MassAK4"):
+hist_allCuts_tot_rebin.GetXaxis().SetNdivisions(505)
+hist_allCuts_tot_rebin_MC.GetXaxis().SetNdivisions(505)
+
 
 if logy:
 	gPad.SetLogy(1)
@@ -303,10 +308,15 @@ if logy:
 		hist_allCuts_tot_rebin.SetMinimum((min/10.)+10)
 	elif (var=="pTWJ_j1" or var=="pTWJ_j2"):
 		print (max, "    -    ", min)
-		hist_allCuts_tot_rebin_MC.SetMaximum(1e09)
-		hist_allCuts_tot_rebin.SetMaximum(1e09)
+		hist_allCuts_tot_rebin_MC.SetMaximum(100*max)
+		hist_allCuts_tot_rebin.SetMaximum(100*max)
 		hist_allCuts_tot_rebin_MC.SetMinimum(1)
 		hist_allCuts_tot_rebin.SetMinimum(1)
+	elif (var=="deltaETAjj"):
+		hist_allCuts_tot_rebin_MC.SetMaximum(10*max)
+                hist_allCuts_tot_rebin.SetMaximum(10*max)
+                hist_allCuts_tot_rebin_MC.SetMinimum(min/10.)
+                hist_allCuts_tot_rebin.SetMinimum(min/10.)
 	else:
 		hist_allCuts_tot_rebin_MC.SetMaximum(2.*max)
 		hist_allCuts_tot_rebin.SetMaximum(2.*max)
@@ -319,17 +329,16 @@ else:
 		hist_allCuts_tot_rebin.SetMaximum(max + 0.3*max)
 		hist_allCuts_tot_rebin_MC.SetMinimum(0.1)
 		hist_allCuts_tot_rebin.SetMinimum(0.1)
+	elif (var=="pTWJ_j1" or var=="pTWJ_j2"):
+                hist_allCuts_tot_rebin_MC.SetMaximum(max + 0.3*max + 10000)
+                hist_allCuts_tot_rebin.SetMaximum(max + 0.3*max + 10000)
+                hist_allCuts_tot_rebin_MC.SetMinimum(min - 0.5*min - 30000)
+                hist_allCuts_tot_rebin.SetMinimum(min - 0.5*min - 30000)
 	else:
-		if (var=="pTWJ_j1" or var=="pTWJ_j2"):
-			hist_allCuts_tot_rebin_MC.SetMaximum(max + 0.3*max + 10000)
-                        hist_allCuts_tot_rebin.SetMaximum(max + 0.3*max + 10000)
-                        hist_allCuts_tot_rebin_MC.SetMinimum(min - 0.5*min - 30000)
-                        hist_allCuts_tot_rebin.SetMinimum(min - 0.5*min - 30000)
-		else:
-			hist_allCuts_tot_rebin_MC.SetMaximum(max + 0.3*max)
-			hist_allCuts_tot_rebin.SetMaximum(max + 0.3*max)
-			hist_allCuts_tot_rebin_MC.SetMinimum(min - 0.5*min)
-			hist_allCuts_tot_rebin.SetMinimum(min - 0.5*min)
+	        hist_allCuts_tot_rebin_MC.SetMaximum(max + 0.3*max)
+		hist_allCuts_tot_rebin.SetMaximum(max + 0.3*max)
+		hist_allCuts_tot_rebin_MC.SetMinimum(min - 0.5*min)
+		hist_allCuts_tot_rebin.SetMinimum(min - 0.5*min)
 
 hist_allCuts_tot_rebin_MC.Draw("hist")
 hist_allCuts_tot_rebin.Draw("p same")
@@ -378,7 +387,14 @@ max_sigma = h_sig.GetBinContent(h_sig.GetMaximumBin())
 error_max_sigma = h_sig.GetBinError(h_sig.GetMaximumBin())
 min_sigma = h_sig.GetBinContent(h_sig.GetMinimumBin())
 error_min_sigma = h_sig.GetBinError(h_sig.GetMinimumBin())
-h_sig.GetYaxis().SetRangeUser(min_sigma-error_min_sigma-0.5, max_sigma+error_max_sigma+0.5)
+if (var=="etaWJ_j1" or var=="etaWJ_j2"):
+    h_sig.GetYaxis().SetRangeUser(min_sigma-error_min_sigma, max_sigma+error_max_sigma+0.5)
+elif (var=="phiWJ_j1" or var=="phiWJ_j2"):
+    h_sig.GetYaxis().SetRangeUser(min_sigma-error_min_sigma-0.1, max_sigma+error_max_sigma+0.1)
+elif (var=="deltaETAjj"):
+    h_sig.GetYaxis().SetRangeUser(min_sigma-error_min_sigma-0.1, max_sigma+error_max_sigma+0.1)
+else:
+    h_sig.GetYaxis().SetRangeUser(min_sigma-error_min_sigma-0.5, max_sigma+error_max_sigma+0.5)
 h_sig.GetYaxis().SetNdivisions(405, kTRUE)
 h_sig.GetYaxis().SetTitleFont(42)
 h_sig.GetYaxis().SetTitle("data / MC")
@@ -388,7 +404,7 @@ h_sig.GetXaxis().SetTitleSize(0.15)
 h_sig.GetXaxis().SetLabelSize(0.16)
 h_sig.GetYaxis().SetLabelSize(0.16)
 h_sig.GetYaxis().SetTitleSize(0.15)
-h_sig.GetYaxis().SetTitleOffset(0.5)
+h_sig.GetYaxis().SetTitleOffset(0.6)
 h_sig.GetXaxis().SetLabelSize(0.14)
 h_sig.GetXaxis().SetLabelOffset(0.0)
 h_sig.Write()

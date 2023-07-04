@@ -15,7 +15,7 @@ set outputFile=${jobName}
 
 #set param_=("python DrawFromTree_data.py --var mjj --xmin 1 --xmax 14000 --xtitle 'Dijet mass [MeV]' --bins 13999 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy")
 
-set param_=("python DrawFromTree_data.py --var mjj --xmin 1 --xmax 14000 --xtitle 'Dijet mass [MeV]' --bins 13999 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --rebin -1 --units GeV" \
+set param_=("python DrawFromTree_data.py --var mjj --xmin 1 --xmax 14000 --xtitle 'Dijet mass [GeV]' --bins 13999 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --rebin -1 --units GeV" \
 "python DrawFromTree_data.py --var pTWJ_j1 --xmin 30 --xmax 5000 --xtitle 'P_{T}(j1) [GeV]' --bins 200 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --rebin 5 --units GeV" \
 "python DrawFromTree_data.py --var pTWJ_j2 --xmin 30 --xmax 5000 --xtitle 'P_{T}(j2) [GeV]' --bins 200 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --logy --rebin 5 --units GeV" \
 "python DrawFromTree_data.py --var etaWJ_j1 --xmin -3 --xmax 3 --xtitle '#eta(j1)' --bins 200 --outputDir ${outputFile}/ --inputList_1 ${inputDataList} --inputMC ${inputMC} --lumi ${lumi} --rebin 5" \
@@ -29,7 +29,7 @@ set param_=("python DrawFromTree_data.py --var mjj --xmin 1 --xmax 14000 --xtitl
 
 #Necessary arguments for copying result files to EOS area.
 set var_=("mjj" "pTWJ_j1" "pTWJ_j2" "etaWJ_j1" "etaWJ_j2" "deltaETAjj" "deltaPHIjj" "phiWJ_j1" "phiWJ_j2" "Dijet_MassAK4")
-set logy_=("_logy" "" "" "" "" "_logy" "_logy" "" "" "_logy")
+set logy_=("_logy" "_logy" "_logy" "" "" "_logy" "_logy" "" "" "_logy")
 
 set cDIR="cjobs_"${jobName}
 set resDIR=${cDIR}"/results/"
