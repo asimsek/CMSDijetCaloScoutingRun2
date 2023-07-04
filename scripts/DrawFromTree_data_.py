@@ -255,7 +255,7 @@ else:
 
 
 
-can_allCuts = TCanvas('can_allCuts_'+var,'can_allCuts_'+var,800,900)
+can_allCuts = TCanvas('can_allCuts_'+var,'can_allCuts_'+var,600,900)
 can_allCuts.cd()
 
 
@@ -271,28 +271,15 @@ leg.AddEntry(hist_allCuts_tot_rebin, "Data", "p")
 
 #################### PAD 1 #####################
 
-
 pad1 = TPad("pad1", "pad1",0,0.,1,1)
-pad1.SetTopMargin(0.05)
-pad1.SetLeftMargin(0.18)
-pad1.SetRightMargin(0.04)
-pad1.SetBottomMargin(0.32)
-#pad1 = TPad("pad1", "pad1",0,0.,1,1)
 pad1.Draw()
-#pad1.Clear()
+pad1.Clear()
 pad1.cd()
 #pad1.SetGrid()
 
 max = hist_allCuts_tot_rebin.GetBinContent(hist_allCuts_tot_rebin.GetMaximumBin())
 min = hist_allCuts_tot_rebin.GetBinContent(hist_allCuts_tot_rebin.GetMinimumBin())
-hist_allCuts_tot_rebin.GetXaxis().SetLabelOffset(1000)
-hist_allCuts_tot_rebin_MC.GetXaxis().SetLabelOffset(1000)
-hist_allCuts_tot_rebin.GetYaxis().SetTitleSize(0.05)
-hist_allCuts_tot_rebin_MC.GetYaxis().SetTitleSize(0.05)
-hist_allCuts_tot_rebin.GetYaxis().SetTitleOffset(1.45)
-hist_allCuts_tot_rebin_MC.GetYaxis().SetTitleOffset(1.45)
-hist_allCuts_tot_rebin.GetYaxis().SetLabelSize(0.05)
-hist_allCuts_tot_rebin_MC.GetYaxis().SetLabelSize(0.05)
+
 
 if logy:
 	gPad.SetLogy(1)
@@ -305,8 +292,8 @@ if logy:
 		print (max, "    -    ", min)
 		hist_allCuts_tot_rebin_MC.SetMaximum(1e09)
 		hist_allCuts_tot_rebin.SetMaximum(1e09)
-		hist_allCuts_tot_rebin_MC.SetMinimum(1)
-		hist_allCuts_tot_rebin.SetMinimum(1)
+		hist_allCuts_tot_rebin_MC.SetMinimum(1e-8)
+		hist_allCuts_tot_rebin.SetMinimum(1e-8)
 	else:
 		hist_allCuts_tot_rebin_MC.SetMaximum(2.*max)
 		hist_allCuts_tot_rebin.SetMaximum(2.*max)
@@ -353,18 +340,12 @@ else:
 
 
 ################### PAD 2 ########################
-pad2 = TPad("pad2", "pad2",0.,0.02,1,0.30)
+pad2 = TPad("pad2", "pad2",0.,0.,1,0.26)
 pad2.SetGrid()
+	      
 pad2.SetTopMargin(0)
-pad2.SetBottomMargin(0.30)
-pad2.SetLeftMargin(0.18)
-pad2.SetRightMargin(0.04)
-
-#pad2 = TPad("pad2", "pad2",0.,0.,1,0.26)
-#pad2.SetGrid()
-#pad2.SetTopMargin(0)
-#pad2.SetBottomMargin(0.4)
-pad2.Draw()
+pad2.SetBottomMargin(0.4)
+pad2.Draw()	       
 pad2.cd()
 
 
@@ -389,8 +370,6 @@ h_sig.GetXaxis().SetLabelSize(0.16)
 h_sig.GetYaxis().SetLabelSize(0.16)
 h_sig.GetYaxis().SetTitleSize(0.15)
 h_sig.GetYaxis().SetTitleOffset(0.5)
-h_sig.GetXaxis().SetLabelSize(0.14)
-h_sig.GetXaxis().SetLabelOffset(0.0)
 h_sig.Write()
 h_sig.Draw("p")
 #########################################################
@@ -418,7 +397,6 @@ outFile.Close()
 
 
 print (" - Finished!")
-
 
 
 
