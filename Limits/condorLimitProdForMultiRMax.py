@@ -33,8 +33,8 @@ def main():
                 print("Created directory: {}".format(condorDIR))
 
 
-            rMaxStart = 0.5
-            rMaxEnd = 20.0
+            rMaxStart = 1.0
+            rMaxEnd = 13.0
             rMaxStep = 0.1
 
             print("Creating all text, csh and jdl files. Please be patient!..")
