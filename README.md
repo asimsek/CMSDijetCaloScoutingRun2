@@ -466,6 +466,13 @@ python condorCombineDataCardsForMultipRMax.py --cfgPath inputFiles/allRunIILimit
 ```
 
 
+> If you produce all 2016, 2017 and 2018 dataCards (limits), you can combine them to set full Run II limits.
+
+```sh
+python combineDataCardsFromSplitDatasets.py --cfgFile combineInputFiles/combineDataCards_allYears.txt --total_cfgFile combineInputFiles/combineDataCards_RunII.txt --fromCombined
+```
+
+> `--fromCombined` argument needs to be used when you combine datacards from "combined" datacards, such as; combining 2016Combined, 2017Combined, 2018Combined limits.
 
 
 
