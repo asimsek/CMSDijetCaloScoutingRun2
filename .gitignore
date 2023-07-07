@@ -74,6 +74,7 @@ inputs/*/*.C
 a.txt
 b.txt
 TriggerEffResults
+HEPDataComparison
 scripts/allKinematics.sh
 .nfs*
 

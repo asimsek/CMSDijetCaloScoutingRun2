@@ -9,6 +9,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Create combined data cards')
     parser.add_argument('--cfgFile', help='config file')
     parser.add_argument('--total_cfgFile', help='config file with parameters for each run')
+    parser.add_argument('--fromCombined', action='store_true', default=False, help='use this while combining dataCards from Combined datasets (Such as; for whole Run II from Combined 2016, 2017 and 2018')
 
     return parser.parse_args()
 
@@ -19,21 +20,24 @@ def main(args):
 
     # Load the config file into a dataframe
     df = pd.read_csv(args.cfgFile, comment='#', header=None)
-    df.columns = ["rMax","signalType","configFile","date","year","lumi","config","inputmjj"]
+    df.columns = ["rMax","signalType","configFile","date","year","lumi","config","inputmjj"] if not args.fromCombined else ["year","lumi","config","date","configFile","signalType","rMax"] 
 
     # Filter based on the year and signal type
-    df_filtered = df[df['year'].str.startswith(str(args.total_year)) & (df['signalType'] == args.signal)]
+    df_filtered = df[df['year'].str.startswith(str(args.total_year)) & (df['signalType'] == args.signal)] if not args.fromCombined else df[(df['signalType'] == args.signal)]
+
 
     # Create new folder for new dataCards
     FolderNew="AllLimits%sCombined_%s_%s/cards_%s_w2016Sig_DE13_M489_%s_rmax%s/" % (args.total_year, args.signal, args.new_confFile, args.signal, args.date, args.new_rMax)
     os.system("mkdir -p %s" % (FolderNew))
 
+    combined = "Combined" if (args.fromCombined) else ""
     # Iterate over the mass range
     for mass in range(500, 2350, 50):
         dataCards = []
         # Iterate over the rows of the filtered dataframe
         for index, row in df_filtered.iterrows():
-            cardPath = "AllLimits%s_%s_%s/cards_%s_w2016Sig_DE13_M489_%s_rmax%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (row['year'], row['signalType'], row['configFile'], row['signalType'], row['date'], row['rMax'], row['signalType'], mass, float(row['lumi']/1000.), row['config'] )
+            lumii = float(row['lumi']/1000.) if not args.fromCombined else float(row['lumi'])
+            cardPath = "AllLimits%s%s_%s_%s/cards_%s_w2016Sig_DE13_M489_%s_rmax%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (row['year'], combined, row['signalType'], row['configFile'], row['signalType'], row['date'], row['rMax'], row['signalType'], mass, lumii, row['config'] )
             dataCards.append("Year%s=%s" % (row['year'], cardPath))
             print("\033[91m DataCard: [%d] - %s \033[0m" % (mass, cardPath))
 
