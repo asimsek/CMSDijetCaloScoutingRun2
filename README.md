@@ -465,7 +465,7 @@ find ./AllLimits*/ -name "*.txt" -type f -exec sed -i 's|/uscms_data/d3/asimsek/
 python condorCombineDataCardsForMultipRMax.py --cfgPath inputFiles/allRunIILimits_cfg.txt --total_cfgFile combineInputFiles/combineDataCards_allYears.txt
 ```
 
-> Now if you need to compare your combined limits with the published 2016 HEPData & Arxiv results use `compareHEPDataAndSplitLimits.py`
+> After production of Combined 2016, 2017 and 2018 data cards and limits, if you need to compare your combined limits with the published 2016 HEPData & Arxiv results use `compareHEPDataAndSplitLimits.py`
 
 
 ```sh
