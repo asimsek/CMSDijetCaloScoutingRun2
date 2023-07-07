@@ -459,11 +459,26 @@ python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_
 find ./AllLimits*/ -name "*.txt" -type f -exec sed -i 's|/uscms_data/d3/asimsek/Dijet2023_RunII/CMSSW_10_2_13/src/CMSDIJET/DijetRootTreeAnalyzer/Limits/||g' {} \;
 ```
 
-> Now you're ready to send all jobs to condor!
+> Now you are ready to send all jobs to condor!
 
 ```sh
 python condorCombineDataCardsForMultipRMax.py --cfgPath inputFiles/allRunIILimits_cfg.txt --total_cfgFile combineInputFiles/combineDataCards_allYears.txt
 ```
+
+> Now if you need to compare your combined limits with the published 2016 HEPData & Arxiv results use `compareHEPDataAndSplitLimits.py`
+
+
+```sh
+cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/scripts
+```
+
+```sh
+python compareHEPDataAndSplitLimits.py --combined --verbose --year 2016 --signal gg
+python compareHEPDataAndSplitLimits.py --combined --verbose --year 2016 --signal qg
+python compareHEPDataAndSplitLimits.py --combined --verbose --year 2016 --signal qq
+```
+
+
 
 ### Full Run II Limits
 > If you produce all 2016, 2017 and 2018 dataCards (limits), you can combine them to set full Run II limits.
