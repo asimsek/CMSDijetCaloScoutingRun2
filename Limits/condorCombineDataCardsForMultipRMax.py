@@ -2,12 +2,14 @@ import os
 import argparse
 import subprocess
 
-def main(cfgPath, total_cfgFile):
+def main(cfgPath, total_cfgFile, fromCombined):
 
     cmssw_dir = os.environ['CMSSW_BASE']
     workDir = cmssw_dir + "/src/CMSDIJET/DijetRootTreeAnalyzer"
     cmssw_Ver = cmssw_dir.split("/")[-1]
     arch = os.environ['SCRAM_ARCH']
+
+    combineText = "--fromCombined" if fromCombined else ""
 
     with open(total_cfgFile, 'r') as f:
         lines = [line.strip() for line in f if not line.strip().startswith('#') and line.strip()]
@@ -36,7 +38,7 @@ def main(cfgPath, total_cfgFile):
 
             cshFilePath = "{0}/Limits_{1}Combined_{2}_{3}_n{4}.csh".format(condorDIRPath, total_year, signal, new_confFile, rMaxStart)
             with open(cshFilePath, 'w') as cshFile:
-                    cshFileContent = create_csh_file_content(cmssw_Ver, arch, condorDIR, cfgPath, newInput_totalcfgFile, total_year, signal, new_confFile, date, rMaxStart, box)
+                    cshFileContent = create_csh_file_content(cmssw_Ver, arch, condorDIR, cfgPath, newInput_totalcfgFile, total_year, signal, new_confFile, date, rMaxStart, box, combineText)
                     cshFile.write(cshFileContent)
 
             jdlFilePath = "{0}/Limits_{1}Combined_{2}_{3}_n{4}.jdl".format(condorDIRPath, total_year, signal, new_confFile, rMaxStart)
@@ -64,7 +66,7 @@ def main(cfgPath, total_cfgFile):
         print("-" * 50)
 
 
-def create_csh_file_content(cmssw_Ver, arch, condorDIR, cfgPath, newInput_totalcfgFile, total_year, signal, new_confFile, date, rMaxStart, box):
+def create_csh_file_content(cmssw_Ver, arch, condorDIR, cfgPath, newInput_totalcfgFile, total_year, signal, new_confFile, date, rMaxStart, box, combineText):
     content = '''#!/bin/tcsh
 source /cvmfs/cms.cern.ch/cmsset_default.csh
 tar -xf {0}.tar.gz
@@ -84,7 +86,7 @@ ls -lhtr
 
 cmsenv
 
-python combineDataCardsFromSplitDatasets.py --cfgFile {3} --total_cfgFile {2}/{5}_{6}_cfg_rMax{9}.txt
+python combineDataCardsFromSplitDatasets.py --cfgFile {3} --total_cfgFile {2}/{5}_{6}_cfg_rMax{9}.txt {11}
 
 xrdcp AllLimits{5}Combined_{6}_{7}/cards_{6}_w2016Sig_DE13_M489_{8}_rmax{9}/limits_freq_{6}_{10}.pdf root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{5}_{6}_{7}/limits_freq_{6}_{10}_M489_rMax{9}.pdf
 xrdcp AllLimits{5}Combined_{6}_{7}/cards_{6}_w2016Sig_DE13_M489_{8}_rmax{9}/limits_freq_{6}_{10}.root root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{5}_{6}_{7}/limits_freq_{6}_{10}_M489_rMax{9}.root
@@ -94,7 +96,7 @@ ls -lhtr AllLimits{5}Combined_{6}_{7}/
 rm -r AllLimits{5}Combined_{6}_{7}
 
 echo "DONE!"
-'''.format(cmssw_Ver, arch, condorDIR, cfgPath, newInput_totalcfgFile, total_year, signal, new_confFile, date, rMaxStart, box)
+'''.format(cmssw_Ver, arch, condorDIR, cfgPath, newInput_totalcfgFile, total_year, signal, new_confFile, date, rMaxStart, box, combineText)
     return content
 
 
@@ -132,7 +134,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--cfgPath", help="Configuration path", required=True)
     parser.add_argument("--total_cfgFile", help="Total config file", required=True)
+    parser.add_argument('--fromCombined', action='store_true', default=False, help='use this while combining dataCards from Combined datasets (Such as; for whole Run II from Combined 2016, 2017 and 2018')
 
     args = parser.parse_args()
 
-    main(args.cfgPath, args.total_cfgFile)
+    main(args.cfgPath, args.total_cfgFile, args.fromCombined)
