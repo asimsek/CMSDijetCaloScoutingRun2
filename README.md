@@ -446,7 +446,7 @@ vi combineInputFiles/combineDataCards_allYears.txt
 python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_cfg.txt --total_cfgFile combineInputFiles/combineDataCards_allYears.txt
 ```
 
-> If the combined limits are problematic, send multiple jobs to condor and try different rMax values at the same time
+> If the combined limits are problematic, send multiple jobs to condor and try different rMax values at the same time!
 > This script will loop all the lines of given inputFile and create condor jobs for each line for multiple rMax values between 0.5-20.0 with 0.1 interval
 > Then it will send all the jobs to condor
 
@@ -489,6 +489,15 @@ python combineDataCardsFromSplitDatasets.py --cfgFile combineInputFiles/combineD
 
 > `--fromCombined` argument needs to be used when you combine datacards from "combined" datacards, such as; combining 2016Combined, 2017Combined, 2018Combined limits.
 
+
+> If the combined Run 2 limits are problematic, send multiple jobs to condor and try different rMax values at the same time!
+> This script will loop all the lines of given combine input file and create condor jobs for each line for multiple rMax values between 0.5-20.0 with 0.1 interval
+> Then it will send all the jobs to condor
+
+
+```sh
+python condorCombineDataCardsForMultipRMax.py --cfgPath combineInputFiles/combineDataCards_allYears.txt --total_cfgFile combineInputFiles/combineDataCards_RunII.txt --fromCombined
+```
 
 
 
