@@ -499,6 +499,15 @@ python combineDataCardsFromSplitDatasets.py --cfgFile combineInputFiles/combineD
 python condorCombineDataCardsForMultipRMax.py --cfgPath combineInputFiles/combineDataCards_allYears.txt --total_cfgFile combineInputFiles/combineDataCards_RunII.txt --fromCombined
 ```
 
+> You can create a latex table from all limit results (2016, 2017, 2018, and Run 2)
+
+```sh
+python makeTableofLimitResults.py --year 2016 --rootgg AllLimits2016Combined_gg_dijet/cards_gg_w2016Sig_DE13_M489_17June2023_rmax3.0/limits_freq_gg_CaloDijet2016.root --rootqg AllLimits2016Combined_qg_dijet/cards_qg_w2016Sig_DE13_M489_17June2023_rmax1.1/limits_freq_qg_CaloDijet2016.root --rootqq AllLimits2016Combined_qq_dijet/cards_qq_w2016Sig_DE13_M489_17June2023_rmax9.2/limits_freq_qq_CaloDijet2016.root
+python makeTableofLimitResults.py --year 2017 --rootgg AllLimits2017Combined_gg_dijet/cards_gg_w2016Sig_DE13_M489_17June2023_rmax2.8/limits_freq_gg_CaloDijet2017.root --rootqg AllLimits2017Combined_qg_dijet/cards_qg_w2016Sig_DE13_M489_17June2023_rmax3.2/limits_freq_qg_CaloDijet2017.root --rootqq AllLimits2017Combined_qq_dijet/cards_qq_w2016Sig_DE13_M489_17June2023_rmax0.9/limits_freq_qq_CaloDijet2017.root
+python makeTableofLimitResults.py --year 2018 --rootgg AllLimits2018Combined_gg_dijet/cards_gg_w2016Sig_DE13_M489_17June2023_rmax3.1/limits_freq_gg_CaloDijet2018.root --rootqg AllLimits2018Combined_qg_dijet/cards_qg_w2016Sig_DE13_M489_17June2023_rmax2.0/limits_freq_qg_CaloDijet2018.root --rootqq AllLimits2018Combined_qq_dijet/cards_qq_w2016Sig_DE13_M489_17June2023_rmax1.5/limits_freq_qq_CaloDijet2018.root
+python makeTableofLimitResults.py --year RunII --rootgg AllLimitsRunIICombined_gg_dijet/cards_gg_w2016Sig_DE13_M489_17June2023_rmax0.6/limits_freq_gg_CaloDijet2016p2017p2018.root --rootqg AllLimitsRunIICombined_qg_dijet/cards_qg_w2016Sig_DE13_M489_17June2023_rmax2.0/limits_freq_qg_CaloDijet2016p2017p2018.root --rootqq AllLimitsRunIICombined_qq_dijet/cards_qq_w2016Sig_DE13_M489_17June2023_rmax1.4/limits_freq_qq_CaloDijet2016p2017p2018.root
+```
+
 ------------
 
 
