@@ -511,6 +511,28 @@ python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.
 python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2016p2017p2018 --inputLimitRoot AllLimitsRunIICombined_qq_dijet/cards_qq_w2016Sig_DE13_M489_17June2023_rmax1.4/limits_freq_qq_CaloDijet2016p2017p2018.root
 ```
 
+#### Compare DM Quark Coupling Results with Previous Publications
+
+> Compare all indicidual years and Full Run II results with HEPData.
+
+```sh
+python CompareDMInterpretation.py --RootFile2016 DarkMatterInterpretation/2016/R_DarkMatterInterpretation_2016.root --RootFile2017 DarkMatterInterpretation/2017/R_DarkMatterInterpretation_2017.root --RootFile2018 DarkMatterInterpretation/2018/R_DarkMatterInterpretation_2018.root --RootFileRunII DarkMatterInterpretation/RunII/R_DarkMatterInterpretation_RunII.root --xSecLimitRootFile AllLimits2016Combined_qq_dijet//cards_qq_w2016Sig_DE13_M489_17June2023_rmax9.2/limits_freq_qq_CaloDijet2016.root --allComparison True
+```
+
+> This `CompareDMInterpretation.py` script also writes RunII Coupling results to a text file under `DMMediatorQuarkCouplingInputFiles` folder. We'll use these text files with `getCouplingResultsFromHEPData.py` script to compare all previous publication for calo-scouting.
+
+> We also need to pull coupling results from HEPData and write those results to txt files. To do this;
+
+```sh
+python getCouplingResultsFromHEPData.py
+```
+
+> When we have all the results from previous publications, we can run the comparison script.
+
+```sh
+python compare_qg_PublishedAndNew.py
+```
+
 
 
 ------------
