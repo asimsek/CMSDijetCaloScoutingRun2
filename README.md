@@ -499,6 +499,23 @@ python combineDataCardsFromSplitDatasets.py --cfgFile combineInputFiles/combineD
 python condorCombineDataCardsForMultipRMax.py --cfgPath combineInputFiles/combineDataCards_allYears.txt --total_cfgFile combineInputFiles/combineDataCards_RunII.txt --fromCombined
 ```
 
+------------
+
+
+### Dark Matter Quark Coupling (Interpretation)
+
+```sh
+python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2016 --inputLimitRoot AllLimits2016Combined_qq_dijet/cards_qq_w2016Sig_DE13_M489_17June2023_rmax9.2/limits_freq_qq_CaloDijet2016.root
+python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2017 --inputLimitRoot AllLimits2017Combined_qq_dijet/cards_qq_w2016Sig_DE13_M489_17June2023_rmax0.9/limits_freq_qq_CaloDijet2017.root
+python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2018 --inputLimitRoot AllLimits2018Combined_qq_dijet/cards_qq_w2016Sig_DE13_M489_17June2023_rmax1.5/limits_freq_qq_CaloDijet2018.root
+python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2016p2017p2018 --inputLimitRoot AllLimitsRunIICombined_qq_dijet/cards_qq_w2016Sig_DE13_M489_17June2023_rmax1.4/limits_freq_qq_CaloDijet2016p2017p2018.root
+```
+
+
+
+------------
+
+
 
 
 
