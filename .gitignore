@@ -77,6 +77,8 @@ TriggerEffResults
 HEPDataComparison
 scripts/allKinematics.sh
 .nfs*
+Limits/latexFiles
+Limits/DarkMatterInterpretation
 
 
 # Don't ignore #
