@@ -529,9 +529,9 @@ python createSignificancePlots.py --fromCombined --year 2018 --cfgFile combineIn
 #### RunII
 
 ```sh
-python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineInputFiles/combineDataCards_allYears.txt --signal qq
-python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineInputFiles/combineDataCards_allYears.txt --signal qg
-python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineInputFiles/combineDataCards_allYears.txt --signal gg
+python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineInputFiles/combineDataCards_RunII.txt --signal qq
+python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineInputFiles/combineDataCards_RunII.txt --signal qg
+python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineInputFiles/combineDataCards_RunII.txt --signal gg
 ```
 
 
