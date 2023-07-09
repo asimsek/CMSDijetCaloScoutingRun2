@@ -499,6 +499,48 @@ python combineDataCardsFromSplitDatasets.py --cfgFile combineInputFiles/combineD
 python condorCombineDataCardsForMultipRMax.py --cfgPath combineInputFiles/combineDataCards_allYears.txt --total_cfgFile combineInputFiles/combineDataCards_RunII.txt --fromCombined
 ```
 
+
+## Significance
+#### 2016
+
+```sh
+python createSignificancePlots.py --fromCombined --year 2016 --cfgFile combineInputFiles/combineDataCards_allYears.txt --signal qq
+python createSignificancePlots.py --fromCombined --year 2016 --cfgFile combineInputFiles/combineDataCards_allYears.txt --signal qg
+python createSignificancePlots.py --fromCombined --year 2016 --cfgFile combineInputFiles/combineDataCards_allYears.txt --signal gg
+```
+
+#### 2017
+
+```sh
+python createSignificancePlots.py --fromCombined --year 2017 --cfgFile combineInputFiles/combineDataCards_allYears.txt --signal qq
+python createSignificancePlots.py --fromCombined --year 2017 --cfgFile combineInputFiles/combineDataCards_allYears.txt --signal qg
+python createSignificancePlots.py --fromCombined --year 2017 --cfgFile combineInputFiles/combineDataCards_allYears.txt --signal gg
+```
+
+
+#### 2018
+
+```sh
+python createSignificancePlots.py --fromCombined --year 2018 --cfgFile combineInputFiles/combineDataCards_allYears.txt --signal qq
+python createSignificancePlots.py --fromCombined --year 2018 --cfgFile combineInputFiles/combineDataCards_allYears.txt --signal qg
+python createSignificancePlots.py --fromCombined --year 2018 --cfgFile combineInputFiles/combineDataCards_allYears.txt --signal gg
+```
+
+#### RunII
+
+```sh
+python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineInputFiles/combineDataCards_RunII.txt --signal qq
+python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineInputFiles/combineDataCards_RunII.txt --signal qg
+python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineInputFiles/combineDataCards_RunII.txt --signal gg
+```
+
+
+
+------------
+
+
+#### Latex table from expected and observed limits
+
 > You can create a latex table from all limit results (2016, 2017, 2018, and Run 2)
 
 ```sh
