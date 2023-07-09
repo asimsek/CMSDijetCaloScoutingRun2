@@ -396,7 +396,7 @@ python3 createFitsAndLimits.py --config_path inputFiles/allRunIILimits_cfg.txt -
 > Find `backgroundDsName` variable, give apropriate config name (`CaloDijetSep2018D`) and `histo_data_mjj_fromTree.root` path!
 
 ```sh
-python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/allRunIILimits_cfg.txt
+python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/allRunIILimits_cfg.txt --scaled
 ```
 
 > Basically, this script is calibrating the given root file which includes a dijet mass distribution (mjj) to the given reference dataset (in our case it's Full 2016 dataset). The reference values are coming from a smooth fit which can be extracted by executing the `python/BinnedFit.py` with correct arguments! You can also create an input file for the reference dataset (such as; `inputFiles/limit2016_cfg.txt`) and execute the `createFitsAndLimits.py` script as described above, to get the smooth fit values for each mass points!
@@ -407,7 +407,7 @@ python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/allRunIILimits_cfg.t
 
 
 ```sh
-python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/allRunIILimits_cfg.txt --freezeParameters
+python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/allRunIILimits_cfg.txt --scaled --freezeParameters
 ```
 
 
@@ -417,7 +417,7 @@ python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/allRunIILimits_cfg.t
 > Note that, the `condorLimitProdForMultiRMax.py` script is running `calibrateDatasetsToSmoothFit.py` to find correct rMax values for scaled datasets!
 
 ```sh
-python condorLimitProdForMultiRMax.py --cfgPath inputFiles/limit2018_cfg.txt
+python condorLimitProdForMultiRMax.py --scaled --cfgPath inputFiles/limit2018_cfg.txt
 ```
 
 
