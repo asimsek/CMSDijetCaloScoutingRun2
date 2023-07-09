@@ -417,7 +417,7 @@ python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/allRunIILimits_cfg.t
 > Note that, the `condorLimitProdForMultiRMax.py` script is running `calibrateDatasetsToSmoothFit.py` to find correct rMax values for scaled datasets!
 
 ```sh
-python condorLimitProdForMultiRMax.py --scaled --cfgPath inputFiles/limit2018_cfg.txt
+python condorLimitProdForMultiRMax.py --cfgPath inputFiles/limit2018_cfg.txt --scaled
 ```
 
 
