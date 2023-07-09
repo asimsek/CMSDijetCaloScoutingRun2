@@ -384,23 +384,31 @@ rMax,signalType,configFile,date,year,lumi,config,inputmjj
 > Perform ONLY BG-Only cross-section fit (by adding `--bf` argument)
 
 ```sh
-python3 createFitsAndLimits.py --config_path inputFiles/limit2018_cfg.txt --bf
+python3 createFitsAndLimits.py --config_path inputFiles/allRunIILimits_cfg.txt --bf
 ```
 
 > If you would like to calibrate dataset and match the cros section of each individual year/era, to a reference cross section (default 2016 full dataset cross section), use the following command line and give the same config file as an argument
 
-> Again give `--bf`argument if you want to perform ONLY BG-Only cross-section fit
+> Again give `--bf` argument if you want to perform ONLY BG-Only cross-section fit
 > If you want to set also the limits, remove `--bf` from the following command line
 
 > Do NOT forget to set config name and mjj root file path inside the `python/RunCombine.py` script for the limits!
 > Find `backgroundDsName` variable, give apropriate config name (`CaloDijetSep2018D`) and `histo_data_mjj_fromTree.root` path!
 
 ```sh
-python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/limit2018_cfg.txt --bf
+python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/allRunIILimits_cfg.txt
 ```
 
 > Basically, this script is calibrating the given root file which includes a dijet mass distribution (mjj) to the given reference dataset (in our case it's Full 2016 dataset). The reference values are coming from a smooth fit which can be extracted by executing the `python/BinnedFit.py` with correct arguments! You can also create an input file for the reference dataset (such as; `inputFiles/limit2016_cfg.txt`) and execute the `createFitsAndLimits.py` script as described above, to get the smooth fit values for each mass points!
 
+> Use `--bf` argument if you want to perform ONLY BG-Only cross-section fit
+
+> Use `--freezeParameters` argument to perform statistical uncertainty only limits. 
+
+
+```sh
+python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/allRunIILimits_cfg.txt --freezeParameters
+```
 
 
 > If the limits are problematic, send multiple jobs to condor and try different rMax values at the same time
