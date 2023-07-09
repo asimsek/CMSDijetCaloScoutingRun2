@@ -403,7 +403,7 @@ python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/allRunIILimits_cfg.t
 
 > Use `--bf` argument if you want to perform ONLY BG-Only cross-section fit
 
-> Use `--freezeParameters` argument to perform statistical uncertainty only limits. 
+> Use `--freezeParameters` argument to perform statistical uncertainty only limits.
 
 
 ```sh
@@ -422,6 +422,8 @@ python condorLimitProdForMultiRMax.py --cfgPath inputFiles/limit2018_cfg.txt
 
 
 > After producing all the data cards for all eras (2016B, 2016C, 2017C, 2017D, 2018A, 2018B, etc.), you need to combine them simultaneously to set limits to each dataset year (2016, 2017, 2018).
+
+> Usually same rMax numbers works for stat. only limits but in case of necessity, you can also use `--freezeParameters` argument to find good rMax value for statistical uncertainty only limits.
 
 > You need to create an input file for this process.
 
