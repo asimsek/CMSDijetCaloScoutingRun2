@@ -79,7 +79,7 @@ scripts/allKinematics.sh
 .nfs*
 Limits/latexFiles
 Limits/DarkMatterInterpretation
-
+Limits/SignificanceResults
 
 # Don't ignore #
 ################
