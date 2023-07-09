@@ -423,7 +423,7 @@ python condorLimitProdForMultiRMax.py --cfgPath inputFiles/limit2018_cfg.txt
 
 > After producing all the data cards for all eras (2016B, 2016C, 2017C, 2017D, 2018A, 2018B, etc.), you need to combine them simultaneously to set limits to each dataset year (2016, 2017, 2018).
 
-> Usually same rMax numbers works for stat. only limits but in case of necessity, you can also use `--freezeParameters` argument to find good rMax value for statistical uncertainty only limits.
+> Usually same rMax numbers works for stat. only limits but in case of necessity, you can also use `--freezeParameters` argument to find good `rMax` value for statistical uncertainty only limits.
 
 > You need to create an input file for this process.
 
@@ -441,12 +441,12 @@ vi combineInputFiles/combineDataCards_allYears.txt
 2016,27.224973278,CaloDijet2016,17June2023,dijet,qg,1.1
 2016,27.224973278,CaloDijet2016,17June2023,dijet,qq,9.2
 
-2017,35.449914768,CaloDijet2017,17June2023,dijet,gg,2.2
-2017,35.449914768,CaloDijet2017,17June2023,dijet,qg,1.8
-2017,35.449914768,CaloDijet2017,17June2023,dijet,qq,10.7
+2017,35.449914768,CaloDijet2017,17June2023,dijet,gg,2.8
+2017,35.449914768,CaloDijet2017,17June2023,dijet,qg,3.2
+2017,35.449914768,CaloDijet2017,17June2023,dijet,qq,0.9
 
 2018,54.451729361,CaloDijet2018,17June2023,dijet,gg,3.1
-2018,54.451729361,CaloDijet2018,17June2023,dijet,qg,2.9
+2018,54.451729361,CaloDijet2018,17June2023,dijet,qg,2.0
 2018,54.451729361,CaloDijet2018,17June2023,dijet,qq,1.5
 ```
 
@@ -459,6 +459,12 @@ python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_
 > If the combined limits are problematic, send multiple jobs to condor and try different rMax values at the same time!
 > This script will loop all the lines of given inputFile and create condor jobs for each line for multiple rMax values between 0.5-20.0 with 0.1 interval
 > Then it will send all the jobs to condor
+
+> Use `--freezeParameters` argument to perform statistical uncertainty only limits.
+
+```sh
+python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_cfg.txt --total_cfgFile combineInputFiles/combineDataCards_allYears.txt --freezeParameters
+```
 
 
 **IMPORTANT!!: Currently, datacards produced with the full path (`/uscms_data/d3/...`) which prevents us to combine these data cards on condor! Therefore, we need to find and replace all the paths and leave just the part after AllLimits...**
@@ -476,6 +482,8 @@ python condorCombineDataCardsForMultipRMax.py --cfgPath inputFiles/allRunIILimit
 ```
 
 > After production of Combined 2016, 2017 and 2018 data cards and limits, if you need to compare your combined limits with the published 2016 HEPData & Arxiv results use `compareHEPDataAndSplitLimits.py`
+
+> Usually same rMax numbers works for stat. only limits but in case of necessity, you can also use `--freezeParameters` argument to find good `rMax` value for statistical uncertainty only limits.
 
 
 ```sh
@@ -499,6 +507,11 @@ python combineDataCardsFromSplitDatasets.py --cfgFile combineInputFiles/combineD
 
 > `--fromCombined` argument needs to be used when you combine datacards from "combined" datacards, such as; combining 2016Combined, 2017Combined, 2018Combined limits.
 
+> Use `--freezeParameters` argument to perform statistical uncertainty only limits.
+
+```sh
+python combineDataCardsFromSplitDatasets.py --cfgFile combineInputFiles/combineDataCards_allYears.txt --total_cfgFile combineInputFiles/combineDataCards_RunII.txt --fromCombined --freezeParameters
+```
 
 > If the combined Run 2 limits are problematic, send multiple jobs to condor and try different rMax values at the same time!
 > This script will loop all the lines of given combine input file and create condor jobs for each line for multiple rMax values between 0.5-20.0 with 0.1 interval
@@ -508,6 +521,8 @@ python combineDataCardsFromSplitDatasets.py --cfgFile combineInputFiles/combineD
 ```sh
 python condorCombineDataCardsForMultipRMax.py --cfgPath combineInputFiles/combineDataCards_allYears.txt --total_cfgFile combineInputFiles/combineDataCards_RunII.txt --fromCombined
 ```
+
+> Usually same rMax numbers works for stat. only limits but in case of necessity, you can also use `--freezeParameters` argument to find good `rMax` value for statistical uncertainty only limits.
 
 
 ## Significance
