@@ -510,7 +510,7 @@ python combineDataCardsFromSplitDatasets.py --cfgFile combineInputFiles/combineD
 > Use `--freezeParameters` argument to perform statistical uncertainty only limits.
 
 ```sh
-python combineDataCardsFromSplitDatasets.py --cfgFile combineInputFiles/combineDataCards_allYears.txt --total_cfgFile combineInputFiles/combineDataCards_RunII.txt --fromCombined --freezeParameters
+python combineDataCardsFromSplitDatasets.py --cfgFile combineInputFiles/combineDataCards_allYears_statOnly.txt --total_cfgFile combineInputFiles/combineDataCards_RunII.txt --fromCombined --freezeParameters
 ```
 
 > If the combined Run 2 limits are problematic, send multiple jobs to condor and try different rMax values at the same time!
