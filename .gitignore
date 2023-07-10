@@ -77,10 +77,14 @@ TriggerEffResults
 HEPDataComparison
 scripts/allKinematics.sh
 .nfs*
+Limits/compareNewAndOldLimits.py
 Limits/latexFiles
 Limits/DarkMatterInterpretation
 Limits/SignificanceResults
 Limits/ComparisonOfFullNuisancesvsStatOnlyLimit
+Limits/ComparisonOfNewAndOldLimit
+
+
 
 # Don't ignore #
 ################
