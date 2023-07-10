@@ -80,6 +80,7 @@ scripts/allKinematics.sh
 Limits/latexFiles
 Limits/DarkMatterInterpretation
 Limits/SignificanceResults
+Limits/ComparisonOfFullNuisancesvsStatOnlyLimit
 
 # Don't ignore #
 ################

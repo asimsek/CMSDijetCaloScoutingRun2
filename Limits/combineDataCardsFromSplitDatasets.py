@@ -39,20 +39,25 @@ def main(args):
     # Iterate over the mass range
     for mass in range(500, 2350, 50):
         dataCards = []
+        nuisances = ""
         # Iterate over the rows of the filtered dataframe
         for index, row in df_filtered.iterrows():
             lumii = float(row['lumi']/1000.) if not args.fromCombined else float(row['lumi'])
-            cardPath = "AllLimits%s%s_%s_%s%s/cards_%s_w2016Sig_DE13_M489_%s_rmax%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (row['year'], combined, row['signalType'], row['configFile'], txtFreeze, row['signalType'], row['date'], row['rMax'], row['signalType'], mass, lumii, row['config'] )
+            cardPath = "AllLimits%s%s_%s_%s/cards_%s_w2016Sig_DE13_M489_%s_rmax%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (row['year'], combined, row['signalType'], row['configFile'], row['signalType'], row['date'], row['rMax'], row['signalType'], mass, lumii, row['config'] )
+            #cardPath = "AllLimits%s%s_%s_%s%s/cards_%s_w2016Sig_DE13_M489_%s_rmax%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (row['year'], combined, row['signalType'], row['configFile'], txtFreeze, row['signalType'], row['date'], row['rMax'], row['signalType'], mass, lumii, row['config'] )
             dataCards.append("Year%s=%s" % (row['year'], cardPath))
             print("\033[91m DataCard: [%d] - %s \033[0m" % (mass, cardPath))
-            if index == 0 and args.freezeParameters: 
+            if args.freezeParameters: 
                 cmdParam = 'cat %s | grep -A 100 -ws "flatParam"' % (cardPath)
                 outputParam = commands.getstatusoutput(cmdParam)
 		outLines = outputParam[1].split("\n")
-                for cParam in outLines: nuisances = ",".join(cParam)
+                for ij, cParam in enumerate(outLines):
+                    foocParam = cParam.split()[0]
+                    seperatorNuis = "," if not ij == 0 else ""
+                    nuisances += "%s%s" % (seperatorNuis, str(foocParam))
                 freezeString = '--freezeParameters lumi,jer,jes,%s' % (nuisances) if args.freezeParameters else ''
 
-
+        print ("\033[93m%s\033[0m" % (freezeString))
         dataC = " ".join(dataCards)
 
         # Execute the combineCards.py command

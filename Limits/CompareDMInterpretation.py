@@ -6,6 +6,7 @@ import os
 import math
 import urllib, json
 import setTDRStyle
+import numpy as np
 
 gROOT.SetBatch(True)
 
@@ -461,12 +462,12 @@ if allComparison == True:
 
 
 
-
 ###################### Plotting #############################
 
 
 if verbose == True:
 	print ("\033[91m -> Creating Canvas for DM Interpretation Comparison - 2016!\033[0m")
+
 
 cExpected = TCanvas('cExpected', '', 900, 1200)
 cExpected.cd()
