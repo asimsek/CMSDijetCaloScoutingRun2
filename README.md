@@ -463,7 +463,7 @@ python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_
 > Use `--freezeParameters` argument to perform statistical uncertainty only limits.
 
 ```sh
-python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_cfg.txt --total_cfgFile combineInputFiles/combineDataCards_allYears.txt --freezeParameters
+python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_cfg.txt --total_cfgFile combineInputFiles/combineDataCards_allYears_statOnly.txt --freezeParameters
 ```
 
 
