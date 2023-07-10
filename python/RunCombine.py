@@ -226,9 +226,11 @@ def main(options,args):
 
         sysString = ''
         if options.noSys and options.deco:
-            sysString = '-S 0 --freezeNuisances=shapeBkg_%s_bkg_deco_%s__norm,deco_%s_eig1,deco_%s_eig2,deco_%s_eig3,jes,jer,lumi'%(box,box,box,box,box)
+            #sysString = '-S 0 --freezeNuisances=shapeBkg_%s_bkg_deco_%s__norm,deco_%s_eig1,deco_%s_eig2,deco_%s_eig3,jes,jer,lumi'%(box,box,box,box,box)
+            sysString = '--freezeParameters=shapeBkg_%s_bkg_deco_%s__norm,deco_%s_eig1,deco_%s_eig2,deco_%s_eig3,jes,jer,lumi'%(box,box,box,box,box)
         elif options.noSys:
-            sysString = '-S 0 --freezeNuisances=shapeBkg_%s_bkg_%s__norm,p1_%s,p2_%s,p3_%s,jes,jer,lumi'%(box,box,box,box,box)
+            #sysString = '-S 0 --freezeNuisances=shapeBkg_%s_bkg_%s__norm,p1_%s,p2_%s,p3_%s,nPar_%s,jes,jer,lumi'%(box,box,box,box,box,box)
+            sysString = '--freezeParameters=shapeBkg_%s_bkg_%s__norm,p1_%s,p2_%s,p3_%s,nPar_%s,jes,jer,lumi'%(box,box,box,box,box,box)
         elif options.multi and options.fitPdf!='all':
             sysString = '--setPhysicsModelParameters pdf_index=%i --freezeNuisances pdf_index'%(pdfIndexMap[options.fitPdf])
             if options.fitPdf != 'fiveparam':

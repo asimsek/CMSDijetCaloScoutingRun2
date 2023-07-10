@@ -14,8 +14,8 @@ def parse_config(line):
     return rMax, signalType, configFile, date, year, float(lumi), config, inputmjj
 
 # Part 2: Execute fit script and parse the output
-def execute_and_parse(script_path, cfgPath, inputmjjNoCalib, configFile, rMax, signalType, date, year, lumi, config):
-    command = "python3 %s --config_path %s --inputmjj %s --cfgFile ../config/%s --rMax %s --signalType %s --date %s --year %s --lumi %s --config %s --scaled --bf" % (script_path, cfgPath, inputmjjNoCalib, configFile, rMax, signalType, date, year, lumi, config)
+def execute_and_parse(script_path, cfgPath, inputmjjNoCalib, configFile, rMax, signalType, date, year, lumi, config, freezeString):
+    command = "python3 %s --config_path %s --inputmjj %s --cfgFile ../config/%s --rMax %s --signalType %s --date %s --year %s --lumi %s --config %s --scaled --bf %s" % (script_path, cfgPath, inputmjjNoCalib, configFile, rMax, signalType, date, year, lumi, config, freezeString)
     print (command)
     proc = subprocess.Popen(command, shell=True, stderr=open(os.devnull, 'w'), stdout=subprocess.PIPE)
     output = proc.communicate()[0]
@@ -121,8 +121,9 @@ def create_config_file(year, calibration_ratio_dict, configFile, config):
     with open("{}.config".format(configFile), "w") as configfile:
         new_cfg.write(configfile)
 
-def run_createFitsAndLimits(script_path, cfgPath, outFolder, outRootFile, configFile, rMax, signalType, date, year, lumi, config, bf=False):
-    cmd = "python3 %s --config_path %s --inputmjj %s/%s --cfgFile %s --rMax %s --signalType %s --date %s --year %s --lumi %s --config %s --scaled" % (script_path, cfgPath, outFolder, outRootFile, configFile, rMax, signalType, date, year, lumi, config)
+def run_createFitsAndLimits(script_path, cfgPath, outFolder, outRootFile, configFile, rMax, signalType, date, year, lumi, config, bf=False, freezeString="", inputmjjNoCalib, scaled=False):
+    if scaled: cmd = "python3 %s --config_path %s --inputmjj %s/%s --cfgFile %s --rMax %s --signalType %s --date %s --year %s --lumi %s --config %s --scaled %s" % (script_path, cfgPath, outFolder, outRootFile, configFile, rMax, signalType, date, year, lumi, config, freezeString)
+    else: cmd = "python3 %s --config_path %s --inputmjj %s --cfgFile %s --rMax %s --signalType %s --date %s --year %s --lumi %s --config %s %s" % (script_path, cfgPath, inputmjjNoCalib, configFile, rMax, signalType, date, year, lumi, config, freezeString)
     if bf: cmd += " --bf"
     print (cmd)
     process = subprocess.Popen(cmd, shell=True)
@@ -133,12 +134,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('--cfgPath', type=str, help='path to the input config file')
     parser.add_argument('--bf', action='store_true', help='Produce ONLY fit results if this argument is given.')
+    parser.add_argument('--scaled', action='store_true', help='Use scaled inputmjj if this argument is given! if not it will use given mjj root file from cfg file')
+    parser.add_argument('--freezeParameters', action='store_true', default=False, help='Stat. Only. Limits')
     args = parser.parse_args()
     cfgPath = args.cfgPath 
  
+    freezeString = "--freezeParameters" if args.freezeParameters else ""
     # define paths and reference values here
     script_path = "createFitsAndLimits.py"
-    refLumi = 27.225
+    refLumi = 27.224
     ## ref fit prediction comes from python/BinnedFit.py outputs (print)
     refVariablesFromSmoothFit_2016All = { 489: [1.44627083E+08, 37], 526: [1.04541488E+08, 39], 565: [7.56068690E+07, 41], 606: [5.47437590E+07, 43], 649: [3.89670510E+07, 44], 693: [2.90739200E+07, 47], 740: [2.08059090E+07, 48], 788: [1.53012090E+07, 50], 838: [1.12744840E+07, 52], 890: [8.32481000E+06, 54], 944: [6.16045800E+06, 56], 1000: [4.56930300E+06, 58], 1058: [3.39710300E+06, 60], 1118: [2.56614300E+06, 63], 1181: [1.90657500E+06, 65], 1246: [1.42051600E+06, 67], 1313: [1.07431700E+06, 70], 1383: [8.00942000E+05, 72], 1455: [6.05762000E+05, 75], 1530: [4.52234000E+05, 77], 1607: [3.42283000E+05, 80], 1687: [2.58654000E+05, 83], 1770: [1.95209000E+05, 86], 1856: [1.47178000E+05, 89], 1945: [1.10879000E+05, 92], 2037: [8.34820000E+04, 95], 2132: [6.33720000E+04, 99], 2231: [4.71210000E+04, 101] }
 
@@ -155,7 +159,7 @@ if __name__ == "__main__":
             histFile1 = File1.Get('h_dat')
 
             print (" -> Collecting calibration values!")
-            data_dict = execute_and_parse(script_path, cfgPath, inputmjjNoCalib, configFile, rMax, signalType, date, year, lumi, config)
+            data_dict = execute_and_parse(script_path, cfgPath, inputmjjNoCalib, configFile, rMax, signalType, date, year, lumi, config, freezeString)
             xsec_dict = calculate_xsec(data_dict, lumi)
             ref_xsec_dict = calculate_ref_xsec(refVariablesFromSmoothFit_2016All, refLumi)
             calibration_ratio_dict = calculate_calibration_ratio(xsec_dict, ref_xsec_dict)
@@ -173,5 +177,5 @@ if __name__ == "__main__":
             print (" -> Executing the %s script!" % (script_path))
             create_config_file(year, calibration_ratio_dict, configFile, config)
 
-            run_createFitsAndLimits(script_path, cfgPath, outFolder, outRootFile, configFile, rMax, signalType, date, year, lumi, config, args.bf)
+            run_createFitsAndLimits(script_path, cfgPath, outFolder, outRootFile, configFile, rMax, signalType, date, year, lumi, config, args.bf, freezeString, inputmjjNoCalib, args.scaled)
 

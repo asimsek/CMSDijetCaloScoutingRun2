@@ -6,6 +6,8 @@ import subprocess
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--cfgPath', help='Path to the config file', required=True)
+    parser.add_argument('--scaled', action='store_true', help='Use scaled inputmjj if this argument is given! if not it will use given mjj root file from cfg file')
+    parser.add_argument('--freezeParameters', action='store_true', default=False, help='Stat. Only. Limits')
     args = parser.parse_args()
 
     if not os.path.isfile(args.cfgPath):
@@ -16,6 +18,8 @@ def main():
     workDir = cmssw_dir + "/src/CMSDIJET/DijetRootTreeAnalyzer"
     cmssw_Ver = cmssw_dir.split("/")[-1]
     arch = os.environ['SCRAM_ARCH']
+    freezeString = "--freezeParameters" if args.freezeParameters else ""
+    scaleString = "--scaled" if args.scaled else ""
 
     with open(args.cfgPath, 'r') as file:
         for line in file:
@@ -45,7 +49,7 @@ def main():
 
                 cshFilePath = "{0}/Limits_{1}_{2}_{3}_n{4}.csh".format(condorDIRPath, year, signalType, configFile, rMaxStart)
                 with open(cshFilePath, 'w') as cshFile:
-                    cshFileContent = create_csh_file_content(year, signalType, configFile, rMaxStart, cmssw_Ver, arch, workDir, condorDIR, newInputcfgFile, date, config)
+                    cshFileContent = create_csh_file_content(year, signalType, configFile, rMaxStart, cmssw_Ver, arch, workDir, condorDIR, newInputcfgFile, date, config, scaleString, freezeString)
                     cshFile.write(cshFileContent)
 
                 jdlFilePath = "{0}/Limits_{1}_{2}_{3}_n{4}.jdl".format(condorDIRPath, year, signalType, configFile, rMaxStart)
@@ -80,7 +84,7 @@ def submit_jobs(condorDIR):
     print("Finished running submit script.")
 
 
-def create_csh_file_content(year, signalType, configFile, rMax, cmssw_Ver, arch, workDir, condorDIR, newInputcfgFile, date, config):
+def create_csh_file_content(year, signalType, configFile, rMax, cmssw_Ver, arch, workDir, condorDIR, newInputcfgFile, date, config, scaleString, freezeString):
     inptCfgFile = os.path.basename(newInputcfgFile)
     csh_content = '''#!/bin/tcsh
 
@@ -101,7 +105,7 @@ pwd
 ls -lhtr
 
 cmsenv
-python calibrateDatasetsToSmoothFit.py --cfgPath {2}/{3}
+python calibrateDatasetsToSmoothFit.py --cfgPath {2}/{3} {10} {11}
 
 xrdcp AllLimits{4}_{5}_{6}/cards_{5}_w2016Sig_DE13_M489_{8}_rmax{7}/limits_freq_{5}_{9}.pdf root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{4}_{5}_{6}/limits_freq_{5}_{9}_M489_rMax{7}.pdf
 
@@ -112,7 +116,7 @@ ls -lhtr AllLimits{4}_{5}_{6}/
 rm -r AllLimits{4}_{5}_{6}
 
 echo "DONE!"
-'''.format(cmssw_Ver, arch, condorDIR, inptCfgFile, year, signalType, configFile, rMax, date, config)
+'''.format(cmssw_Ver, arch, condorDIR, inptCfgFile, year, signalType, configFile, rMax, date, config, scaleString, freezeString)
     return csh_content
 
 
