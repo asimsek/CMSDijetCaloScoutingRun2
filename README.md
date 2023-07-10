@@ -403,12 +403,6 @@ python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/allRunIILimits_cfg.t
 
 > Use `--bf` argument if you want to perform ONLY BG-Only cross-section fit
 
-> Use `--freezeParameters` argument to perform statistical uncertainty only limits.
-
-
-```sh
-python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/allRunIILimits_cfg.txt --scaled --freezeParameters
-```
 
 
 > If the limits are problematic, send multiple jobs to condor and try different rMax values at the same time
@@ -463,7 +457,7 @@ python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_
 > Use `--freezeParameters` argument to perform statistical uncertainty only limits.
 
 ```sh
-python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_cfg.txt --total_cfgFile combineInputFiles/combineDataCards_allYears_statOnly.txt --freezeParameters
+python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_cfg.txt --total_cfgFile combineInputFiles/combineDataCards_allYears.txt --freezeParameters
 ```
 
 
@@ -523,6 +517,42 @@ python condorCombineDataCardsForMultipRMax.py --cfgPath combineInputFiles/combin
 ```
 
 > Usually same rMax numbers works for stat. only limits but in case of necessity, you can also use `--freezeParameters` argument to find good `rMax` value for statistical uncertainty only limits.
+
+
+
+### Comparison Stat.+Syst. / Stat.-Only
+
+#### 2016
+
+```sh
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2016 --signal gg
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2016 --signal qg
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2016 --signal qq
+```
+
+#### 2017
+
+```sh
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2017 --signal gg
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2017 --signal qg
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2017 --signal qq
+```
+
+#### 2018
+
+```sh
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2018 --signal gg
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2018 --signal qg
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2018 --signal qq
+```
+
+#### Run II
+
+```sh
+python compareFullNuisancesVsStatOnly.py --config dijet --year RunII --signal gg
+python compareFullNuisancesVsStatOnly.py --config dijet --year RunII --signal qg
+python compareFullNuisancesVsStatOnly.py --config dijet --year RunII --signal qq
+```
 
 
 ## Significance
@@ -589,11 +619,17 @@ python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.
 
 #### Compare DM Quark Coupling Results with Previous Publications
 
-> Compare all indicidual years and Full Run II results with HEPData.
+```sh
+python compareCouplingwithHEPData_Ratio.py --RootFile2016 DarkMatterInterpretation/2016/R_DarkMatterInterpretation_2016.root --RootFile2017 DarkMatterInterpretation/2017/R_DarkMatterInterpretation_2017.root --RootFile2018 DarkMatterInterpretation/2018/R_DarkMatterInterpretation_2018.root --RootFileRunII DarkMatterInterpretation/RunII/R_DarkMatterInterpretation_RunII.root --verbose
+```
+
+
+> Compare all individual years and Full Run II results with HEPData.
 
 ```sh
 python CompareDMInterpretation.py --RootFile2016 DarkMatterInterpretation/2016/R_DarkMatterInterpretation_2016.root --RootFile2017 DarkMatterInterpretation/2017/R_DarkMatterInterpretation_2017.root --RootFile2018 DarkMatterInterpretation/2018/R_DarkMatterInterpretation_2018.root --RootFileRunII DarkMatterInterpretation/RunII/R_DarkMatterInterpretation_RunII.root --xSecLimitRootFile AllLimits2016Combined_qq_dijet//cards_qq_w2016Sig_DE13_M489_17June2023_rmax9.2/limits_freq_qq_CaloDijet2016.root --allComparison True
 ```
+
 
 > This `CompareDMInterpretation.py` script also writes RunII Coupling results to a text file under `DMMediatorQuarkCouplingInputFiles` folder. We'll use these text files with `getCouplingResultsFromHEPData.py` script to compare all previous publication for calo-scouting.
 
