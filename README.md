@@ -403,12 +403,6 @@ python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/allRunIILimits_cfg.t
 
 > Use `--bf` argument if you want to perform ONLY BG-Only cross-section fit
 
-> Use `--freezeParameters` argument to perform statistical uncertainty only limits.
-
-
-```sh
-python calibrateDatasetsToSmoothFit.py --cfgPath inputFiles/allRunIILimits_cfg.txt --scaled --freezeParameters
-```
 
 
 > If the limits are problematic, send multiple jobs to condor and try different rMax values at the same time
@@ -463,7 +457,7 @@ python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_
 > Use `--freezeParameters` argument to perform statistical uncertainty only limits.
 
 ```sh
-python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_cfg.txt --total_cfgFile combineInputFiles/combineDataCards_allYears_statOnly.txt --freezeParameters
+python combineDataCardsFromSplitDatasets.py --cfgFile inputFiles/allRunIILimits_cfg.txt --total_cfgFile combineInputFiles/combineDataCards_allYears.txt --freezeParameters
 ```
 
 
@@ -510,7 +504,7 @@ python combineDataCardsFromSplitDatasets.py --cfgFile combineInputFiles/combineD
 > Use `--freezeParameters` argument to perform statistical uncertainty only limits.
 
 ```sh
-python combineDataCardsFromSplitDatasets.py --cfgFile combineInputFiles/combineDataCards_allYears_statOnly.txt --total_cfgFile combineInputFiles/combineDataCards_RunII.txt --fromCombined --freezeParameters
+python combineDataCardsFromSplitDatasets.py --cfgFile combineInputFiles/combineDataCards_allYears.txt --total_cfgFile combineInputFiles/combineDataCards_RunII.txt --fromCombined --freezeParameters
 ```
 
 > If the combined Run 2 limits are problematic, send multiple jobs to condor and try different rMax values at the same time!
