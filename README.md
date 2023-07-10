@@ -519,6 +519,42 @@ python condorCombineDataCardsForMultipRMax.py --cfgPath combineInputFiles/combin
 > Usually same rMax numbers works for stat. only limits but in case of necessity, you can also use `--freezeParameters` argument to find good `rMax` value for statistical uncertainty only limits.
 
 
+
+### Comparison Stat.+Syst. / Stat.-Only
+
+#### 2016
+
+```sh
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2016 --signal gg
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2016 --signal qg
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2016 --signal qq
+```
+
+#### 2017
+
+```sh
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2017 --signal gg
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2017 --signal qg
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2017 --signal qq
+```
+
+#### 2018
+
+```sh
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2018 --signal gg
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2018 --signal qg
+python compareFullNuisancesVsStatOnly.py --config dijet --year 2018 --signal qq
+```
+
+#### Run II
+
+```sh
+python compareFullNuisancesVsStatOnly.py --config dijet --year RunII --signal gg
+python compareFullNuisancesVsStatOnly.py --config dijet --year RunII --signal qg
+python compareFullNuisancesVsStatOnly.py --config dijet --year RunII --signal qq
+```
+
+
 ## Significance
 #### 2016
 
