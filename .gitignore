@@ -73,6 +73,7 @@ dijetCondor/a.sh
 inputs/*/*.C
 a.txt
 b.txt
+Limits/dijet*.config
 TriggerEffResults
 HEPDataComparison
 scripts/allKinematics.sh

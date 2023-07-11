@@ -141,17 +141,20 @@ def create_config_file(year, calibration_ratio_dict, configFile, config):
             new_cfg.set(cfgName, key, value)
 
     # Write the updated config data to a new config file in the current directory
-    with open("{}.config".format(configFile), "w") as configfile:
+    with open("{}{}.config".format(configFile, year), "w") as configfile:
         new_cfg.write(configfile)
 
 def run_createFitsAndLimits(script_path, cfgPath, outFolder, outRootFile, configFile, rMax, signalType, date, year, lumi, config, bf=False, freezeString="", inputmjjNoCalib="", scaled=False):
-    if scaled: cmd = "python3 %s --config_path %s --inputmjj %s/%s --cfgFile %s --rMax %s --signalType %s --date %s --year %s --lumi %s --config %s --scaled %s" % (script_path, cfgPath, outFolder, outRootFile, configFile, rMax, signalType, date, year, lumi, config, freezeString)
+    if scaled: cmd = "python3 %s --config_path %s --inputmjj %s/%s --cfgFile %s%s --rMax %s --signalType %s --date %s --year %s --lumi %s --config %s --scaled %s" % (script_path, cfgPath, outFolder, outRootFile, configFile, year, rMax, signalType, date, year, lumi, config, freezeString)
     else: cmd = "python3 %s --config_path %s --inputmjj %s --cfgFile %s --rMax %s --signalType %s --date %s --year %s --lumi %s --config %s %s" % (script_path, cfgPath, inputmjjNoCalib, configFile, rMax, signalType, date, year, lumi, config, freezeString)
     if bf: cmd += " --bf"
     print (cmd)
     process = subprocess.Popen(cmd, shell=True)
     process.wait()
-    if process.returncode == 0: os.remove("%s.config" % configFile)
+    if process.returncode == 0: 
+        if scaled: os.remove("%s%s.config" % configFile, year)
+        else: os.remove("%s.config" % configFile)
+    
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='')
