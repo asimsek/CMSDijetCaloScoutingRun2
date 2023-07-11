@@ -152,8 +152,8 @@ def run_createFitsAndLimits(script_path, cfgPath, outFolder, outRootFile, config
     process = subprocess.Popen(cmd, shell=True)
     process.wait()
     if process.returncode == 0: 
-        if scaled: os.remove("%s%s.config" % configFile, year)
-        else: os.remove("%s.config" % configFile)
+        if scaled: os.remove("%s%s.config" % (configFile, year))
+        else: os.remove("%s.config" % (configFile))
     
 
 if __name__ == "__main__":
