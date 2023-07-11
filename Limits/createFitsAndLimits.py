@@ -12,6 +12,7 @@ def execute_commands(args, rMax, signalType, configFile, date, year, lumi, confi
     cfg_foo = configFile.split("/")[-1] if "/" in configFile else configFile
     workDir = os.environ['CMSSW_BASE'] + "/src/CMSDIJET/DijetRootTreeAnalyzer"
     inputmjjTrue = f"{workDir}/inputs/{inputmjj1}/histo_data_mjj_fromTree.root" if not scaled else inputmjj
+    print (inputmjjTrue)
     outputFitFolder = f"fits_{date}_{year}_DE13_M{mass}_w2016Signals/{config}_{cfg_foo}"
     scaledtxt = "--scaled" if scaled else ""
     txtFreeze = '_statOnly' if args.freezeParameters else ''
@@ -84,7 +85,7 @@ if __name__ == '__main__':
             execute_commands(args, float(rMax), signalType, configFile, date, year, float(lumi), config, str(inputmjj1), args.scaled, args.freezeParameters)
     else:
         cfgFileTrue = configFile if not args.cfgFile else args.cfgFile
+        print (str(args.inputmjj))
         execute_commands(args, float(args.rMax), args.signalType, cfgFileTrue, args.date, args.year, float(args.lumi), args.config, str(args.inputmjj), args.scaled, args.freezeParameters)
-
 
 

@@ -92,12 +92,15 @@ def calculate_calibration_ratio(xsec_dict, ref_xsec_dict):
 
 # Part 6: Apply the calibration ratio to a histogram
 def apply_calibration(histFile1, calibration_ratio_dict, year, outRootFilePath):
-    for bin in range(1, histFile1.GetNbinsX()+1):
+    #for bin in range(1, histFile1.GetNbinsX()+1):
+    for bin in range(500, 5000):
         bin_content = histFile1.GetBinContent(bin)
-        bin_center = histFile1.GetBinCenter(bin)
+        #bin_center = histFile1.GetBinCenter(bin)
+        bin_center = bin
         if bin_center in calibration_ratio_dict:
             calibration_ratio = calibration_ratio_dict[bin_center]
             new_bin_content = bin_content * calibration_ratio
+            print ("old: %.6f | new: %.6f | kFactor: %.6f" % (bin_content, new_bin_content, calibration_ratio))
             histFile1.SetBinContent(bin, new_bin_content)
             # Modify the error bars
             histFile1.SetBinError(bin, histFile1.GetBinError(bin) * calibration_ratio)
@@ -112,6 +115,7 @@ def delete_latest_directory(prefix, dir_path='.'):
     dirs = [d for d in os.listdir(dir_path) if os.path.isdir(os.path.join(dir_path, d)) and d.startswith(prefix)]
     # Find the most recently modified directory
     latest_dir = max(dirs, key=lambda d: os.path.getmtime(os.path.join(dir_path, d)))
+    print(latest_dir)
     # Delete the latest directory
     shutil.rmtree(os.path.join(dir_path, latest_dir))
 
