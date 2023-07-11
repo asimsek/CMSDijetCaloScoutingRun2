@@ -13,6 +13,29 @@ def parse_config(line):
     rMax, signalType, configFile, date, year, lumi, config, inputmjj = line.split(",")
     return rMax, signalType, configFile, date, year, float(lumi), config, inputmjj
 
+
+# Part 1.5: Get reference smooth fit on ref data
+def get_ref_smooth_fit(refConfigFile):
+    command = "python3 createFitsAndLimits.py --config_path %s --bf" % (refConfigFile)
+    print (command)
+    proc = subprocess.Popen(command, shell=True, stderr=open(os.devnull, 'w'), stdout=subprocess.PIPE)
+    output = proc.communicate()[0]
+    if output:
+        output = output.decode('utf-8')
+        lines = output.split("\n")
+        data_dict = {}
+        for line in lines:
+            if line.startswith("FitPred"):
+                elements = line.split(",")
+                mjj = int(elements[1])
+                eventSize = int(elements[2])
+                binWidth = int(elements[3])
+                data_dict[mjj] = [eventSize, binWidth]
+        sorted_data_dict = OrderedDict(sorted(data_dict.items()))
+        return sorted_data_dict
+    else:
+        return None
+
 # Part 2: Execute fit script and parse the output
 def execute_and_parse(script_path, cfgPath, inputmjjNoCalib, configFile, rMax, signalType, date, year, lumi, config, freezeString):
     command = "python3 %s --config_path %s --inputmjj %s --cfgFile ../config/%s --rMax %s --signalType %s --date %s --year %s --lumi %s --config %s --scaled --bf %s" % (script_path, cfgPath, inputmjjNoCalib, configFile, rMax, signalType, date, year, lumi, config, freezeString)
@@ -121,7 +144,7 @@ def create_config_file(year, calibration_ratio_dict, configFile, config):
     with open("{}.config".format(configFile), "w") as configfile:
         new_cfg.write(configfile)
 
-def run_createFitsAndLimits(script_path, cfgPath, outFolder, outRootFile, configFile, rMax, signalType, date, year, lumi, config, bf=False, freezeString="", inputmjjNoCalib, scaled=False):
+def run_createFitsAndLimits(script_path, cfgPath, outFolder, outRootFile, configFile, rMax, signalType, date, year, lumi, config, bf=False, freezeString="", inputmjjNoCalib="", scaled=False):
     if scaled: cmd = "python3 %s --config_path %s --inputmjj %s/%s --cfgFile %s --rMax %s --signalType %s --date %s --year %s --lumi %s --config %s --scaled %s" % (script_path, cfgPath, outFolder, outRootFile, configFile, rMax, signalType, date, year, lumi, config, freezeString)
     else: cmd = "python3 %s --config_path %s --inputmjj %s --cfgFile %s --rMax %s --signalType %s --date %s --year %s --lumi %s --config %s %s" % (script_path, cfgPath, inputmjjNoCalib, configFile, rMax, signalType, date, year, lumi, config, freezeString)
     if bf: cmd += " --bf"
@@ -142,9 +165,10 @@ if __name__ == "__main__":
     freezeString = "--freezeParameters" if args.freezeParameters else ""
     # define paths and reference values here
     script_path = "createFitsAndLimits.py"
+    refConfigFile = "inputFiles/ref2016All_cfg.txt"
     refLumi = 27.224
     ## ref fit prediction comes from python/BinnedFit.py outputs (print)
-    refVariablesFromSmoothFit_2016All = { 489: [1.44627083E+08, 37], 526: [1.04541488E+08, 39], 565: [7.56068690E+07, 41], 606: [5.47437590E+07, 43], 649: [3.89670510E+07, 44], 693: [2.90739200E+07, 47], 740: [2.08059090E+07, 48], 788: [1.53012090E+07, 50], 838: [1.12744840E+07, 52], 890: [8.32481000E+06, 54], 944: [6.16045800E+06, 56], 1000: [4.56930300E+06, 58], 1058: [3.39710300E+06, 60], 1118: [2.56614300E+06, 63], 1181: [1.90657500E+06, 65], 1246: [1.42051600E+06, 67], 1313: [1.07431700E+06, 70], 1383: [8.00942000E+05, 72], 1455: [6.05762000E+05, 75], 1530: [4.52234000E+05, 77], 1607: [3.42283000E+05, 80], 1687: [2.58654000E+05, 83], 1770: [1.95209000E+05, 86], 1856: [1.47178000E+05, 89], 1945: [1.10879000E+05, 92], 2037: [8.34820000E+04, 95], 2132: [6.33720000E+04, 99], 2231: [4.71210000E+04, 101] }
+    refVariablesFromSmoothFit_2016All = get_ref_smooth_fit(refConfigFile)
 
     with open(cfgPath, 'r') as f:
         for line in f:
@@ -173,7 +197,7 @@ if __name__ == "__main__":
             # calibrate dijet mass distribution
             print (" -> Calibrating dijet mass distribution!")
             apply_calibration(histFile1, calibration_ratio_dict, year, outRootFilePath)
-            delete_latest_directory('fits_')
+            delete_latest_directory("fits_%s_%s_DE13_M526_w2016Signals" % (date, year))
             print (" -> Executing the %s script!" % (script_path))
             create_config_file(year, calibration_ratio_dict, configFile, config)
 

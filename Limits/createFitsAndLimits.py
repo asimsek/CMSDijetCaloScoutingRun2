@@ -6,7 +6,7 @@ import argparse
 import configparser
 
 def execute_commands(args, rMax, signalType, configFile, date, year, lumi, config, inputmjj, scaled, freezeParameters):
-    mass = "489"
+    mass = "526"
     lumi2 = lumi / 1000
     xsecSignal = 10.0
     cfg_foo = configFile.split("/")[-1] if "/" in configFile else configFile

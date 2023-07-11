@@ -591,7 +591,7 @@ if __name__ == '__main__':
         predYield = asimov.weight(rt.RooArgSet(th1x))
         dataYield = dataHist_reduce.weight(rt.RooArgSet(th1x))
         rss += float(predYield-dataYield) * float(predYield-dataYield)
-        print "FitPred,%i,%i,%i" % (x[i],predYield,(x[i+1]-x[i]))
+        print "FitPred,%i,%.0f,%i" % (x[i],predYield,(x[i+1]-x[i]))
         print "%i <= mjj < %i; prediction: %.0f; data %i"  % (x[i],x[i+1],predYield,dataYield)
     print "RSS = ", rss 
         
