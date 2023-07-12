@@ -37,8 +37,8 @@ def main():
                 print("Created directory: {}".format(condorDIR))
 
 
-            rMaxStart = 0.5
-            rMaxEnd = 20.0
+            rMaxStart = 1.0
+            rMaxEnd = 10.0
             rMaxStep = 0.1
 
             print("Creating all text, csh and jdl files. Please be patient!..")
@@ -109,11 +109,11 @@ python calibrateDatasetsToSmoothFit.py --cfgPath {2}/{3} {10} {11}
 
 tar --exclude-vcs -zcf AllLimits{4}_{5}_{6}.tar.gz AllLimits{4}_{5}_{6} --exclude=tmp --exclude="*.tar.gz" 
 
-xrdcp AllLimits{4}_{5}_{6}/cards_{5}_w2016Sig_DE13_M489_{8}_rmax{7}/limits_freq_{5}_{9}.pdf root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{4}_{5}_{6}/PDFs/limits_freq_{5}_{9}_M526_rMax{7}.pdf
+xrdcp AllLimits{4}_{5}_{6}/cards_{5}_w2016Sig_DE13_M526_{8}_rmax{7}/limits_freq_{5}_{9}.pdf root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{4}_{5}_{6}/PDFs/limits_freq_{5}_{9}_M526_rMax{7}.pdf
 
-xrdcp AllLimits{4}_{5}_{6}/cards_{5}_w2016Sig_DE13_M489_{8}_rmax{7}/limits_freq_{5}_{9}.root root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{4}_{5}_{6}/Roots/limits_freq_{5}_{9}_M526_rMax{7}.root
+xrdcp AllLimits{4}_{5}_{6}/cards_{5}_w2016Sig_DE13_M526_{8}_rmax{7}/limits_freq_{5}_{9}.root root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{4}_{5}_{6}/Roots/limits_freq_{5}_{9}_M526_rMax{7}.root
 
-xrdcp AllLimits{4}_{5}_{6}.tar.gz root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/tarFiles/AllLimits{4}_{5}_{6}_rMax{7}.tar.gz
+xrdcp AllLimits{4}_{5}_{6}.tar.gz root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{4}_{5}_{6}/tarFiles/AllLimits{4}_{5}_{6}_rMax{7}.tar.gz
 
 echo "starting cleanup..."
 ls -lhtr AllLimits{4}_{5}_{6}/

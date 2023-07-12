@@ -39,7 +39,7 @@ def createSignificance(cfgFile, year, signal, fromCombined):
             
         
         ## Input Data Card
-        inputLimitFolder="AllLimits%s%s_%s_%s/cards_%s_w2016Sig_DE13_M489_%s_rmax%s/" % (year, combineText, signal, configFile, signal, date, rMax)
+        inputLimitFolder="AllLimits%s%s_%s_%s/cards_%s_w2016Sig_DE13_M526_%s_rmax%s/" % (year, combineText, signal, configFile, signal, date, rMax)
         inputDataCard = "%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (inputLimitFolder, signal, mass, lumi, config)
         print ("\033[1;31m -> %s\033[0;0m" % (inputDataCard))
 

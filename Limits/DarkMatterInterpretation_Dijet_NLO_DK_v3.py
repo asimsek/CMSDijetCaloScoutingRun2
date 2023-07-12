@@ -37,7 +37,7 @@ def DMConstraintsM0(x):
 ################### Arguments #########################
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument("--inputLimitRoot", type=str, help="Limit Result Root File [limits_freq_qq_CaloDijet2016.root]", default="AllLimits2016Combined_qq_dijetSep/cards_qq_w2016Sig_DE13_M489_17June2021_rmax9.4/limits_freq_qq_CaloDijet2016.root")
+parser.add_argument("--inputLimitRoot", type=str, help="Limit Result Root File [limits_freq_qq_CaloDijet2016.root]", default="AllLimits2016Combined_qq_dijetSep/cards_qq_w2016Sig_DE13_M526_17June2021_rmax9.4/limits_freq_qq_CaloDijet2016.root")
 parser.add_argument("--dijetxSecFile", type=str, help="DM Mediator Cross Section vs DM Mediator Mass From Theory", default="dijetxSecFile.txt")
 parser.add_argument("--kFactorFile", type=str, help="kFactor txt File", default="zp_k_factor_v2.txt")
 parser.add_argument("--box", type=str, help="Configuration box of the year (name)", default="CaloDijet2016")
@@ -54,13 +54,13 @@ med_min = 600.
 med_max = 1800.
 
 # 2016
-# usage = "python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2016 --inputLimitRoot AllLimits2016Combined_qq_dijet/cards_qq_w2016Sig_DE13_M489_17June2023_rmax9.2/limits_freq_qq_CaloDijet2016.root"
+# usage = "python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2016 --inputLimitRoot AllLimits2016Combined_qq_dijet/cards_qq_w2016Sig_DE13_M526_17June2023_rmax9.2/limits_freq_qq_CaloDijet2016.root"
 # 2017
-# usage = "python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2017 --inputLimitRoot AllLimits2017Combined_qq_dijet/cards_qq_w2016Sig_DE13_M489_17June2023_rmax0.9/limits_freq_qq_CaloDijet2017.root"
+# usage = "python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2017 --inputLimitRoot AllLimits2017Combined_qq_dijet/cards_qq_w2016Sig_DE13_M526_17June2023_rmax0.9/limits_freq_qq_CaloDijet2017.root"
 # 2018
-# usage = "python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2018 --inputLimitRoot AllLimits2018Combined_qq_dijet/cards_qq_w2016Sig_DE13_M489_17June2023_rmax1.5/limits_freq_qq_CaloDijet2018.root"
+# usage = "python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2018 --inputLimitRoot AllLimits2018Combined_qq_dijet/cards_qq_w2016Sig_DE13_M526_17June2023_rmax1.5/limits_freq_qq_CaloDijet2018.root"
 # Run-II
-# usage = "python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2016p2017p2018 --inputLimitRoot AllLimitsRunIICombined_qq_dijet/cards_qq_w2016Sig_DE13_M489_17June2023_rmax1.4/limits_freq_qq_CaloDijet2016p2017p2018.root"
+# usage = "python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2016p2017p2018 --inputLimitRoot AllLimitsRunIICombined_qq_dijet/cards_qq_w2016Sig_DE13_M526_17June2023_rmax1.4/limits_freq_qq_CaloDijet2016p2017p2018.root"
 
 ####### Extracting year info from config box name #######
 

@@ -31,7 +31,7 @@ def main(args):
 
 
     # Create new folder for new dataCards
-    FolderNew="AllLimits%sCombined_%s_%s%s/cards_%s_w2016Sig_DE13_M489_%s_rmax%s/" % (args.total_year, args.signal, args.new_confFile, txtFreeze, args.signal, args.date, args.new_rMax)
+    FolderNew="AllLimits%sCombined_%s_%s%s/cards_%s_w2016Sig_DE13_M526_%s_rmax%s/" % (args.total_year, args.signal, args.new_confFile, txtFreeze, args.signal, args.date, args.new_rMax)
     os.system("mkdir -p %s" % (FolderNew))
 
     combined = "Combined" if (args.fromCombined) else ""
@@ -43,8 +43,8 @@ def main(args):
         # Iterate over the rows of the filtered dataframe
         for index, row in df_filtered.iterrows():
             lumii = float(row['lumi']/1000.) if not args.fromCombined else float(row['lumi'])
-            cardPath = "AllLimits%s%s_%s_%s/cards_%s_w2016Sig_DE13_M489_%s_rmax%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (row['year'], combined, row['signalType'], row['configFile'], row['signalType'], row['date'], row['rMax'], row['signalType'], mass, lumii, row['config'] )
-            #cardPath = "AllLimits%s%s_%s_%s%s/cards_%s_w2016Sig_DE13_M489_%s_rmax%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (row['year'], combined, row['signalType'], row['configFile'], txtFreeze, row['signalType'], row['date'], row['rMax'], row['signalType'], mass, lumii, row['config'] )
+            cardPath = "AllLimits%s%s_%s_%s/cards_%s_w2016Sig_DE13_M526_%s_rmax%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (row['year'], combined, row['signalType'], row['configFile'], row['signalType'], row['date'], row['rMax'], row['signalType'], mass, lumii, row['config'] )
+            #cardPath = "AllLimits%s%s_%s_%s%s/cards_%s_w2016Sig_DE13_M526_%s_rmax%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (row['year'], combined, row['signalType'], row['configFile'], txtFreeze, row['signalType'], row['date'], row['rMax'], row['signalType'], mass, lumii, row['config'] )
             dataCards.append("Year%s=%s" % (row['year'], cardPath))
             print("\033[91m DataCard: [%d] - %s \033[0m" % (mass, cardPath))
             if args.freezeParameters: 

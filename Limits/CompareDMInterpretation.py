@@ -24,7 +24,7 @@ parser.add_argument("--RootFile2016", type=str, help="Root file that created wit
 parser.add_argument("--RootFile2017", type=str, help="2017 - Root file that created with the DarkMatterInterpretation_Dijet_NLO_DK_v3.py script", default="DarkMatterInterpretation/2017/R_DarkMatterInterpretation_2017.root")
 parser.add_argument("--RootFile2018", type=str, help="2018 - Root file that created with the DarkMatterInterpretation_Dijet_NLO_DK_v3.py script", default="DarkMatterInterpretation/2018/R_DarkMatterInterpretation_2018.root")
 parser.add_argument("--RootFileRunII", type=str, help="RunII - Root file that created with the DarkMatterInterpretation_Dijet_NLO_DK_v3.py script", default="DarkMatterInterpretation/RunII/R_DarkMatterInterpretation_RunII.root")
-parser.add_argument("--xSecLimitRootFile", type=str, help="xSec Limit Result Root File that used on DarkMatterInterpretation_Dijet_NLO_DK_v3.py script!", default="AllLimits2016Combined_qq_dijet//cards_qq_w2016Sig_DE13_M489_17June2023_rmax9.2/limits_freq_qq_CaloDijet2016.root")
+parser.add_argument("--xSecLimitRootFile", type=str, help="xSec Limit Result Root File that used on DarkMatterInterpretation_Dijet_NLO_DK_v3.py script!", default="AllLimits2016Combined_qq_dijet//cards_qq_w2016Sig_DE13_M526_17June2023_rmax9.2/limits_freq_qq_CaloDijet2016.root")
 parser.add_argument("--allComparison", type=bool, help="Compare all Coupling g_q' Limits in one plot!", default=False)
 args = parser.parse_args()
 RootFile2016 = args.RootFile2016
