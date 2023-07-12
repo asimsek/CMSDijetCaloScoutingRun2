@@ -89,8 +89,8 @@ cmsenv
 
 python combineDataCardsFromSplitDatasets.py --cfgFile {3} --total_cfgFile {2}/{5}_{6}_cfg_rMax{9}.txt {11} {12}
 
-xrdcp AllLimits{5}Combined_{6}_{7}/cards_{6}_w2016Sig_DE13_M489_{8}_rmax{9}/limits_freq_{6}_{10}.pdf root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{5}_{6}_{7}/limits_freq_{6}_{10}_M489_rMax{9}.pdf
-xrdcp AllLimits{5}Combined_{6}_{7}/cards_{6}_w2016Sig_DE13_M489_{8}_rmax{9}/limits_freq_{6}_{10}.root root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{5}_{6}_{7}/limits_freq_{6}_{10}_M489_rMax{9}.root
+xrdcp AllLimits{5}Combined_{6}_{7}/cards_{6}_w2016Sig_DE13_M526_{8}_rmax{9}/limits_freq_{6}_{10}.pdf root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{5}_{6}_{7}/limits_freq_{6}_{10}_M526_rMax{9}.pdf
+xrdcp AllLimits{5}Combined_{6}_{7}/cards_{6}_w2016Sig_DE13_M526_{8}_rmax{9}/limits_freq_{6}_{10}.root root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{5}_{6}_{7}/limits_freq_{6}_{10}_M526_rMax{9}.root
 
 echo "starting cleanup..."
 ls -lhtr AllLimits{5}Combined_{6}_{7}/
