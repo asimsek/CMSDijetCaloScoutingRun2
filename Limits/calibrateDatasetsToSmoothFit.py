@@ -4,8 +4,11 @@ import ROOT
 import argparse
 import shutil
 import ConfigParser
+import array
 from ROOT import TFile, TH1F
 from collections import OrderedDict
+import numpy as np
+
 
 # Part 1: Parse the cfgPath file
 def parse_config(line):
@@ -92,22 +95,31 @@ def calculate_calibration_ratio(xsec_dict, ref_xsec_dict):
 
 # Part 6: Apply the calibration ratio to a histogram
 def apply_calibration(histFile1, calibration_ratio_dict, year, outRootFilePath):
-    #for bin in range(1, histFile1.GetNbinsX()+1):
-    for bin in range(500, 5000):
-        bin_content = histFile1.GetBinContent(bin)
-        #bin_center = histFile1.GetBinCenter(bin)
-        bin_center = bin
-        if bin_center in calibration_ratio_dict:
-            calibration_ratio = calibration_ratio_dict[bin_center]
-            new_bin_content = bin_content * calibration_ratio
-            print ("old: %.6f | new: %.6f | kFactor: %.6f" % (bin_content, new_bin_content, calibration_ratio))
-            histFile1.SetBinContent(bin, new_bin_content)
-            # Modify the error bars
-            histFile1.SetBinError(bin, histFile1.GetBinError(bin) * calibration_ratio)
+    massPoints = []
+    for i in calibration_ratio_dict:
+        massPoints.append(i)
+    massPoints.append(2332)
+
+    for x, massPoint in enumerate(massPoints):
+        if massPoint == 2332: continue
+        bin_idx = histFile1.FindBin(massPoint)
+        content = histFile1.GetBinContent(bin_idx)
+        error = histFile1.GetBinError(bin_idx)
+        scale_factor = calibration_ratio_dict[massPoint]
+        histFile1.SetBinContent(bin_idx, content*scale_factor)
+        histFile1.SetBinError(bin_idx, error*scale_factor)
+        print ("Bin:%d-%d | old: %d | new: %.0f | kFactor: %.6f" % (massPoints[x], massPoints[x+1], content, content*scale_factor, scale_factor))
+
+
+    # h_dat = histFile1.Clone("h_dat")
+
     # Write the new histogram to a file
     outFile = TFile(str(outRootFilePath), "RECREATE")
     histFile1.Write()
+    # h_dat.Write()
     outFile.Close()
+
+
 
 # Part 7: Delete fits_ folder which created for calibration ratio
 def delete_latest_directory(prefix, dir_path='.'):
@@ -145,19 +157,17 @@ def create_config_file(year, calibration_ratio_dict, configFile, config):
             new_cfg.set(cfgName, key, value)
 
     # Write the updated config data to a new config file in the current directory
-    with open("{}{}.config".format(configFile, year), "w") as configfile:
+    with open("{}.config".format(configFile), "w") as configfile:
         new_cfg.write(configfile)
 
 def run_createFitsAndLimits(script_path, cfgPath, outFolder, outRootFile, configFile, rMax, signalType, date, year, lumi, config, bf=False, freezeString="", inputmjjNoCalib="", scaled=False):
-    if scaled: cmd = "python3 %s --config_path %s --inputmjj %s/%s --cfgFile %s%s --rMax %s --signalType %s --date %s --year %s --lumi %s --config %s --scaled %s" % (script_path, cfgPath, outFolder, outRootFile, configFile, year, rMax, signalType, date, year, lumi, config, freezeString)
+    if scaled: cmd = "python3 %s --config_path %s --inputmjj %s/%s --cfgFile %s --rMax %s --signalType %s --date %s --year %s --lumi %s --config %s --scaled %s" % (script_path, cfgPath, outFolder, outRootFile, configFile, rMax, signalType, date, year, lumi, config, freezeString)
     else: cmd = "python3 %s --config_path %s --inputmjj %s --cfgFile %s --rMax %s --signalType %s --date %s --year %s --lumi %s --config %s %s" % (script_path, cfgPath, inputmjjNoCalib, configFile, rMax, signalType, date, year, lumi, config, freezeString)
     if bf: cmd += " --bf"
     print (cmd)
     process = subprocess.Popen(cmd, shell=True)
     process.wait()
-    if process.returncode == 0: 
-        if scaled: os.remove("%s%s.config" % (configFile, year))
-        else: os.remove("%s.config" % (configFile))
+    if process.returncode == 0: os.remove("%s.config" % (configFile))
     
 
 if __name__ == "__main__":
@@ -175,6 +185,7 @@ if __name__ == "__main__":
     refConfigFile = "inputFiles/ref2016All_cfg.txt"
     refLumi = 27.224
     ## ref fit prediction comes from python/BinnedFit.py outputs (print)
+    print (" -> Collecting reference values!")
     refVariablesFromSmoothFit_2016All = get_ref_smooth_fit(refConfigFile)
 
     with open(cfgPath, 'r') as f:
@@ -187,7 +198,7 @@ if __name__ == "__main__":
             # read the input mjj root file
             inputmjjNoCalib = str("../inputs/" + inputmjj + "/histo_data_mjj_fromTree.root")
             File1 = TFile.Open(inputmjjNoCalib)
-            histFile1 = File1.Get('h_dat')
+            histFile1 = File1.Get('h_dat_rebin')
 
             print (" -> Collecting calibration values!")
             data_dict = execute_and_parse(script_path, cfgPath, inputmjjNoCalib, configFile, rMax, signalType, date, year, lumi, config, freezeString)
