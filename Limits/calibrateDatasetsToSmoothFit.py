@@ -183,7 +183,7 @@ if __name__ == "__main__":
     # define paths and reference values here
     script_path = "createFitsAndLimits.py"
     refConfigFile = "inputFiles/ref2016All_cfg.txt"
-    refLumi = 27.224
+    refLumi = 27.224973278
     ## ref fit prediction comes from python/BinnedFit.py outputs (print)
     print (" -> Collecting reference values!")
     refVariablesFromSmoothFit_2016All = get_ref_smooth_fit(refConfigFile)
