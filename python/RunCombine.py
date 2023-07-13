@@ -207,8 +207,8 @@ def main(options,args):
 	elif 'CaloDijetSep2016' in box or 'CaloDijetSep2017' in box or 'CaloDijetSep2018' in box:
 	    signalDsName = '%s/inputs/ResonanceShapes_%s_13TeV_CaloScouting_Spring16.root' % (workDir, model)
 
-        histRootFile = "%s/Limits/scaledDijetMassHistoRoots/histo_data_mjj_scaled_%s.root" % (workDir, options.yr) if options.scaled else "%s/inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root" % (workDir, options.yr)
-        histRootFileFull = "%s/Limits/scaledDijetMassHistoRoots/histo_data_mjj_scaled_%s.root" % (workDir, options.yr) if options.scaled else "%s/inputs/CaloScoutingHT%sALL_DatavsQDCMC_DE13_M489_17June2021_1130/histo_data_mjj_fromTree.root" % (workDir, options.yr)
+        histRootFile = "%s/Limits/scaledDijetMassHistoRoots/histo_data_mjj_scaled_%s.root" % (workDir, options.yr) if options.scaled else "%s/inputs/CaloScoutingHT%s_DatavsQDCMC_11June2023_2245/histo_data_mjj_fromTree.root" % (workDir, options.yr)
+        histRootFileFull = "%s/Limits/scaledDijetMassHistoRoots/histo_data_mjj_scaled_%s.root" % (workDir, options.yr) if options.scaled else "%s/inputs/CaloScoutingHT%sALL_DatavsQDCMC_11June2023_2245/histo_data_mjj_fromTree.root" % (workDir, options.yr)
         backgroundDsName = {'CaloDijet%s'%options.yr:"%s" % (histRootFileFull),
                             'CaloDijetSep%s'%options.yr:"%s" % (histRootFile),
                             #'CaloDijet2016':'inputs/data_CaloScoutingHT_Run2016BCDEFG_BiasCorrected_Mjj300_Golden27637pb_CaloDijet2016.root',
