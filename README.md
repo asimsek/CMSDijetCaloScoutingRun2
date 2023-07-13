@@ -627,7 +627,7 @@ python compareCouplingwithHEPData_Ratio.py --RootFile2016 DarkMatterInterpretati
 > Compare all individual years and Full Run II results with HEPData.
 
 ```sh
-python CompareDMInterpretation.py --RootFile2016 DarkMatterInterpretation/2016/R_DarkMatterInterpretation_2016.root --RootFile2017 DarkMatterInterpretation/2017/R_DarkMatterInterpretation_2017.root --RootFile2018 DarkMatterInterpretation/2018/R_DarkMatterInterpretation_2018.root --RootFileRunII DarkMatterInterpretation/RunII/R_DarkMatterInterpretation_RunII.root --xSecLimitRootFile AllLimits2016Combined_qq_dijet//cards_qq_w2016Sig_DE13_M489_17June2023_rmax9.2/limits_freq_qq_CaloDijet2016.root --allComparison True
+python CompareDMInterpretation.py --RootFile2016 DarkMatterInterpretation/2016/R_DarkMatterInterpretation_2016.root --RootFile2017 DarkMatterInterpretation/2017/R_DarkMatterInterpretation_2017.root --RootFile2018 DarkMatterInterpretation/2018/R_DarkMatterInterpretation_2018.root --RootFileRunII DarkMatterInterpretation/RunII/R_DarkMatterInterpretation_RunII.root --xSecLimitRootFile AllLimits2016Combined_qq_dijet//cards_qq_w2016Sig_DE13_M526_17June2023_rmax9.2/limits_freq_qq_CaloDijet2016.root --allComparison True
 ```
 
 
