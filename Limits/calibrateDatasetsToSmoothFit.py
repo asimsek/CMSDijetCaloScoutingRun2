@@ -104,12 +104,13 @@ def apply_calibration(histFile1, calibration_ratio_dict, year, outRootFilePath):
         if massPoint == 2332: continue
         bin_idx = histFile1.FindBin(massPoint)
         content = histFile1.GetBinContent(bin_idx)
+	bin_width = histFile1.GetBinWidth(bin_idx)
         error = histFile1.GetBinError(bin_idx)
         scale_factor = calibration_ratio_dict[massPoint]
         histFile1.SetBinContent(bin_idx, content*scale_factor)
         histFile1.SetBinError(bin_idx, error*scale_factor)
         print ("Bin:%d-%d | old: %d | new: %.0f | kFactor: %.6f" % (massPoints[x], massPoints[x+1], content, content*scale_factor, scale_factor))
-
+        print ("calibDataPred,%d,%.0f,%d" % (massPoints[x], content*scale_factor, bin_width) )
 
     # h_dat = histFile1.Clone("h_dat")
 

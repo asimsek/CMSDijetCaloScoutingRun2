@@ -163,11 +163,7 @@ def calculateChi2AndFillResiduals(data_obs_TGraph_,background_hist_,hist_fit_res
             err_tot_data = err_high_data  
         else:
             err_tot_data = err_low_data
-	if (box == "CaloDijet2016p2017p2018"):
-                err_tot_data = FitMultipliers[bin] / 1000.
-                #err_tot_data = err_tot_data
-        else:
-                err_tot_data = err_tot_data * math.sqrt(FitMultipliers[bin])
+        err_tot_data = err_tot_data * math.sqrt(FitMultipliers[bin])
         plotRegions = plotRegion.split(',')
         checkInRegions = [xbinCenter>workspace_.var('mjj').getMin(reg) and xbinCenter<workspace_.var('mjj').getMax(reg) for reg in plotRegions]
         if effFit_: checkInRegions = [xbinCenter>workspace_.var('mjj').getMin('Eff') and xbinCenter<workspace_.var('mjj').getMax('Eff')]
@@ -179,6 +175,8 @@ def calculateChi2AndFillResiduals(data_obs_TGraph_,background_hist_,hist_fit_res
             err_fit_residual = 0
 
         ## Fill histo with residuals
+        print ("Mass: %d | value_data: %f | value_fit: %f | err_tot_data: %f" % (xbinCenter-(binWidth_current/2), value_data, value_fit, err_tot_data))
+        print ("fitResidualP,%d,%f,%f,%f,%f" % (xbinCenter-(binWidth_current/2), fit_residual, err_tot_data, err_high_data*math.sqrt(FitMultipliers[bin]), err_low_data*math.sqrt(FitMultipliers[bin])))
 
         hist_fit_residual_vsMass_.SetBinContent(bin+1,fit_residual)
         hist_fit_residual_vsMass_.SetBinError(bin+1,err_fit_residual)
@@ -946,13 +944,14 @@ if __name__ == '__main__':
         lastY = 0
         firstX = 0
         firstY = 0
+        multiplier = 2000.
         notSet = True
         for i in range(0,g_signal.GetN()): 
             N = g_signal.GetY()[i]
             binWidth = g_signal.GetEXlow()[i] + g_signal.GetEXhigh()[i]      
             if g_signal.GetX()[i]>float(mass)*0.75 and notSet:                
                 firstX = g_signal.GetX()[i]
-                firstY = N/(binWidth * lumi)
+                firstY = (N*multiplier)/(binWidth * lumi)
                 notSet = False
             
         for i in range(0,g_signal.GetN()):
@@ -961,7 +960,7 @@ if __name__ == '__main__':
             if g_signal.GetX()[i]<=float(mass)*0.75:
                 g_signal.SetPoint(i,firstX,firstY)
             else:
-                g_signal.SetPoint(i, g_signal.GetX()[i], N/(binWidth * lumi))
+                g_signal.SetPoint(i, g_signal.GetX()[i], (N*multiplier)/(binWidth * lumi))
             g_signal.SetPointEYlow(i, 0)
             g_signal.SetPointEYhigh(i, 0)            
             if g_signal.GetX()[i]>float(mass)*1.25:
@@ -1271,9 +1270,10 @@ if __name__ == '__main__':
         sigHistResidual.SetLineWidth(2)
         sigHistResidual.SetLineStyle(style)
         for bin in range (0,g_data.GetN()):
+            xbinCenter = g_data.GetX()[bin]
             value_data = g_data.GetY()[bin]
             err_tot_data = g_data.GetEYhigh()[bin]
-            binWidth = g_data.GetEXlow()[i] + g_data.GetEXhigh()[i]
+            binWidth = g_data.GetEXlow()[bin] + g_data.GetEXhigh()[bin]
             value_signal = sigHist.GetBinContent(bin+1)/(binWidth*lumi)
 	    if (box == "CaloDijet2016p2017p2018"):
                 err_tot_data = FitMultipliers[bin] / 1000.
@@ -1285,7 +1285,7 @@ if __name__ == '__main__':
                 sig_residual = (value_signal) / err_tot_data
             else:
                 sig_residual = 0                                
-    
+   
             ## Fill histo with residuals
             sigHistResidual.SetBinContent(bin+1,sig_residual)
         sigHistResiduals.append(sigHistResidual)
