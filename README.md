@@ -492,6 +492,8 @@ python compareHEPDataAndSplitLimits.py --combined --verbose --year 2016 --signal
 
 
 
+
+
 ### Full Run II Limits
 > If you produce all 2016, 2017 and 2018 dataCards (limits), you can combine them to set full Run II limits.
 
@@ -589,6 +591,34 @@ python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineI
 python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineInputFiles/combineDataCards_RunII.txt --signal gg
 ```
 
+
+------------
+
+#### Combine Fit results from era
+
+> You need to change the year variable inside the `Reading_workspace.C` script and retrieve the fit results from each era.
+
+```sh
+root -l -b -q Reading_workspace.C
+```
+
+> This script will produce root files that we'll use to combine.
+
+> When you produce all the results for eras use `Plot_Combined_All.C` script to combine fits for 2016, 2017, 2018 and RunII.
+
+> You need to change `Fullyear` variable inside the `Plot_Combined_All.C` script.
+
+```sh
+root -l -b -q Plot_Combined_All.C
+```
+
+#### Compare Cross-Sections
+
+> Change the `Fullyear`variable inside the `Compare_XsecFits` script.
+
+```sh
+root -l -b -q Compare_XsecFits.C
+```
 
 
 ------------
