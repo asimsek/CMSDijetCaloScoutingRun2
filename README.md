@@ -596,7 +596,7 @@ python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineI
 
 #### Combine Fit results from era
 
-> You need to change the year variable inside the `Reading_workspace.C` script and retrieve the fit results from each era.
+> You need to change the `year` variable inside the `Reading_workspace.C` script and retrieve the fit results from each era.
 
 ```sh
 root -l -b -q Reading_workspace.C
