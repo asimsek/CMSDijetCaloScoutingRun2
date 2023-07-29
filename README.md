@@ -614,7 +614,7 @@ root -l -b -q Plot_Combined_All.C
 
 #### Compare Cross-Sections
 
-> Change the `Fullyear`variable inside the `Compare_XsecFits` script.
+> Change the `Fullyear`variable inside the `Compare_XsecFits` script. [2016, 2017, 2018, RunII]
 
 ```sh
 root -l -b -q Compare_XsecFits.C
