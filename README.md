@@ -594,7 +594,7 @@ python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineI
 
 ------------
 
-#### Combine Fit results from era
+#### Combine Fit results from all data eras
 
 > You need to change the `year` variable inside the `Reading_workspace.C` script and retrieve the fit results from each era.
 
@@ -606,7 +606,7 @@ root -l -b -q Reading_workspace.C
 
 > When you produce all the results for eras use `Plot_Combined_All.C` script to combine fits for 2016, 2017, 2018 and RunII.
 
-> You need to change `Fullyear` variable inside the `Plot_Combined_All.C` script.
+> You need to change `Fullyear` variable inside the `Plot_Combined_All.C` script.
 
 ```sh
 root -l -b -q Plot_Combined_All.C
@@ -614,7 +614,7 @@ root -l -b -q Plot_Combined_All.C
 
 #### Compare Cross-Sections
 
-> Change the `Fullyear`variable inside the `Compare_XsecFits` script. [2016, 2017, 2018, RunII]
+> Change the `Fullyear`variable inside the `Compare_XsecFits` script. [2016, 2017, 2018, RunII]
 
 ```sh
 root -l -b -q Compare_XsecFits.C
