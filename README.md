@@ -622,6 +622,8 @@ root -l -b -q Plot_Combined_All.C
 ```sh
 cd combinedFitResults
 hadd DijetFitResult_CaloDijetSep2016.root DijetFitResult_CaloDijetSep2016B.root DijetFitResult_CaloDijetSep2016C.root DijetFitResult_CaloDijetSep2016D.root DijetFitResult_CaloDijetSep2016E.root DijetFitResult_CaloDijetSep2016F.root DijetFitResult_CaloDijetSep2016G.root
+hadd DijetFitResult_CaloDijetSep2017.root DijetFitResult_CaloDijetSep2017C.root DijetFitResult_CaloDijetSep2017D.root DijetFitResult_CaloDijetSep2017E.root DijetFitResult_CaloDijetSep2017F.root
+hadd DijetFitResult_CaloDijetSep2018.root DijetFitResult_CaloDijetSep2018A.root DijetFitResult_CaloDijetSep2018B.root DijetFitResult_CaloDijetSep2018C.root DijetFitResult_CaloDijetSep2018D.root
 ```
 
 
