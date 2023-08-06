@@ -599,6 +599,7 @@ python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineI
 > You need to change the `year` variable inside the `Reading_workspace.C` script and retrieve the fit results from each era.
 
 ```sh
+mkdir -p combinedFitResults
 root -l -b -q Reading_workspace.C
 ```
 
@@ -617,6 +618,12 @@ root -l -b -q Plot_Combined_All.C
 > Change the `Fullyear` variable inside the `Compare_XsecFits` script. [2016, 2017, 2018, RunII]
 
 > For RunII, you need to use hadd and merge the fit results from the `Reading_workspace.C` script!
+
+```sh
+cd combinedFitResults
+hadd DijetFitResult_CaloDijetSep2016.root DijetFitResult_CaloDijetSep2016B.root DijetFitResult_CaloDijetSep2016C.root DijetFitResult_CaloDijetSep2016D.root DijetFitResult_CaloDijetSep2016E.root DijetFitResult_CaloDijetSep2016F.root DijetFitResult_CaloDijetSep2016G.root
+```
+
 
 ```sh
 root -l -b -q Compare_XsecFits.C
