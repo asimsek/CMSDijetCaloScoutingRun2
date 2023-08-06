@@ -616,6 +616,8 @@ root -l -b -q Plot_Combined_All.C
 
 > Change the `Fullyear` variable inside the `Compare_XsecFits` script. [2016, 2017, 2018, RunII]
 
+> For RunII, you need to use hadd and merge the fit results from the `Reading_workspace.C` script!
+
 ```sh
 root -l -b -q Compare_XsecFits.C
 ```
