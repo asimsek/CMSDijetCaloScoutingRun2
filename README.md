@@ -384,7 +384,7 @@ rMax,signalType,configFile,date,year,lumi,config,inputmjj
 > Perform ONLY BG-Only cross-section fit (by adding `--bf` argument)
 
 ```sh
-python3 createFitsAndLimits.py --config_path inputFiles/allRunIILimits_cfg.txt --bf
+python3 createFitsAndLimits.py --config_path inputFiles/allRunIILimits_cfg.txt --scaled --bf
 ```
 
 > If you would like to calibrate dataset and match the cros section of each individual year/era, to a reference cross section (default 2016 full dataset cross section), use the following command line and give the same config file as an argument
