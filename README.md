@@ -16,7 +16,7 @@ git clone -b dijetpdf_102X https://github.com/RazorCMS/HiggsAnalysis-CombinedLim
 cd HiggsAnalysis/CombinedLimit
 source env_standalone.sh
 make -j 8; make  # second make fixes compilation error of first
-cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer
+cd $CMSSW_BASE/src/CMSDIJET/DijetRootTreeAnalyzer
 ```
 
 
@@ -179,7 +179,7 @@ python3 condor_submit_Data.py --config inputFiles_QCDMC/QCD_Pt_3200toInf_2017_cf
 #### Scouting Calo Commissioning
 
 ```sh
-cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/lists/reducedNTuples
+cd $CMSSW_BASE/src/CMSDIJET/DijetRootTreeAnalyzer/lists/reducedNTuples
 mkdir -p ScoutingCaloCommissioning
 cd ScoutingCaloCommissioning
 ```
@@ -226,7 +226,7 @@ ls -1v /eos/uscms/store/group/lpcjj/CaloScouting/rootTrees_reduced/2018/Scouting
 
 
 ```sh
-cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/lists/reducedNTuples
+cd $CMSSW_BASE/src/CMSDIJET/DijetRootTreeAnalyzer/lists/reducedNTuples
 mkdir -p ScoutingCaloHT
 cd ScoutingCaloHT
 ```
@@ -309,7 +309,7 @@ hadd -T ScoutingCaloHT_Run2018ALL_NoTree_reduced_skim.root /eos/uscms/store/user
 ##### Produce Trigger Efficiency Plots
 
 ```sh
-cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/scripts
+cd $CMSSW_BASE/src/CMSDIJET/DijetRootTreeAnalyzer/scripts
 ```
 
 ```sh
@@ -481,7 +481,7 @@ python condorCombineDataCardsForMultipRMax.py --cfgPath inputFiles/allRunIILimit
 
 
 ```sh
-cd $CMSSW_BASE/CMSDIJET/DijetRootTreeAnalyzer/scripts
+cd $CMSSW_BASE/src/CMSDIJET/DijetRootTreeAnalyzer/scripts
 ```
 
 ```sh
