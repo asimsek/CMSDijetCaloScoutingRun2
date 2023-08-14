@@ -637,11 +637,20 @@ root -l -b -q 'Plot_Combined_All.C("RunII")'
 
 > For RunII, you need to use hadd and merge the fit results from the `Reading_workspace.C` script!
 
+
 ```sh
-cd combinedFitResults
+cd $CMSSW_BASE/src/CMSDIJET/DijetRootTreeAnalyzer/Limits/combinedFitResults
+```
+
+```sh
 hadd DijetFitResult_CaloDijetSep2016.root DijetFitResult_CaloDijetSep2016B.root DijetFitResult_CaloDijetSep2016C.root DijetFitResult_CaloDijetSep2016D.root DijetFitResult_CaloDijetSep2016E.root DijetFitResult_CaloDijetSep2016F.root DijetFitResult_CaloDijetSep2016G.root
 hadd DijetFitResult_CaloDijetSep2017.root DijetFitResult_CaloDijetSep2017C.root DijetFitResult_CaloDijetSep2017D.root DijetFitResult_CaloDijetSep2017E.root DijetFitResult_CaloDijetSep2017F.root
 hadd DijetFitResult_CaloDijetSep2018.root DijetFitResult_CaloDijetSep2018A.root DijetFitResult_CaloDijetSep2018B.root DijetFitResult_CaloDijetSep2018C.root DijetFitResult_CaloDijetSep2018D.root
+```
+
+
+```sh
+cd $CMSSW_BASE/src/CMSDIJET/DijetRootTreeAnalyzer/Limits
 ```
 
 
