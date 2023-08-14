@@ -605,12 +605,12 @@ root -l -b -q 'Reading_workspace.C("2016C")'
 
 > This script will produce root files that we'll use to combine.
 
-> When you produce all the results for eras use `Plot_Combined_All.C` script to combine fits for 2016, 2017, 2018 and RunII.
+> When you produce all the results for eras, use `Plot_Combined_All.C` script to combine fits for 2016, 2017, 2018, and RunII.
 
-> You need to change `Fullyear` variable inside the `Plot_Combined_All.C` script.
+> You need to change `Fullyear` argument when you execute the `Plot_Combined_All.C` script.
 
 ```sh
-root -l -b -q Plot_Combined_All.C
+root -l -b -q 'Plot_Combined_All.C("2016")'
 ```
 
 #### Compare Cross-Sections
