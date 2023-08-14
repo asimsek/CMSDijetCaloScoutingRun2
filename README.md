@@ -596,11 +596,11 @@ python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineI
 
 #### Combine Fit results from all data eras
 
-> You need to change the `year` variable inside the `Reading_workspace.C` script and retrieve the fit results from each era.
+> You need to change the `year` argument when you execute the `Reading_workspace.C` script and retrieve the fit results from each era.
 
 ```sh
 mkdir -p combinedFitResults
-root -l -b -q Reading_workspace.C
+root -l -b -q 'Reading_workspace.C("2016C")'
 ```
 
 > This script will produce root files that we'll use to combine.
