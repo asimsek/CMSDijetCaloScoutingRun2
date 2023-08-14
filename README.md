@@ -646,7 +646,10 @@ hadd DijetFitResult_CaloDijetSep2018.root DijetFitResult_CaloDijetSep2018A.root 
 
 
 ```sh
-root -l -b -q Compare_XsecFits.C
+root -l -b -q 'Compare_XsecFits.C("2016")'
+root -l -b -q 'Compare_XsecFits.C("2017")'
+root -l -b -q 'Compare_XsecFits.C("2018")'
+root -l -b -q 'Compare_XsecFits.C("RunII")'
 ```
 
 
