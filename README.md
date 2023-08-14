@@ -600,7 +600,22 @@ python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineI
 
 ```sh
 mkdir -p combinedFitResults
+root -l -b -q 'Reading_workspace.C("2016B")'
 root -l -b -q 'Reading_workspace.C("2016C")'
+root -l -b -q 'Reading_workspace.C("2016D")'
+root -l -b -q 'Reading_workspace.C("2016E")'
+root -l -b -q 'Reading_workspace.C("2016F")'
+root -l -b -q 'Reading_workspace.C("2016G")'
+
+root -l -b -q 'Reading_workspace.C("2017C")'
+root -l -b -q 'Reading_workspace.C("2017D")'
+root -l -b -q 'Reading_workspace.C("2017E")'
+root -l -b -q 'Reading_workspace.C("2017F")'
+
+root -l -b -q 'Reading_workspace.C("2018A")'
+root -l -b -q 'Reading_workspace.C("2018B")'
+root -l -b -q 'Reading_workspace.C("2018C")'
+root -l -b -q 'Reading_workspace.C("2018D")'
 ```
 
 > This script will produce root files that we'll use to combine.
@@ -611,6 +626,9 @@ root -l -b -q 'Reading_workspace.C("2016C")'
 
 ```sh
 root -l -b -q 'Plot_Combined_All.C("2016")'
+root -l -b -q 'Plot_Combined_All.C("2017")'
+root -l -b -q 'Plot_Combined_All.C("2018")'
+root -l -b -q 'Plot_Combined_All.C("RunII")'
 ```
 
 #### Compare Cross-Sections
