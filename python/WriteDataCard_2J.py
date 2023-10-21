@@ -48,8 +48,9 @@ def initializeWorkspace(w,cfg,box,scaleFactor=1.,penalty=False,multi=True,x=None
         
     constPars = ['sqrts', 'sqrts5', 'p50_%s'%box, 'sqrtsm', 'p0_%s'%box, 'sqrtsa','sqrtse', 'pa0_%s'%box]
     if w.var('meff_%s'%box).getVal()<0 and w.var('seff_%s'%box).getVal()<0:
+         constPars.extend(['meff_%s'%box,'seff_%s'%box])
          #constPars.extend(['meff_%s'%box,'seff_%s'%box, 'p0_%s'%box, 'p1_%s'%box, 'p2_%s'%box,  'pm3_%s'%box,  'pm4_%s'%box])#edw!!!!
-          constPars.extend(['meff_%s'%box,'seff_%s'%box,  'p3_%s'%box, 'p4_%s'%box,   'pm3_%s'%box, 'pm4_%s'%box, 'pa3_%s'%box,'pa4_%s'%box ,'pe4_%s'%box])
+         #constPars.extend(['meff_%s'%box,'seff_%s'%box,  'p3_%s'%box, 'p4_%s'%box,   'pm3_%s'%box, 'pm4_%s'%box, 'pa3_%s'%box,'pa4_%s'%box ,'pe4_%s'%box])
     if  w.var('pa4_%s'%box)!=None and w.var('pa4_%s'%box).getVal()==0:
         constPars.extend(['pa4_%s'%box])
     if  w.var('pm3_%s'%box)!=None and w.var('pm3_%s'%box).getVal()==0:
@@ -59,12 +60,15 @@ def initializeWorkspace(w,cfg,box,scaleFactor=1.,penalty=False,multi=True,x=None
     if  w.var('p2_%s'%box)!=None and w.var('p2_%s'%box).getVal()==0:
         constPars.extend(['p2_%s'%box])
  
-    
+    print (parameters)
         
     for parameter in parameters:
         paramName = parameter.split('[')[0]
         if paramName not in constPars:
             paramNames.append(paramName)
+            #print (paramName)
+            if penalty and '_norm' in paramName:
+		continue
             w.var(paramName).setConstant(False)
             
         # float normalization parameters
@@ -240,7 +244,8 @@ def writeDataCard(box,model,txtfileName,bkgs,paramNames,w,penalty,fixed,shapes=[
                 fixPars(w,paramName)    
             elif 'Mean' in paramName or 'Sigma' in paramName:
                 fixPars(w,paramName)           
-            elif penalty:                    
+            elif penalty and 'pdf_index' not  in paramName: 
+                if '_norm' in paramName: continue
                 mean = w.var(paramName).getVal()
                 sigma = w.var(paramName).getError()                
                 if "Ntot" in paramName:                    

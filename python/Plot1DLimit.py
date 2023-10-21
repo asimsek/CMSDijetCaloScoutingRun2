@@ -13,6 +13,7 @@ def getThyXsecDict():
     for xsecFile in xsecFiles:
         moreThyModels = []
         xsecFileWithPath = workDir + xsecFile
+        #print (xsecFileWithPath)
         f = open(xsecFileWithPath)
         for i,line in enumerate(f.readlines()):
             if line[0]=='#': continue
@@ -475,7 +476,7 @@ if __name__ == '__main__':
     model = models[0]
     directory      = options.outDir
     Box = Boxes[0]
-    box = Box.lower()
+    box = Box
     
     
     thyXsecDict = getThyXsecDict() 
@@ -988,16 +989,26 @@ if __name__ == '__main__':
     #c.SetLogx()    
     c.RedrawAxis() # request from David
     if options.doSignificance:
-        c.SaveAs(options.outDir+"/signif_"+options.model+"_"+options.box.lower()+".pdf")
-        c.SaveAs(options.outDir+"/signif_"+options.model+"_"+options.box.lower()+".C")
+        c.SaveAs(options.outDir+"/signif_"+options.model+"_"+options.box+".pdf")
+        c.SaveAs(options.outDir+"/signif_"+options.model+"_"+options.box+".C")
+        outFile = rt.TFile.Open(options.outDir+"/signif_"+options.model+"_"+options.box+".root","recreate")
+        outFile.cd()
+        c.Write()
+        graphDict = {}
+        graphDict['obs'] = gr_observedLimit
+        for limitType, graphs in graphDict.iteritems():
+            for (Box,model), graph in graphs.iteritems():
+                graph.SetName('%s_%s_%s'%(limitType,model,Box))
+                graph.Write()
+        outFile.Close()
     else:
         if options.bayes:
             if options.noSys:
-                c.SaveAs(options.outDir+"/limits_bayes_nosys_"+options.model+"_"+options.box.lower()+".pdf")
-                c.SaveAs(options.outDir+"/limits_bayes_nosys_"+options.model+"_"+options.box.lower()+".C")
+                c.SaveAs(options.outDir+"/limits_bayes_nosys_"+options.model+"_"+options.box+".pdf")
+                c.SaveAs(options.outDir+"/limits_bayes_nosys_"+options.model+"_"+options.box+".C")
             else:
-                c.SaveAs(options.outDir+"/limits_bayes_"+options.model+"_"+options.box.lower()+".pdf")
-                c.SaveAs(options.outDir+"/limits_bayes_"+options.model+"_"+options.box.lower()+".C")
+                c.SaveAs(options.outDir+"/limits_bayes_"+options.model+"_"+options.box+".pdf")
+                c.SaveAs(options.outDir+"/limits_bayes_"+options.model+"_"+options.box+".C")
         else:
             if options.noSys:
                 c.SaveAs(options.outDir+"/limits_freq_nosys_"+options.model+"_"+options.box+".pdf")
@@ -1015,5 +1026,5 @@ if __name__ == '__main__':
                 graphDict['exp2sigma'] = gr_expectedLimit2sigma
                 for limitType, graphs in graphDict.iteritems(): 
                     for (Box,model), graph in graphs.iteritems():
-                        graph.SetName('%s_%s_%s'%(limitType,model,Box.lower()))
+                        graph.SetName('%s_%s_%s'%(limitType,model,Box))
                         graph.Write()

@@ -86,6 +86,15 @@ Limits/ComparisonOfFullNuisancesvsStatOnlyLimit
 Limits/ComparisonOfNewAndOldLimit
 Limits/old
 Limits/combinedFitResults
+Limits_*
+config_backup
+EnvelopeMethod/DeltaNLLPlots
+EnvelopeMethod/AllLimits*
+EnvelopeMethod/SignificanceResults
+inputs/2332GeV_mjj
+config/_*.config
+
+
 
 # Don't ignore #
 ################

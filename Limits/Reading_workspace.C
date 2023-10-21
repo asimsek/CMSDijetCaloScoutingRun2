@@ -19,7 +19,8 @@
 using namespace RooFit;
 using namespace std;
 
-void Reading_workspace() {
+void Reading_workspace(const std::string& year) {
+//void Reading_workspace(){
 
 const int nMassBins=102;
 double massBoundaries[nMassBins+1] = {1, 3, 6, 10, 16, 23, 31, 40, 50, 61, 74, 88, 103, 119, 137, 156, 176, 197, 220, 244, 270, 296, 325,
@@ -28,7 +29,7 @@ double massBoundaries[nMassBins+1] = {1, 3, 6, 10, 16, 23, 31, 40, 50, 61, 74, 8
      4509, 4686, 4869, 5058, 5253, 5455, 5663, 5877, 6099, 6328, 6564, 6808, 7060, 7320, 7589, 7866, 8152, 8752, 9067, 9391, 9726, 10072,
      10430, 10798, 11179, 11571, 11977, 12395, 12827, 13272, 13732, 14000};
 
-std::string year = "2018D";
+//std::string year = "2016B";
 std::string sepText = "Sep";
 std::stringstream ss0;
 ss0 << "CaloDijet" << sepText << year;
@@ -64,6 +65,11 @@ std::stringstream mjjRootFile;
 mjjRootFile << "scaledDijetMassHistoRoots/histo_data_mjj_scaled_" << year << ".root";
 TFile* dataFile = new TFile(mjjRootFile.str().c_str());
 TH1D* h_dat_rebin = (TH1D*) dataFile->Get("h_dat_rebin");
+
+double xmin = h_dat_rebin->GetXaxis()->GetXmin();
+double xmax = 2132;
+
+h_dat_rebin->GetXaxis()->SetRangeUser(xmin, xmax);
 
 double scaleFactor = h_dat_rebin->Integral();
 unbinned->Scale(scaleFactor);

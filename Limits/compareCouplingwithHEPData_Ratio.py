@@ -4,7 +4,7 @@ from ROOT import *
 from array import *
 import os
 import math
-import urllib, json
+import urllib2, json
 import setTDRStyle
 import numpy as np
 
@@ -111,7 +111,10 @@ Exp1X_RunII, Exp1Y_RunII = histRootExpRunII_.GetX(), histRootExpRunII_.GetY()
 ############# Read Data from HEPData JSON File ##############
 if verbose:
 	print ("\033[91m -> Reading data from JSON File: \033[0m" + str(JsonFileURL))
-response = urllib.urlopen(JsonFileURL)
+
+headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3' }
+request = urllib2.Request(JsonFileURL, headers=headers)
+response = urllib2.urlopen(request)
 data = json.loads(response.read())
 
 obsHEPData2016_ = []

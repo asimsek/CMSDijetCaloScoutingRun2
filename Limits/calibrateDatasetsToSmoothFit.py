@@ -98,10 +98,10 @@ def apply_calibration(histFile1, calibration_ratio_dict, year, outRootFilePath):
     massPoints = []
     for i in calibration_ratio_dict:
         massPoints.append(i)
-    massPoints.append(2332)
+    massPoints.append(2132)
 
     for x, massPoint in enumerate(massPoints):
-        if massPoint == 2332: continue
+        if massPoint == 2132: continue
         bin_idx = histFile1.FindBin(massPoint)
         content = histFile1.GetBinContent(bin_idx)
 	bin_width = histFile1.GetBinWidth(bin_idx)
@@ -183,7 +183,8 @@ if __name__ == "__main__":
     freezeString = "--freezeParameters" if args.freezeParameters else ""
     # define paths and reference values here
     script_path = "createFitsAndLimits.py"
-    refConfigFile = "inputFiles/ref2016All_cfg.txt"
+    #refConfigFile = "inputFiles/ref2016All_cfg.txt"
+    refConfigFile = "inputFiles/ref2016All_ATLAS_cfg.txt"
     refLumi = 27.224973278
     ## ref fit prediction comes from python/BinnedFit.py outputs (print)
     print (" -> Collecting reference values!")

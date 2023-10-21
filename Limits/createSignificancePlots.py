@@ -9,7 +9,7 @@ import pandas as pd
 def createSignificance(cfgFile, year, signal, fromCombined):
     # Variables
     outputFolder = "SignificanceResults"
-    begin, end, step = 550, 2300, 50 
+    begin, end, step = 550, 2100, 50 
     combineText = 'Combined' if fromCombined else ''
 
     cmssw_dir = os.environ['CMSSW_BASE']

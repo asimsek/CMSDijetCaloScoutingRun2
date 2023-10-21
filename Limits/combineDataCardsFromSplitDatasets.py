@@ -37,7 +37,7 @@ def main(args):
     combined = "Combined" if (args.fromCombined) else ""
     freezeString = ""
     # Iterate over the mass range
-    for mass in range(500, 2350, 50):
+    for mass in range(550, 2150, 50):
         dataCards = []
         nuisances = ""
         # Iterate over the rows of the filtered dataframe
@@ -72,7 +72,7 @@ def main(args):
         os.system(cmdMoveCombinedRoot)
 
     
-    cmdRest1 = "python {0}/python/GetCombine.py -d {0}/Limits/{1} -m {2} --mass range\\(500,2350,50\\) -b {3} --xsec 10.0 -l {4}".format(workDir, FolderNew, args.signal, args.box, str(args.total_lumi))
+    cmdRest1 = "python {0}/python/GetCombine.py -d {0}/Limits/{1} -m {2} --mass range\\(550,2150,50\\) -b {3} --xsec 10.0 -l {4}".format(workDir, FolderNew, args.signal, args.box, str(args.total_lumi))
     cmdRest2 = "python {0}/python/Plot1DLimit.py -d {0}/Limits/{1} -m {2} -b {3} -l {4} --massMin 600 --massMax 1800 --xsecMin 1e-5 --xsecMax 1e5".format(workDir, FolderNew, args.signal, args.box, str(args.total_lumi))
     os.system(cmdRest1)
     os.system(cmdRest2)

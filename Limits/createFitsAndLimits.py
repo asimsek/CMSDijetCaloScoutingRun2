@@ -37,7 +37,7 @@ def execute_commands(args, rMax, signalType, configFile, date, year, lumi, confi
         subprocess.run([
             "python", f"{workDir}/python/RunCombine.py", "-c", f"{cfgFilePath}", "-m", signalType, "-d",
             outputLimitFolder + f"/cards_{signalType}_w2016Sig_DE13_M{mass}_{date}_rmax{rMax}", "--mass",
-            "range(500,2350,50)", "-i", outputFitFolder + f"/DijetFitResults_{config}.root", "-b", config,
+            "range(550,2150,50)", "-i", outputFitFolder + f"/DijetFitResults_{config}.root", "-b", config,
             "--rMax", str(rMax), "--xsec", str(xsecSignal), "-l", str(lumi2), "--yr", year, scaledtxt, freezeString
         ])
 
@@ -45,7 +45,7 @@ def execute_commands(args, rMax, signalType, configFile, date, year, lumi, confi
         subprocess.run([
             "python", f"{workDir}/python/GetCombine.py", "-d",
             outputLimitFolder + f"/cards_{signalType}_w2016Sig_DE13_M{mass}_{date}_rmax{rMax}", "-m", signalType, "--mass",
-            "range(500,2350,50)", "-b", config, "--xsec", str(xsecSignal), "-l", str(lumi2)
+            "range(550,2150,50)", "-b", config, "--xsec", str(xsecSignal), "-l", str(lumi2)
         ])
 
         print(" -> Plotting process has been started! \n")

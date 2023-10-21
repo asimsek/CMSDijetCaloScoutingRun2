@@ -73,7 +73,7 @@ iPeriod = 0
 #####################################################
 
 minX_mass = 526
-maxX_mass = 2332
+maxX_mass = 2132
 
 # Problem between 321712 & 322040 | Run2018D
 # Main Trigger is HT250

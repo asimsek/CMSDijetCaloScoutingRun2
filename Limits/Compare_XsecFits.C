@@ -20,7 +20,7 @@
 #include "TLatex.h"
 #include "setTDRStyle.C"
 
-void Compare_XsecFits(){
+void Compare_XsecFits(const std::string& Fullyear){
 
     setTDRStyle();
 
@@ -35,7 +35,7 @@ void Compare_XsecFits(){
                     {27224.973278, 35449.914768, 54451.729361}}}
     };
 
-    std::string Fullyear = "RunII";
+    //std::string Fullyear = "RunII";
     std::vector<std::string> years = data[Fullyear].first;
     std::vector<double> lumis = data[Fullyear].second;
 
@@ -43,7 +43,7 @@ void Compare_XsecFits(){
     std::vector<int> colors = { kBlue, kOrange, kGreen, kMagenta, 36, 48, kYellow, kCyan, kViolet, kAzure };
 
     double startit      = 526.;
-    double endit        = 2332.;
+    double endit        = 2132.;
     double startit_RM   = 526.;
 
     Char_t image_name[1024];

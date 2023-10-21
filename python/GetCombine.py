@@ -88,6 +88,8 @@ if __name__ == '__main__':
                   help="for toys instead of asymptotic")
     parser.add_option('--xsec',dest="xsec",default=1,type="float",
                   help="reference xsec")
+    parser.add_option('--multi',dest="doMultiPDF",default=False,action='store_true',
+                  help="Envelope")
 
     (options,args) = parser.parse_args()
 
@@ -99,7 +101,7 @@ if __name__ == '__main__':
     doSignificance = options.doSignificance
     bayes = options.bayes
     refXsec = options.xsec
-    
+    doMultiPDF = options.doMultiPDF
 
     boxes = boxInput.split('_')
 
@@ -137,8 +139,12 @@ if __name__ == '__main__':
             if not glob.glob(getFileName("higgsCombine",massPoint,boxInput,model,lumi,directory,"MarkovChainMC",0)): continue
             print "INFO: opening %s"%(getFileName("higgsCombine",massPoint,boxInput,model,lumi,directory,"MarkovChainMC",0))
             tFile = rt.TFile.Open(getFileName("higgsCombine",massPoint,boxInput,model,lumi,directory,"MarkovChainMC",0))
+        elif doMultiPDF:
+            if not glob.glob(getFileName("higgsCombineEnvelope_",massPoint,boxInput,model,lumi,directory,"MultiDimFit",0)): continue
+            print "INFO: opening %s"%(getFileName("higgsCombineEnvelope_",massPoint,boxInput,model,lumi,directory,"MultiDimFit",0))
+            tFile = rt.TFile.Open(getFileName("higgsCombineEnvelope_",massPoint,boxInput,model,lumi,directory,"MultiDimFit",0))
         else:
-            if not glob.glob(getFileName("higgsCombine",massPoint,boxInput,model,lumi,directory,"Asymptotic",0)): continue
+            #if not glob.glob(getFileName("higgsCombine",massPoint,boxInput,model,lumi,directory,"Asymptotic",0)): continue
             print "INFO: opening %s"%(getFileName("higgsCombine",massPoint,boxInput,model,lumi,directory,"Asymptotic",0))
             tFile = rt.TFile.Open(getFileName("higgsCombine",massPoint,boxInput,model,lumi,directory,"Asymptotic",0))
 
@@ -239,7 +245,6 @@ if __name__ == '__main__':
         limits.reverse()
         print massPoint
         print limits
-        
         haddOutput = writeXsecTree(boxInput, model, directory, massPoint, [limits[0]],[limits[1]],[limits[2]],[limits[3]],[limits[4]],[limits[5]])
         haddOutputs.append(haddOutput)
 

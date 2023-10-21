@@ -865,7 +865,7 @@ if __name__ == '__main__':
     #paper 
     pad_1.SetPad(0.01,0.37,0.99,0.98)
     pad_1.SetLogy()
-    if 'PF' in box or w.var('mjj').getMax() > 2332:
+    if 'PF' in box or w.var('mjj').getMax() > 2132:
         if not options.linearX: 
             pad_1.SetLogx()
     pad_1.SetRightMargin(0.05)
@@ -885,7 +885,7 @@ if __name__ == '__main__':
     pad_2.SetRightMargin(0.05)
     #pad_2.SetGridx()
     #pad_2.SetGridy()
-    if 'PF' in box or w.var('mjj').getMax() > 2332:
+    if 'PF' in box or w.var('mjj').getMax() > 2132:
         if not options.linearX: 
           pad_2.SetLogx()
 
@@ -918,7 +918,7 @@ if __name__ == '__main__':
         myRebinnedDensityTH1.SetMinimum(2e-8)
     elif 'Calo' in box:
         myRebinnedDensityTH1.SetMaximum(2e4)
-        if w.var('mjj').getMax() > 2332:            
+        if w.var('mjj').getMax() > 2132:            
             myRebinnedDensityTH1.SetMaximum(20)
             myRebinnedDensityTH1.SetMinimum(2e-8)
         else:
@@ -1013,7 +1013,7 @@ if __name__ == '__main__':
         if 'PF' in box:
             leg.AddEntry(g_signal,"%s (%.1f TeV)"%(model,float(mass)/1000.),"l")
         elif 'Calo' in box:
-            if w.var('mjj').getMax() > 2332:
+            if w.var('mjj').getMax() > 2132:
                 leg.AddEntry(g_signal,"%s (%.1f TeV)"%(model,float(mass)/1000.),"l")
             else:    
                 leg.AddEntry(g_signal,"%s (%.2f TeV)"%(model,float(mass)/1000.),"l")   
@@ -1036,7 +1036,7 @@ if __name__ == '__main__':
 
     if 'Calo' in box:
         pave_sel.AddText("Wide Calo-jets")
-        if w.var('mjj').getMax() > 2332:
+        if w.var('mjj').getMax() > 2132:
             #pave_sel.AddText("%.1f < m_{jj} < %.1f TeV"%(w.var('mjj').getMin('Low')/1000.,w.var('mjj').getMax('High')/1000.))
             pave_sel.AddText("m_{jj} > %.2f TeV"%(w.var('mjj').getMin('Low')/1000.))
         else:
@@ -1193,7 +1193,7 @@ if __name__ == '__main__':
     line = rt.TLine(h_fit_residual_vs_mass.GetXaxis().GetXmin(),0,h_fit_residual_vs_mass.GetXaxis().GetXmax(),0) 
     line.Draw("same")
     
-    if 'PF' in box or w.var('mjj').getMax() > 2332:        
+    if 'PF' in box or w.var('mjj').getMax() > 2132:        
         # PAS
         #h_fit_residual_vs_mass.GetXaxis().SetTitle('Dijet Mass [TeV]')
         # paper
@@ -1258,7 +1258,7 @@ if __name__ == '__main__':
         xLab.DrawLatex(1600, -4, "1.6")
         xLab.DrawLatex(1800, -4, "1.8")
         xLab.DrawLatex(2000, -4, "2")
-	xLab.DrawLatex(2200, -4, "2.2")
+	#xLab.DrawLatex(2100, -4, "2.1")
         #rt.gPad.RedrawAxis()
         #rt.gPad.Update()
 
@@ -1275,11 +1275,7 @@ if __name__ == '__main__':
             err_tot_data = g_data.GetEYhigh()[bin]
             binWidth = g_data.GetEXlow()[bin] + g_data.GetEXhigh()[bin]
             value_signal = sigHist.GetBinContent(bin+1)/(binWidth*lumi)
-	    if (box == "CaloDijet2016p2017p2018"):
-                err_tot_data = FitMultipliers[bin] / 1000.
-                #err_tot_data = err_tot_data
-            else:
-                err_tot_data = err_tot_data * math.sqrt(FitMultipliers[bin]) 
+            err_tot_data = err_tot_data * math.sqrt(FitMultipliers[bin]) 
             ## Signal residuals
             if err_tot_data>0:                
                 sig_residual = (value_signal) / err_tot_data

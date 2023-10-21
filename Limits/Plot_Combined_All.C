@@ -21,7 +21,8 @@
 #include "setTDRStyle.C"
 #include <iomanip>
 
-void Plot_Combined_All(){
+void Plot_Combined_All(const std::string& Fullyear){
+//void Plot_Combined_All(){
     setTDRStyle();
 
     std::map<std::string, std::pair<std::vector<std::string>, std::vector<double>>> data = {
@@ -35,24 +36,26 @@ void Plot_Combined_All(){
                     {5704.216707, 2572.903489, 4242.291557, 4025.228137, 3104.509132, 7575.824256, 8377.067561, 4247.682094, 9285.786621, 13539.378492, 13974.656080, 7057.396004, 6894.770971, 26524.906306}}}
     };
    
-    std::string Fullyear = "RunII";
+    //std::string Fullyear = "2016";
     std::vector<std::string> years = data[Fullyear].first;
     std::vector<double> lumis = data[Fullyear].second; 
 
     double lumi = std::accumulate(lumis.begin(), lumis.end(), 0.0);
 
     double startit	= 526.;
-    double endit	= 2332.;
+    double endit	= 2132.;
     double startit_RM   = 526.;
 
     Char_t image_name[1024];
     sprintf(image_name,"_%sAll",Fullyear.c_str());
 
+    
     double massBoundaries[104] = {1, 3, 6, 10, 16, 23, 31, 40, 50, 61, 74, 88, 103, 119, 137, 156, 176, 197, 220, 244, 270, 296, 325,
      354, 386, 419, 453, 489, 526, 565, 606, 649, 693, 740, 788, 838, 890, 944, 1000, 1058, 1118, 1181, 1246, 1313, 1383, 1455, 1530, 1607,
      1687,1770, 1856, 1945, 2037, 2132, 2231, 2332, 2438, 2546, 2659, 2775, 2895, 3019, 3147, 3279, 3416, 3558, 3704, 3854, 4010, 4171, 4337,
      4509, 4686, 4869, 5058, 5253, 5455, 5663, 5877, 6099, 6328, 6564, 6808, 7060, 7320, 7589, 7866, 8152, 8447, 8752, 9067, 9391, 9726, 10072,
      10430, 10798, 11179, 11571, 11977, 12395, 12827, 13272, 13732, 14000};
+    
 
     TH1D *Standard_fit_pull_1D    = new TH1D("Standard_fit_pull_1D","Standard Fit Pulls",12,-4,4);
     TH1D *Standard_Fit = new TH1D("Standard_Fit","Standard_Fit",103,massBoundaries);
@@ -263,7 +266,7 @@ void Plot_Combined_All(){
         xLab->DrawLatex(1600, xLab_vert, "1.6");
         xLab->DrawLatex(1800, xLab_vert, "1.8");
         xLab->DrawLatex(2000, xLab_vert, "2");
-        xLab->DrawLatex(2200, xLab_vert, "2.2");
+        //xLab->DrawLatex(2200, xLab_vert, "2.2");
 
     char Pred_pdf[300];
     strcpy(Pred_pdf,"combinedFitResults/Combined_Background");
