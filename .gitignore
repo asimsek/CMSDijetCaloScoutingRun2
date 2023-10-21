@@ -93,7 +93,7 @@ EnvelopeMethod/AllLimits*
 EnvelopeMethod/SignificanceResults
 inputs/2332GeV_mjj
 config/_*.config
-
+scripts/kinem.sh
 
 
 # Don't ignore #
