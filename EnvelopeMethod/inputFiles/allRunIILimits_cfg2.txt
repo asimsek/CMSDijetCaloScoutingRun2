@@ -1,3 +1,0 @@
-#rMax,signalType,configFile,date,year,lumi,box
-#2018
-2.9,qq,dijetSep_multipdf,17June2023,2018D,26524.906306,CaloDijetSep2018D

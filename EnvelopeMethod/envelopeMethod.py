@@ -20,7 +20,8 @@ def parse_input_file(filename, fromCombined):
 
 def create_data_cards(year, signalType, date, rMax, box, configFile, lumi, fromCombined):
     combineText = 'Combined' if fromCombined else ''
-    for mass in range(550, 2150, 50): 
+    for mass in range(550, 2150, 50):
+    #for mass in range(850, 900, 50):
         inputMjj = "../Limits/scaledDijetMassHistoRoots/histo_data_mjj_scaled_{0}.root".format(year)
         outputDataCardFolder = "AllLimits{1}{4}_{0}_MULTI/cards_{0}_w2016Sig_DE13_M526_{2}_rmax{3}/".format(signalType, year, date, rMax, combineText)
 
@@ -31,13 +32,22 @@ def create_data_cards(year, signalType, date, rMax, box, configFile, lumi, fromC
 
         inputSignals = "../inputs/ResonanceShapes_{0}_13TeV_CaloScouting_Spring16.root --jesUp ../inputs/ResonanceShapes_{0}_13TeV_CaloScouting_Spring16_JESUP.root --jesDown ../inputs/ResonanceShapes_{0}_13TeV_CaloScouting_Spring16_JESDOWN.root --jerUp ../inputs/ResonanceShapes_{0}_13TeV_CaloScouting_Spring16_JERUP.root --jerDown ../inputs/ResonanceShapes_{0}_13TeV_CaloScouting_Spring16_JERDOWN.root".format(signalType)
 
-        dataCardCommand = "python ../python/WriteDataCard_2J.py -b {0} -c ../config/{1}.config -m {2} --mass {7} -i {3} {4} {5} -d {6} --xsec 10.0 --lumi {8} --multi".format(box, configFile, signalType, inputFitCMS, inputMjj, inputSignals, outputDataCardFolder, mass, lumi)
-        print (dataCardCommand)
-
         print("\033[91mProducing dataCards for mass point: {0}\033[0m".format(mass))
+
+        dataCardCommand = "python ../python/WriteDataCard_2J.py -b {0} -c ../config/{1}.config -m {2} --mass {7} -i {3} {4} {5} -d {6} --xsec 10.0 --lumi {8} --multi".format(box, configFile, signalType, inputFitCMS, inputMjj, inputSignals, outputDataCardFolder, mass, lumi)
         os.system(dataCardCommand)
 
-        
+        t2wCommand = "text2workspace.py %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt -o %s/t2w_dijet_combine_%s_%s_lumi-%.3f_%s.root" % (outputDataCardFolder, signalType, str(mass), float(lumi), box, outputDataCardFolder, signalType, str(mass), float(lumi), box)
+        os.system(t2wCommand)
+
+        saveWSCommand = "combine -M MultiDimFit %s/t2w_dijet_combine_%s_%s_lumi-%.3f_%s.root -n %s_%s_lumi-%.3f_%s --cminDefaultMinimizerStrategy 0 --saveWorkspace --robustFit 1" % (outputDataCardFolder, signalType, str(mass), float(lumi), box, signalType, str(mass), float(lumi), box)
+
+        os.system(saveWSCommand)
+
+        saveWSMoveCommand = "mv higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root" % (signalType, str(mass), float(lumi), box, outputDataCardFolder, signalType, str(mass), float(lumi), box)
+        os.system(saveWSMoveCommand)
+
+
 
 
 def perform_asymptotic_limits(year, signalType, date, rMax, box, configFile, lumi, fromCombined):
@@ -48,9 +58,10 @@ def perform_asymptotic_limits(year, signalType, date, rMax, box, configFile, lum
     if not os.path.exists(DataCardFolder): os.makedirs(DataCardFolder)
 
     for mass in range(550, 2150, 50):
-        combineCommand = "combine -M AsymptoticLimits -d %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 0 --setParameterRanges r=0,%s -n %s_%s_lumi-%.3f_%s --saveWorkspace --setParameters myIndex=-1" % (DataCardFolder, signalType, str(mass), float(lumi), box, rMax, signalType, str(mass), float(lumi)/1000., box)
+    #for mass in range(850, 900, 50):
+        combineCommand = "combine -M AsymptoticLimits %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 0 --setParameterRanges r=0,%s -n %s_%s_lumi-%.3f_%s --saveWorkspace --snapshotName MultiDimFit" % (DataCardFolder, signalType, str(mass), float(lumi), box, rMax, signalType, str(mass), float(lumi)/1000., box)
 
-        #combineCommand = 'combine -M AsymptoticLimits %s/higgsCombineEnvelope_%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 0 --setParameterRanges r=0,%s -n %s_%s_lumi-%.3f_%s --saveWorkspace --snapshotName "MultiDimFit" --setParameters myIndex=-1' % (inputToysFolder, signalType, str(mass), float(lumi)/1000., box, rMax, signalType, str(mass), float(lumi)/1000., box)
+        #combineCommand = 'combine -M AsymptoticLimits -d %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 0 --setParameterRanges r=0,%s -n %s_%s_lumi-%.3f_%s --saveWorkspace' % (inputToysFolder, signalType, str(mass), float(lumi)/1000., box, rMax, signalType, str(mass), float(lumi)/1000., box)
         combineMoveCommand = "mv higgsCombine%s_%s_lumi-%.3f_%s.AsymptoticLimits.mH120.root %s/higgsCombine%s_%s_lumi-%.3f_%s.Asymptotic.mH120.root" % (signalType, str(mass), float(lumi)/1000., box, DataCardFolder, signalType, str(mass), float(lumi)/1000., box)
 
 
@@ -82,8 +93,10 @@ def combine_and_plot_significance(year, signalType, date, rMax, box, configFile,
     os.system("mkdir -p %s" % (OutputSigfnifFolder))
 
     for mass in range(550, 2150, 50):
-        inputDataCard = "%s/dijet_combine_%s_%s_lumi-%.3f_%s.txt" % (inputDataCardFolder, signalType, str(mass), float(lumi), box)
-        signifCommand = 'combine -M Significance --signif %s -n %s_%s_lumi-%.3f_%s --setParameterRanges r=0,%s --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 0 --saveWorkspace --setParameters myIndex=-1' % (inputDataCard, signalType, str(mass), float(lumi)/1000., box, rMax)
+    #for mass in range(850, 900, 50):
+        #inputDataCard = "-d %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt" % (inputDataCardFolder, signalType, str(mass), float(lumi), box)
+        inputDataCard = "%s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root" % (inputDataCardFolder, signalType, str(mass), float(lumi), box)
+        signifCommand = 'combine -M Significance --signif %s -n %s_%s_lumi-%.3f_%s --setParameterRanges r=0,%s --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 0 --saveWorkspace --snapshotName MultiDimFit' % (inputDataCard, signalType, str(mass), float(lumi)/1000., box, rMax)
         signifMoveCommand = "mv higgsCombine%s_%s_lumi-%.3f_%s.Significance.mH120.root %s/higgsCombine%s_%s_lumi-%.3f_%s.ProfileLikelihood.mH120.root" % (signalType, str(mass), float(lumi)/1000., box, OutputSigfnifFolder, signalType, str(mass), float(lumi)/1000., box)
 
         os.system(signifCommand)
@@ -105,15 +118,18 @@ def create_deltaNLL_toys(year, signalType, date, rMax, box, configFile, lumi, fr
 
     os.system("mkdir -p %s" % (outputToysFolder))
 
+    rRange_min = -1.0
+    rRange_max = 2.0
+
     #for mass in range(550, 2150, 50):
     for mass in range(850, 900, 50):
-        combineCommandEnvelope = "combine -M MultiDimFit -d %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt --algo grid --setParameterRanges r=0,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n Envelope --points 100 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --setParameters myIndex=-1" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, "3")
+        combineCommandEnvelope = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n Envelope --points 100 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.001 --robustFit 1" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
         combineMoveCommandEnvelope = "mv higgsCombineEnvelope.MultiDimFit.mH120.root %s/higgsCombineEnvelope_%s_%d_lumi-%.3f_%s.MultiDimFit.mH120.root" % (outputToysFolder, signalType, mass, float(lumi)/1000., box)
 
-        combineCommandATLAS = "combine -M MultiDimFit -d %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt --algo grid --setParameterRanges r=0,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n ATLAS --freezeParameters pdf_index --setParameters pdf_index=0 --points 100 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, "3")
+        combineCommandATLAS = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n ATLAS --freezeParameters pdf_index --setParameters pdf_index=0 --points 100 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.001 --robustFit 1" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
         combineMoveCommandATLAS = "mv higgsCombineATLAS.MultiDimFit.mH120.root %s/higgsCombineATLAS_%s_%d_lumi-%.3f_%s.MultiDimFit.mH120.root" % (outputToysFolder, signalType, mass, float(lumi)/1000., box)
 
-        combineCommandCMS = "combine -M MultiDimFit -d %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt --algo grid --setParameterRanges r=0,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n CMS --freezeParameters pdf_index --setParameters pdf_index=1 --points 100 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, "3")
+        combineCommandCMS = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n CMS --freezeParameters pdf_index --setParameters pdf_index=1 --points 100 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.001 --robustFit 1" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
         combineMoveCommandCMS = "mv higgsCombineCMS.MultiDimFit.mH120.root %s/higgsCombineCMS_%s_%d_lumi-%.3f_%s.MultiDimFit.mH120.root" % (outputToysFolder, signalType, mass, float(lumi)/1000., box)
 
         os.system(combineCommandEnvelope)
@@ -123,9 +139,9 @@ def create_deltaNLL_toys(year, signalType, date, rMax, box, configFile, lumi, fr
         os.system(combineCommandCMS)
         os.system(combineMoveCommandCMS)
 
-        print (combineCommandEnvelope)
-        print (combineCommandATLAS)
-        print (combineCommandCMS)
+        #print (combineCommandEnvelope)
+        #print (combineCommandATLAS)
+        #print (combineCommandCMS)
 
 
     mass_ = "850"
