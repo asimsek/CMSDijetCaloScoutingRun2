@@ -16,6 +16,13 @@ git clone -b dijetpdf_102X https://github.com/RazorCMS/HiggsAnalysis-CombinedLim
 cd HiggsAnalysis/CombinedLimit
 source env_standalone.sh
 make -j 8; make  # second make fixes compilation error of first
+
+cd ../../
+git clone https://github.com/cms-analysis/CombineHarvester.git CombineHarvester
+cd CombineHarvester/
+git checkout v2.0.0
+scram b
+
 cd $CMSSW_BASE/src/CMSDIJET/DijetRootTreeAnalyzer
 ```
 
