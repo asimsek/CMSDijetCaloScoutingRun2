@@ -1,19 +1,25 @@
 import os
 import argparse
+import subprocess
+import re
+from ROOT import *
 
-def parse_input_file(filename, fromCombined):
+gROOT.SetBatch(True)
+
+def parse_input_file(filename, fromCombined, year, sig, justOne):
     params_list = []
     with open(filename, 'r') as file:
         for line in file:
             line = line.strip()
-            if not line or line.startswith("#"):
-                continue
+            if not line or line.startswith("#"): continue
             parts = line.split(',')
             params = {}
             if not fromCombined:
                 params['rMax'], params['signalType'], params['configFile'], params['date'], params['year'], params['lumi'], params['box'] = parts
             else:
                 params['year'], params['lumi'], params['box'], params['date'],  params['configFile'], params['signalType'], params['rMax'] = parts
+
+            if justOne == True and (year != params['year'] or sig != params['signalType']): continue
             params_list.append(params)
     return params_list
 
@@ -110,6 +116,38 @@ def combine_and_plot_significance(year, signalType, date, rMax, box, configFile,
     os.system(plot1DLimitCommand)
 
 
+def change_penalty_term(cFactor):
+    cmssw_dir = os.environ['CMSSW_BASE']
+    combineDir = "%s/src/HiggsAnalysis/CombinedLimit/src" % (cmssw_dir)
+    workDir = "%s/src/CMSDIJET/DijetRootTreeAnalyzer/EnvelopeMethod" % (cmssw_dir)
+    multiPDF_file = "RooMultiPdf.cxx"
+
+    with open("%s/%s" % (combineDir, multiPDF_file), 'r') as file:
+        content = file.read()
+
+    match = re.search(r"(double _cFactor=)([^;]+);", content)
+    old_value = match.group(2)
+    
+    if match and (float(old_value.strip()) != float(cFactor)):
+        new_content = content.replace("double _cFactor=%s;" % old_value.strip(), "double _cFactor=%s;" % str(cFactor))
+        
+        if content != new_content:
+            os.chdir(combineDir)
+            with open(multiPDF_file, 'w') as file:
+                file.write(new_content)
+
+            retcode = subprocess.call(["scram", "b"])
+            os.chdir(workDir)
+
+            if retcode == 0:
+                return True, "Modified %s script for cFactor and executed 'scram b' command successfully." % (multiPDF_file)
+            else:
+                return False, "Modified %s script for cFactor but 'scram b' command failed." % (multiPDF_file)
+
+    return False, "Modification was not successful or not needed."
+
+
+
 def create_deltaNLL_toys(year, signalType, date, rMax, box, configFile, lumi, fromCombined):
     combineText = 'Combined' if fromCombined else ''
 
@@ -169,9 +207,21 @@ if __name__ == "__main__":
     parser.add_argument('--nll', action='store_true', default=False, help='use this to create DeltaNLL results')
     parser.add_argument('--noDC', action='store_true', default=False, help='use this to prevent recreating data Cards again!')
     parser.add_argument('--fromCombined', action='store_true', default=False, help='use this if you are working with combined limits')
+    parser.add_argument('--c', default='0.5', help='set correction factor (penalty term) for the discrete profiling!')
+    parser.add_argument('--year', default='', help='give a year if you want to perform limit only for one year in the input list')
+    parser.add_argument('--sig', default='', help='give a signalType if you want to perform limit only for one year & signalType')
+    parser.add_argument('--justOne', action='store_true', default=False, help='use this if you want to perform limit only for one year in the input list')
+    ## https://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/tutorial2023/parametric_exercise/#part-5-discrete-profiling
+    ## https://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/part3/nonstandard/#discrete-profiling
     args = parser.parse_args()
 
-    params_list = parse_input_file(args.inputFile, args.fromCombined)
+    params_list = parse_input_file(args.inputFile, args.fromCombined, args.year, args.sig, args.justOne)
+
+    ## Function to change the correction factor (panalty term) directly in the combine scripts.
+    ## Easier for our case since we use both WriteDataCard_2J.py and text2workspace.py scripts.
+    ## I defined a section in the WriteDataCard_2J.py script for cFactor if you only need to use this script!
+    ## Search for RooMultiPdf in WriteDataCard_2J.py script. 
+    change_penalty_term(float(args.c))
 
     for params in params_list:
         if not args.noDC:
@@ -191,6 +241,7 @@ if __name__ == "__main__":
 
     os.system("rm roostats-*.root")
     os.system("rm combine_logger.out")
+
 
 
 

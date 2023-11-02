@@ -94,6 +94,9 @@ EnvelopeMethod/SignificanceResults
 inputs/2332GeV_mjj
 config/_*.config
 scripts/kinem.sh
+EnvelopeMethod/fullLimits
+EnvelopeMethod/tarExtractor.py
+EnvelopeMethod/BiasResuls_cFactor*
 
 
 # Don't ignore #

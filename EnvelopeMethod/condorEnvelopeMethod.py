@@ -36,13 +36,16 @@ def main():
                 print("Created directory: {}".format(condorDIR))
 
 
-            rMaxStart = 1.0
-            rMaxEnd = 5.0
+            rMaxStart = 0.1
+            rMaxEnd = 10.0
+            #rMaxStart = float(rMax)
+            #rMaxEnd = float(rMax)+0.01
             rMaxStep = 0.1
 
             print("Creating all text, csh and jdl files. Please be patient!..")
 
             while rMaxStart <= rMaxEnd:
+		print ("\033[91mProcessing rMax=\033[0m%.2f" % (rMaxStart))
             	newInputcfgFile = "{0}/{1}_cfg_rMax{2}.txt".format(condorDIR, signalType, rMaxStart)
             	with open(newInputcfgFile, 'w') as newFile:
                     newFile.write(','.join([str(rMaxStart), signalType, configFile, date, year, lumi, box]))
@@ -62,7 +65,7 @@ def main():
 
             os.chdir("{0}/..".format(cmssw_dir))
             print("Creating tar file for condor jobs. This process might take a while!..")
-            tarCommandLine = 'tar --exclude-vcs -zcf {0}.tar.gz {0} --exclude=tmp --exclude="*.tar.gz" --exclude="*.pdf" --exclude="*.png" --exclude=.git --exclude="probl" --exclude="Limits_*" --exclude="dijetCondor" --exclude="lists" --exclude="scripts" --exclude="config_backup" --exclude="data/" --exclude="Autumn18_*" --exclude="Fall17_*" --exclude="Summer16_*"'.format(cmssw_Ver)
+            tarCommandLine = 'tar --exclude-vcs -zcf {0}.tar.gz {0} --exclude=tmp --exclude="*.tar.gz" --exclude="*.pdf" --exclude="*.png" --exclude=.git --exclude="probl" --exclude="tarExt" --exclude="Limits_*" --exclude="dijetCondor" --exclude="lists" --exclude="scripts" --exclude="config_backup" --exclude="data/" --exclude="Autumn18_*" --exclude="Fall17_*" --exclude="Summer16_*"'.format(cmssw_Ver)
             os.system(tarCommandLine)
             subprocess.call(['mv', "{0}.tar.gz".format(cmssw_Ver), "{0}/{1}.tar.gz".format(condorDIRPath, cmssw_Ver)])
             os.chdir(workDir+"/EnvelopeMethod")
@@ -107,16 +110,15 @@ pwd
 ls -lhtr
 
 cmsenv
-python envelopeMethod.py --inputFile {2}/{3} --limit --signif
+python envelopeMethod.py --inputFile {2}/{3} --limit
 
 
 
 xrdcp AllLimits{4}_{5}_MULTI/cards_{5}_w2016Sig_DE13_M526_{7}_rmax{6}/limits_freq_{5}_{8}.pdf root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/EnvelopeLimits_2023/AllLimits{4}_{5}_MULTI/PDFs/limits_freq_{5}_{8}_M526_rMax{6}.pdf
-
 xrdcp AllLimits{4}_{5}_MULTI/cards_{5}_w2016Sig_DE13_M526_{7}_rmax{6}/limits_freq_{5}_{8}.root root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/EnvelopeLimits_2023/AllLimits{4}_{5}_MULTI/Roots/limits_freq_{5}_{8}_M526_rMax{6}.root
 
-xrdcp SignificanceResults/signif_{4}_{5}_{8}_rmax{6}/signif_{5}_{8}.pdf root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/EnvelopeLimits_2023/SignificanceResults/signif_{4}_{5}/PDFs/signif_{5}_{8}_rmax{6}.pdf
-xrdcp SignificanceResults/signif_{4}_{5}_{8}_rmax{6}/signif_{5}_{8}.root root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/EnvelopeLimits_2023/SignificanceResults/signif_{4}_{5}/Roots/signif_{5}_{8}_rmax{6}.root
+#xrdcp SignificanceResults/signif_{4}_{5}_{8}_rmax{6}/signif_{5}_{8}.pdf root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/EnvelopeLimits_2023/SignificanceResults/signif_{4}_{5}/PDFs/signif_{5}_{8}_rmax{6}.pdf
+#xrdcp SignificanceResults/signif_{4}_{5}_{8}_rmax{6}/signif_{5}_{8}.root root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/EnvelopeLimits_2023/SignificanceResults/signif_{4}_{5}/Roots/signif_{5}_{8}_rmax{6}.root
 
 
 
@@ -124,8 +126,8 @@ tar --exclude-vcs -zcf AllLimits{4}_{5}_MULTI.tar.gz AllLimits{4}_{5}_MULTI --ex
 xrdcp AllLimits{4}_{5}_MULTI.tar.gz root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/EnvelopeLimits_2023/AllLimits{4}_{5}_MULTI/tarFiles/AllLimits{4}_{5}_MULTI_rMax{6}.tar.gz
 
 
-tar --exclude-vcs -zcf signif_{5}_{8}_rmax{6}.tar.gz -C SignificanceResults signif_{4}_{5}_{8}_rmax{6} --exclude=tmp --exclude="*.tar.gz"
-xrdcp signif_{5}_{8}_rmax{6}.tar.gz root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/EnvelopeLimits_2023/SignificanceResults/signif_{4}_{5}/tarFiles/signif_{5}_{8}_rmax{6}.tar.gz
+#tar --exclude-vcs -zcf signif_{5}_{8}_rmax{6}.tar.gz -C SignificanceResults signif_{4}_{5}_{8}_rmax{6} --exclude=tmp --exclude="*.tar.gz"
+#xrdcp signif_{5}_{8}_rmax{6}.tar.gz root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/EnvelopeLimits_2023/SignificanceResults/signif_{4}_{5}/tarFiles/signif_{5}_{8}_rmax{6}.tar.gz
 
 
 echo "starting cleanup..."

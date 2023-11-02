@@ -3,7 +3,7 @@ import ROOT
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from matplotlib.ticker import FuncFormatter
+from matplotlib.ticker import FuncFormatter, ScalarFormatter
 import argparse
 import numpy as np
 import copy
@@ -63,8 +63,12 @@ def main(args):
     y_label.set_position((y_label.get_position()[0], 0.90))
     x_label.set_position((0.95, x_label.get_position()[1]))
 
+
     ax = plt.gca()
     ax.yaxis.offsetText.set_fontsize(18)
+    #ax.yaxis.set_major_formatter(ScalarFormatter(useMathText=True))
+    #plt.rcParams['axes.formatter.useoffset'] = False
+    #ax.ticklabel_format(scilimits=(-3, 3))
 
     plt.legend(numpoints=1, loc='upper left', fontsize=18)
     plt.grid(True, which="both", linestyle="--", linewidth=0.5)
