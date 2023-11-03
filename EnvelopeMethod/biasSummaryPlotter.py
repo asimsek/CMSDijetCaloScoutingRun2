@@ -10,7 +10,7 @@ execfile('tdrStyle.py')
 def main():
     parser = argparse.ArgumentParser(description="")
     parser.add_argument("--muTrue", type=str, help="[0: BgOnly, 1: ExpectedSignal, 2: 2*ExpectedSignal]", default="1")
-    parser.add_argument('--cFactor', default='1.5', help='set correction factor (penalty term) for the discrete profiling!')
+    parser.add_argument('--cFactor', default='0.5', help='set correction factor (penalty term) for the discrete profiling!')
     parser.add_argument("--year", type=str, help="Dataset Year [2018D]", default="2018D")
     parser.add_argument("--signalType", type=str, help="Signal Type [gg, qg, qq]", default="gg")
     parser.add_argument("--configFile", type=str, help="Fit Config File [dijetSep_multipdf]", default="dijetSep_multipdf")

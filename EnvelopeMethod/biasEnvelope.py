@@ -19,7 +19,6 @@ def main():
     parser.add_argument("--toys", type=int, help="how many toys?", default="100")
     args = parser.parse_args()
 
-    #massRange = ["1500"]
     massRange = ["800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600"]
 
     if not os.path.isfile(args.inputFile):
@@ -34,12 +33,14 @@ def main():
             if (args.year != year) or (args.sig != signalType): continue
             print("\033[91mProcessing line: {}\033[0m".format(line))
 
+            commandLimit = "python envelopeMethod.py --inputFile %s --c %s --year %s --sig %s --justOne --limit" % (args.inputFile, args.c, args.year, args.sig)
             if os.path.exists("AllLimits%s_%s_MULTI" % (args.year, args.sig)):
                 user_input = raw_input("\033[93mThe Limit folder exist! Would you like to perform limits again?! (y/n): \033[0m")
-                if user_input.lower() == 'yes' or user_input.lower() == 'y':
-                    commandLimit = "python envelopeMethod.py --inputFile %s --c %s --year %s --sig %s --justOne --limit" % (args.inputFile, args.c, args.year, args.sig)
-                    print ("\n\033[91m%s\033[0m\n" % (commandLimit) )
-                    os.system(commandLimit)
+                
+            if not os.path.exists("AllLimits%s_%s_MULTI" % (args.year, args.sig)) or user_input.lower() == 'yes' or user_input.lower() == 'y':
+                print ("\n\033[91m%s\033[0m\n" % (commandLimit) )
+                os.system(commandLimit)
+
 
             for mass in massRange:
                 expSigVal = int(args.muTrue) * get_expected_value(year, signalType, rMax, box, date, mass)
