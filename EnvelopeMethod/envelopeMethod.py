@@ -46,12 +46,16 @@ def create_data_cards(year, signalType, date, rMax, box, configFile, lumi, fromC
         t2wCommand = "text2workspace.py %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt -o %s/t2w_dijet_combine_%s_%s_lumi-%.3f_%s.root" % (outputDataCardFolder, signalType, str(mass), float(lumi), box, outputDataCardFolder, signalType, str(mass), float(lumi), box)
         os.system(t2wCommand)
 
-        saveWSCommand = "combine -M MultiDimFit %s/t2w_dijet_combine_%s_%s_lumi-%.3f_%s.root -n %s_%s_lumi-%.3f_%s --cminDefaultMinimizerStrategy 0 --saveWorkspace --robustFit 1" % (outputDataCardFolder, signalType, str(mass), float(lumi), box, signalType, str(mass), float(lumi), box)
-
+        #saveWSCommand = "combine -M MultiDimFit %s/t2w_dijet_combine_%s_%s_lumi-%.3f_%s.root -n %s_%s_lumi-%.3f_%s --cminDefaultMinimizerStrategy 0 --saveWorkspace --robustFit 1" % (outputDataCardFolder, signalType, str(mass), float(lumi), box, signalType, str(mass), float(lumi), box)
+        saveWSCommand = "combine -M MultiDimFit %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt -n %s_%s_lumi-%.3f_%s --cminDefaultMinimizerStrategy 0 --saveWorkspace --robustFit 1" % (outputDataCardFolder, signalType, str(mass), float(lumi), box, signalType, str(mass), float(lumi), box)
         os.system(saveWSCommand)
 
         saveWSMoveCommand = "mv higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root" % (signalType, str(mass), float(lumi), box, outputDataCardFolder, signalType, str(mass), float(lumi), box)
         os.system(saveWSMoveCommand)
+
+        print (dataCardCommand)
+        print (t2wCommand)
+        print (saveWSCommand)
 
 
 

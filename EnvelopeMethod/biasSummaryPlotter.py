@@ -14,6 +14,8 @@ def main():
     parser.add_argument("--year", type=str, help="Dataset Year [2018D]", default="2018D")
     parser.add_argument("--signalType", type=str, help="Signal Type [gg, qg, qq]", default="gg")
     parser.add_argument("--configFile", type=str, help="Fit Config File [dijetSep_multipdf]", default="dijetSep_multipdf")
+    parser.add_argument('--sanityCheck', action='store_true', default=False)
+    parser.add_argument('--oppositeFuncs', action='store_true', default=False)
     args = parser.parse_args()
 
 
@@ -23,11 +25,15 @@ def main():
     atlas_graphs_sigma = []
     cms_graphs_sigma = []
 
-    for mass in massRange:
+    Type = "GenFuncFitEnv"
+    if args.sanityCheck: Type = "Sanity"
+    if args.oppositeFuncs: Type = "Opposite"
 
+    for mass in massRange:
     	## Bias
-        patternATLAS = "BiasResuls_cFactor{0}/ATLAS_FullSignal_muTrue{1}/{2}_{3}_{4}/bias_plot_{3}_{2}_M{5}GeV_MaxLikelihood_muTrue*.root".format(args.cFactor, args.muTrue, args.year, args.signalType, args.configFile, mass)
-        patternCMS = "BiasResuls_cFactor{0}/CMS_FullSignal_muTrue{1}/{2}_{3}_{4}/bias_plot_{3}_{2}_M{5}GeV_MaxLikelihood_muTrue*.root".format(args.cFactor, args.muTrue, args.year, args.signalType, args.configFile, mass)
+        patternATLAS = "BiasResuls_cFactor{0}/{2}_{3}_ATLAS_{5}_muTrue{1}/bias_plot_{3}_{2}_M{4}GeV_MaxLikelihood_muTrue*.root".format(args.cFactor, args.muTrue, args.year, args.signalType, mass, Type)
+        patternCMS = "BiasResuls_cFactor{0}/{2}_{3}_CMS_{5}_muTrue{1}/bias_plot_{3}_{2}_M{4}GeV_MaxLikelihood_muTrue*.root".format(args.cFactor, args.muTrue, args.year, args.signalType, mass, Type)
+
 
         atlasRootFile = glob.glob(patternATLAS)
         if atlasRootFile: rootFileATLAS = atlasRootFile[0]
@@ -41,8 +47,8 @@ def main():
         if graph_cms: cms_graphs.append(graph_cms)
 
         ### Sigma
-        patternATLAS_sigma = "BiasResuls_cFactor{0}/ATLAS_FullSignal_muTrue{1}/{2}_{3}_{4}/bias_plot_divr_{3}_{2}_M{5}GeV_MaxLikelihood_muTrue*.root".format(args.cFactor, args.muTrue, args.year, args.signalType, args.configFile, mass)
-        patternCMS_sigma = "BiasResuls_cFactor{0}/CMS_FullSignal_muTrue{1}/{2}_{3}_{4}/bias_plot_divr_{3}_{2}_M{5}GeV_MaxLikelihood_muTrue*.root".format(args.cFactor, args.muTrue, args.year, args.signalType, args.configFile, mass)
+        patternATLAS_sigma = "BiasResuls_cFactor{0}/{2}_{3}_ATLAS_{5}_muTrue{1}/bias_plot_divr_{3}_{2}_M{4}GeV_MaxLikelihood_muTrue*.root".format(args.cFactor, args.muTrue, args.year, args.signalType, mass, Type)
+        patternCMS_sigma = "BiasResuls_cFactor{0}/{2}_{3}_CMS_{5}_muTrue{1}/bias_plot_divr_{3}_{2}_M{4}GeV_MaxLikelihood_muTrue*.root".format(args.cFactor, args.muTrue, args.year, args.signalType, mass, Type)
 
 
         atlasRootFile_sigma = glob.glob(patternATLAS_sigma)

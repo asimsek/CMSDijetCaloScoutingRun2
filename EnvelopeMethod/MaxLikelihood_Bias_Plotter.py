@@ -19,10 +19,6 @@ import os
 gROOT.SetBatch(True)
 execfile('tdrStyle.py')
 
-fitter = ROOT.Fit.Fitter()
-fitter.Config().MinimizerOptions().SetTolerance(1e-6)
-fitter.Config().MinimizerOptions().SetMaxIterations(100000000)
-
 
 ################# Arguments ###############
 parser = argparse.ArgumentParser()
@@ -58,15 +54,16 @@ cFactor = args.cFactor
 ################# Variables ################
 
 nBins = 80
-sigmaBins = 40
-divrBins = 80
+sigmaBins = 15
+divrBins = 15
 
 CMSPaveText = "CMS Supplementary"
 #LumiPaveText = "%.2f fb^{-1} (13 TeV)" % (lumi)
 LumiPaveText = "              (13 TeV)"
 
 cFactor_text = "_cFactor%s" % (cFactor) if cFactor != "" else ""
-outputFolder = "BiasResuls%s/%s/%s_%s_%s" % (cFactor_text, Type, year, signal, cfgFile)
+#outputFolder = "BiasResuls%s/%s/%s_%s_%s" % (cFactor_text, Type, year, signal, cfgFile)
+outputFolder = "BiasResuls{0}/{1}_{2}_{3}".format(cFactor_text, year, signal, Type)
 muTrueCut = -1
 ############################################
 
@@ -91,8 +88,8 @@ def main():
 
 		nEntries = Tree1.GetEntries()
 
-		histSigmaAux = TH1D("histSigmaAux", "Pull Histogram", 1000, 0, 50)
-		histDivrAux = TH1D("histDivrAux", "Pull Histogram", 1000, -10, 10)
+		histSigmaAux = TH1D("histSigmaAux", "Pull Histogram", 100, 0, 50)
+		histDivrAux = TH1D("histDivrAux", "Pull Histogram", 100, -10, 10)
 
 		for i in range(0, nEntries):
 			Tree1.GetEntry(i)
@@ -100,18 +97,11 @@ def main():
 			mu = Tree1.r
 			muLowErr = Tree1.rLoErr
 			muHighErr = Tree1.rHiErr
-			#muErr = Tree1.rErr
-			#print ("Mu: %s - muLowErr: %s - muHighErr: %s" % (str(mu), str(muLowErr), str(muHighErr)) )
 			fit_status = Tree1.fit_status
 
-			#if fit_status < 0: continue
-			#if fit_status > -1 and muLowErr > 0.5 and muHighErr > 0.5:
-			if fit_status > -1:
-				if mu < muTrue:
-					histSigmaAux.Fill(muHighErr)
-				if mu > muTrue:
-					histSigmaAux.Fill(muLowErr)
-
+			if fit_status > -1 and muHighErr>0 and muLowErr>0:
+				histSigmaAux.Fill((0.5*(muHighErr+muLowErr)))
+				
 				if muTrue != 0:
 					histDivrAux.Fill((mu-muTrue)/muTrue)
 				else:
@@ -122,7 +112,6 @@ def main():
 		sigmaAuxMean = histSigmaAux.GetMean()
 		sigmaAuxRms = histSigmaAux.GetRMS()
 
-		#print ("divrMean: %0.8f - divrRms: %0.8f || sigmaAuxMean:%0.8f - sigmaAuxRms:%0.8f" % (divrMean, divrRms, sigmaAuxMean, sigmaAuxRms) )
 		sigmaMinCut = sigmaAuxMean - (0.5*sigmaAuxRms)
 		sigmaMaxCut = sigmaAuxMean + (0.5*sigmaAuxRms)
 
@@ -134,6 +123,7 @@ def main():
 		histSigma = TH1D("histSigma", "Pull Histogram", sigmaBins, sigmaAuxMean-5*sigmaAuxRms, sigmaAuxMean+5*sigmaAuxRms)
                 #histSigma = TH1D("histSigma", "Pull Histogram", nBins*2, -5, 5)
 		
+		sigmaCalc = 0
 
 		for i in range(0, nEntries):
 			Tree1.GetEntry(i)
@@ -143,25 +133,25 @@ def main():
 			muHighErr = Tree1.rHiErr
 			muErr = Tree1.rErr
 			fit_status = Tree1.fit_status
-                        
-                        #if fit_status < 0: continue
-			#if muLowErr < 120 and muHighErr < 120:
-			#if fit_status > -1 and muLowErr > 2.5:
-			#if fit_status > -1 and muLowErr !=0 and muHighErr != 0:
-			if fit_status > -1:
-				if mu < muTrue:
-					histBiasMaxLikelihood.Fill( (mu-muTrue) / muHighErr )
-					#histLowHalf.Fill( (mu-muTrue) / muHighErr )
-					histSigma.Fill(muHighErr)
-				if mu > muTrue:
-					histBiasMaxLikelihood.Fill( (mu-muTrue) / muLowErr )
-					#histHighHalf.Fill( (mu-muTrue) / muLowErr )
-					histSigma.Fill(muLowErr)
 
-				if muTrue != 0:
-					histBiasDivr.Fill((mu-muTrue)/muTrue)
-				else:
-					histBiasDivr.Fill(mu)
+			if sigmaCalc == 1:
+				if fit_status > -1 and (muHighErr+muLowErr)!=0:
+					histBiasMaxLikelihood.Fill( (mu-muTrue) / (0.5*(muHighErr+muLowErr)) )
+					histSigma.Fill((0.5*(muHighErr+muLowErr)))
+
+			else:
+				if fit_status > -1:
+					if mu < muTrue:
+						histBiasMaxLikelihood.Fill( (mu-muTrue) / muHighErr )
+						histSigma.Fill(muHighErr)
+					if mu > muTrue:
+						histBiasMaxLikelihood.Fill( (mu-muTrue) / muLowErr )
+						histSigma.Fill(muLowErr)
+
+			if muTrue != 0:
+				histBiasDivr.Fill((mu-muTrue)/muTrue)
+			else:
+				histBiasDivr.Fill(mu)
 
 
 		histoMean = histBiasDivr.GetMean()
@@ -176,15 +166,15 @@ def main():
 		biasRangeMax = (biasMean+5*biasRms)+3
 
 
-		gaussFit = TF1("gaussFit", "[0]*exp(-0.5*((x-[1])/[2])^2)", -1., 1.)
-                gaussFit.SetParameter(0, histBiasMaxLikelihood.GetMaximum())
-		gaussFit.FixParameter(1, find_max_bin_in_range(histBiasMaxLikelihood, -1.0, 1.0)) # biasMean
-		gaussFit.SetParameter(2, 0.1)
+		#gaussFit = TF1("gaussFit", "[0]*exp(-0.5*((x-[1])/[2])^2)", -1., 1.)
+                #gaussFit.SetParameter(0, histBiasMaxLikelihood.GetMaximum())
+		#gaussFit.FixParameter(1, find_max_bin_in_range(histBiasMaxLikelihood, -1.0, 1.0)) # biasMean
+		#gaussFit.SetParameter(2, 0.1)
 
                 #gaussFit.SetParLimits(0, histBiasMaxLikelihood.GetMaximum()*0.99, histBiasMaxLikelihood.GetMaximum()*1.5)
                 #gaussFit.SetParLimits(1, find_max_bin_in_range(histBiasMaxLikelihood, -1.0, 1.0) - biasRms/2, find_max_bin_in_range(histBiasMaxLikelihood, -1.0, 1.0) + biasRms/2)
                 #gaussFit.SetParLimits(1, find_max_bin_in_range(histBiasMaxLikelihood, -1.0, 1.0) - 0.5, find_max_bin_in_range(histBiasMaxLikelihood, -1.0, 1.0) + 0.5)
-                gaussFit.SetParLimits(2, find_max_bin_in_range(histBiasMaxLikelihood, -1.0, 1.0) - 0.5, find_max_bin_in_range(histBiasMaxLikelihood, -1.0, 1.0) + 0.5)
+                #gaussFit.SetParLimits(2, find_max_bin_in_range(histBiasMaxLikelihood, -1.0, 1.0) - 0.5, find_max_bin_in_range(histBiasMaxLikelihood, -1.0, 1.0) + 0.5)
 
 		c1 = TCanvas('c1', 'Bias Pull MaxLikelihood', 900, 900)
 		c1.cd()
@@ -193,18 +183,29 @@ def main():
 		histBiasMaxLikelihood.SetXTitle("(#mu - #mu_{True})/#sigma_{#mu}")
 		histBiasMaxLikelihood.SetYTitle("PseudoDatasets")
 		if muTrue != muTrueCut:
-			histBiasMaxLikelihood.Fit(gaussFit, "ERQ")
-                        gaussFit.SetRange(-5, 5) ## To show the full gaussian shape / line
+			gaussFit2 = TF1("gaussFit2", "gaus", find_max_bin_in_range(histBiasMaxLikelihood, -0.5, 0.5)-1.0, find_max_bin_in_range(histBiasMaxLikelihood, -0.5, 0.5)+1.0)
+			gaussFit2.SetParameter(0, histBiasMaxLikelihood.GetMaximum())
+			gaussFit2.SetParameter(1, find_max_bin_in_range(histBiasMaxLikelihood, -0.5, 0.5))
+			#gaussFit2.SetParameter(2, biasRms)
 
-			par1 = gaussFit.GetParameter(1)
-			par2 = gaussFit.GetParameter(2)
+
+			gaussFit2.SetParLimits(1, -0.1, 0.1)
+			#gaussFit2.SetParLimits(2, -1.2, 1.2)
+
+                        histBiasMaxLikelihood.Fit(gaussFit2, "RQ")
+                        gaussFit2.SetRange(-5, 5) ## To show the full gaussian shape / line
+
+			par1 = gaussFit2.GetParameter(1)
+			par2 = gaussFit2.GetParameter(2)
 
 
-		histBiasMaxLikelihood.SetMarkerColor(kBlack)
-		histBiasMaxLikelihood.SetMarkerSize(1)
-		histBiasMaxLikelihood.Draw("E1")
+		#histBiasMaxLikelihood.SetMarkerColor(kBlack)
+		#histBiasMaxLikelihood.SetMarkerSize(1)
+
+		histBiasMaxLikelihood.Draw("HIST")
+		#histBiasMaxLikelihood.Draw("E1")
 		if muTrue != muTrueCut:
-			gaussFit.Draw("SAME")
+			gaussFit2.Draw("SAME")
 
 		leg = TLegend(0.66, 0.75, 0.96, 0.92)
 		leg.SetBorderSize(5)
@@ -213,9 +214,9 @@ def main():
                 leg.AddEntry(histSigma, "#mu_{True}= %0.3f" % (muTrue), "")
 		if muTrue != muTrueCut:
                 	leg.AddEntry(histSigma, "-----------------------", "")
-			leg.AddEntry(gaussFit, "Gaussian Fit", "l")
-			leg.AddEntry(gaussFit, "Mean: %0.3f #pm %0.3f" % (par1, (biasRms/math.sqrt(nEntries))) , "")
-			leg.AddEntry(gaussFit, "Std. Dev.: %0.3f" % (math.fabs(par2)) , "")
+			leg.AddEntry(gaussFit2, "Gaussian Fit", "l")
+			leg.AddEntry(gaussFit2, "Mean: %0.3f #pm %0.3f" % (par1, (biasRms/math.sqrt(nEntries))) , "")
+			leg.AddEntry(gaussFit2, "Std. Dev.: %0.3f" % (math.fabs(par2)) , "")
 		else:
 			leg.AddEntry(histSigma, "Mean: %0.3f #pm %0.3f" % (histSigma.GetMean(), (histSigma.GetRMS()/math.sqrt(nEntries))) , "")
 			leg.AddEntry(histSigma, "Std. Dev.: %0.3f" % (math.fabs(histSigma.GetStdDev())) , "")
@@ -223,6 +224,7 @@ def main():
 
 		if muTrue != muTrueCut:
 			print ("Gaussian Fit Mean: %.2f" % (par1))
+			print ("Gaussian Fit Sigma: %.2f" % (par2))
 		paveLumi = TPaveText(0.16, 0.93, 0.96, 0.96, "blNDC")
 		paveLumi.SetFillColor(0)
 		paveLumi.SetBorderSize(0)
@@ -302,9 +304,15 @@ def main():
 
 
 
-		gaussFitDivr = TF1("gaussFitDivr", "[0]*exp(-0.5*((x-[1])/[2])^2)", histoMean-5*histoRms, histoMean+5*histoRms)
-		gaussFitDivr.SetParameter(1, histoMean)
-		gaussFitDivr.SetParameter(2, histoRms)
+		gaussFitDivr = TF1("gaussFitDivr", "gaus", find_max_bin_in_range(histBiasDivr, -1.0, 1.0)-0.5, find_max_bin_in_range(histBiasDivr, -1.0, 1.0)+0.5)
+		gaussFitDivr.SetParameter(0, histBiasDivr.GetMaximum())
+		gaussFitDivr.SetParameter(1, find_max_bin_in_range(histBiasDivr, -1.0, 1.0))
+
+		
+
+		#gaussFitDivr = TF1("gaussFitDivr", "[0]*exp(-0.5*((x-[1])/[2])^2)", histoMean-5*histoRms, histoMean+5*histoRms)
+		#gaussFitDivr.SetParameter(1, histoMean)
+		#gaussFitDivr.SetParameter(2, histoRms)
 
 
 		c2 = TCanvas('c2', 'Bias Pull Divr', 900, 900)
@@ -316,7 +324,9 @@ def main():
 			histBiasDivr.SetXTitle("#mu")
 
 		histBiasDivr.SetYTitle("PseudoDatasets")
-		histBiasDivr.Fit(gaussFitDivr, "q")
+		histBiasDivr.Fit(gaussFitDivr, "RQ")
+		gaussFitDivr.SetRange(-5, 5) ## To show the full gaussian shape / line
+		#histBiasDivr.Fit(gaussFitDivr, "q")
 
 		par1 = gaussFitDivr.GetParameter(1)
 		par2 = gaussFitDivr.GetParameter(2)
@@ -324,6 +334,7 @@ def main():
 		histBiasDivr.SetMarkerColor(kBlack)
 		histBiasDivr.SetMarkerSize(1)
 		histBiasDivr.Draw("E1")
+		#histBiasDivr.Draw("HIST")
 		gaussFitDivr.Draw("SAME")
 
 
@@ -419,15 +430,15 @@ def main():
                 outHistFile2.Close()
 
                 #gaussFitSigma = TF1("gaussFitSigma", "[0]*exp(-0.5*((x-[1])/[2])^2)", sigmaMean-5*sigmaRms, sigmaMean+5*sigmaRms)
-                gaussFitSigma = TF1("gaussFitSigma", "[0]*exp(-0.5*((x-[1])/[2])^2)", -0.5, 0.5)
+                gaussFitSigma = TF1("gaussFitSigma", "gaus", -1.0, 1.0)
                 gaussFitSigma.SetParameter(0, histSigma.GetMaximum())
-                gaussFitSigma.FixParameter(1, find_max_bin_in_range(histSigma, -0.5, 0.5)) #sigmaMean
-                gaussFitSigma.SetParameter(2, 0.1) # sigmaRms
+                gaussFitSigma.SetParameter(1, find_max_bin_in_range(histSigma, -1.0, 1.0)) #sigmaMean
+                #gaussFitSigma.SetParameter(2, 0.1) # sigmaRms
 
-                #gaussFitSigma.SetParLimits(0, histSigma.GetMaximum()*0.99, histSigma.GetMaximum()*1.01)
+                gaussFitSigma.SetParLimits(0, histSigma.GetMaximum()*0.99, histSigma.GetMaximum()*1.01)
                 #gaussFitSigma.SetParLimits(1, find_max_bin_in_range(histSigma, -0.5, 0.5) - 0.5, find_max_bin_in_range(histSigma, -0.5, 0.5) + 0.5)
-                #gaussFitSigma.SetParLimits(2, 0, 10 * sigmaRms)
-                gaussFit.SetParLimits(2, find_max_bin_in_range(histSigma, -0.5, 0.5) - 0.5, find_max_bin_in_range(histSigma, -0.5, 0.5) + 0.5)
+                gaussFitSigma.SetParLimits(2, -1.0, 1.0)
+                #gaussFitSigma.SetParLimits(2, find_max_bin_in_range(histSigma, -0.5, 0.5) - 0.5, find_max_bin_in_range(histSigma, -0.5, 0.5) + 0.5)
 
 
 		c3 = TCanvas('c3', 'Bias Sigma', 900, 900)
@@ -446,8 +457,10 @@ def main():
 		histSigma.SetMarkerColor(kBlack)
 		histSigma.SetMarkerSize(1)
 		histSigma.Draw("E1")
+		#histSigma.Draw("HIST")
 		gaussFitSigma.Draw("SAME")
 
+		histSigma.GetXaxis().SetNdivisions(505)
 
 		leg = TLegend(0.66, 0.75, 0.96, 0.92)
 		leg.SetBorderSize(5)
