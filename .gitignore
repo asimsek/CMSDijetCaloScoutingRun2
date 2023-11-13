@@ -106,7 +106,7 @@ main
 scripts/triggerPlotterHT_fromHisto
 scripts/triggerPlotterHT_fromTree.C
 src/_analysisClass_mainDijetCaloScoutingSelection_RunII.C
-
+scripts/triggerPlotterHT_fromHisto.C
 
 # Don't ignore #
 ################

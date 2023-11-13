@@ -69,11 +69,11 @@ def main():
     combined_atlas_graph_sigma = combine_graphs(atlas_graphs_sigma)
     combined_cms_graph_sigma = combine_graphs(cms_graphs_sigma)
 
-    plot_summary(combined_atlas_graph, "ATLAS", "", args.cFactor, args.signalType, args.muTrue, args.year)
-    plot_summary(combined_cms_graph, "CMS", "", args.cFactor, args.signalType, args.muTrue, args.year)
+    plot_summary(combined_atlas_graph, "ATLAS", "", args.cFactor, args.signalType, args.muTrue, args.year, args.sanityCheck, args.oppositeFuncs)
+    plot_summary(combined_cms_graph, "CMS", "", args.cFactor, args.signalType, args.muTrue, args.year, args.sanityCheck, args.oppositeFuncs)
 
-    plot_summary(combined_atlas_graph_sigma, "ATLAS", "sigma", args.cFactor, args.signalType, args.muTrue, args.year)
-    plot_summary(combined_cms_graph_sigma, "CMS", "sigma", args.cFactor, args.signalType, args.muTrue, args.year)
+    plot_summary(combined_atlas_graph_sigma, "ATLAS", "sigma", args.cFactor, args.signalType, args.muTrue, args.year, args.sanityCheck, args.oppositeFuncs)
+    plot_summary(combined_cms_graph_sigma, "CMS", "sigma", args.cFactor, args.signalType, args.muTrue, args.year, args.sanityCheck, args.oppositeFuncs)
 
 
 
@@ -114,16 +114,31 @@ def combine_graphs(graphs):
 
 
 
-def plot_summary(mergedHisto, funcType, biasType, cFactor, signalType, muTrue, year):
+def plot_summary(mergedHisto, funcType, biasType, cFactor, signalType, muTrue, year, sanityCheck, oppositeFuncs):
     CMSPaveText = "CMS #bf{Supplementary}"
     LumiPaveText = "            (13 TeV)"
 
+    paveTextFit_ = "Fit  PDF: Envelope Method"
+    suffix_text = ""
+
     if funcType == "ATLAS":
         paveTextGen_ = "Gen. PDF: Atlas 5-Param"
-    else:
+        suffix_text = "GenATLASFitEnvelope"
+        if sanityCheck: 
+            paveTextFit_ = "Fit  PDF: Atlas 5-Param"
+            suffix_text = "GenATLASFitATLAS"
+        if oppositeFuncs:
+            paveTextFit_ = "Fit  PDF: CMS 4-Param"
+            suffix_text = "GenATLASFitCMS"
+    elif funcType == "CMS":
         paveTextGen_ = "Gen. PDF: CMS 4-Param"
-
-    paveTextFit_ = "Fit  PDF: Envelope Method"
+        suffix_text = "GenCMSFitEnvelope"
+        if sanityCheck:
+            paveTextFit_ = "Fit  PDF: CMS 4-Param"
+            suffix_text = "GenCMSFitCMS"
+        if oppositeFuncs:
+            paveTextFit_ = "Fit  PDF: Atlas 5-Param"
+            suffix_text = "GenCMSFitATLAS"
 
     if biasType == "sigma":
     	y_title = "Mean bias [% of #mu]"
@@ -152,8 +167,8 @@ def plot_summary(mergedHisto, funcType, biasType, cFactor, signalType, muTrue, y
     mergedHisto.SetMarkerColor(kBlack)
     mergedHisto.SetMarkerStyle(8)
     mergedHisto.SetMarkerSize(2.0)
-    mergedHisto.SetMinimum(-150)
-    mergedHisto.SetMaximum(150)
+    mergedHisto.SetMinimum(-300)
+    mergedHisto.SetMaximum(300)
     mergedHisto.GetXaxis().SetNdivisions(505)
     mergedHisto.Draw("AP")
 
@@ -186,7 +201,7 @@ def plot_summary(mergedHisto, funcType, biasType, cFactor, signalType, muTrue, y
     paveGenFit.AddText("#bf{#it{%s} }" % (paveTextFit_))
     paveGenFit.Draw()
 
-    canvas1.SaveAs("%s/bias_plot_%s_%s_%s_%s_muTrue%s_cFactor%s.pdf" % (outputFolder, biasType, funcType, year, signalType, muTrue, cFactor) )
+    canvas1.SaveAs("%s/bias_plot_%s_%s_%s_%s_muTrue%s_cFactor%s.pdf" % (outputFolder, biasType, suffix_text, year, signalType, muTrue, cFactor) )
     canvas1.Close()
 
 

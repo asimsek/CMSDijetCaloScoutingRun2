@@ -134,7 +134,7 @@ int main(int argc, char* argv[]) {
                 eU = (1-BetaInverse(aeff,N1-N2,N2+1))-p;
                 eL = p-(1-BetaInverse(1-aeff,N1-N2+1,N2));
             }
-        } if (h1->GetBinCenter(i)>380) { p=1.0; }
+        } 
 
         vx[i] = h1->GetBinCenter(i);
         vy[i] = p;

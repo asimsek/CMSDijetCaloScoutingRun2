@@ -16,7 +16,7 @@ def main():
     parser.add_argument('--c', default='0.5', help='set correction factor (penalty term) for the discrete profiling!')
     parser.add_argument("--year", type=str, help="Dataset Year [2018D]", default="2018D")
     parser.add_argument("--sig", type=str, help="Signal Type [gg, qg, qq]", default="gg")
-    parser.add_argument("--toys", type=int, help="how many toys?", default="500")
+    parser.add_argument("--toys", type=int, help="how many toys?", default="1000")
     parser.add_argument("--mass", type=int, help="mass to analyze", default="800")
     parser.add_argument('--condor', action='store_true', default=False)
     parser.add_argument('--sanityCheck', action='store_true', default=False)
@@ -27,6 +27,8 @@ def main():
         massRange = []
         massRange.append(args.mass)
     else:
+        #massRange = ["800"]
+        #massRange = ["900", "1000", "1100", "1200", "1300", "1400", "1500", "1600"]
         massRange = ["800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600"]
 
     if not os.path.isfile(args.inputFile):
@@ -65,15 +67,21 @@ def main():
 
                 
                 Type = "GenFuncFitEnv_muTrue%d" % int(args.muTrue)
-                if args.sanityCheck: Type = "Sanity_muTrue%d" % int(args.muTrue)
-                if args.oppositeFuncs: Type = "Opposite_muTrue%d" % int(args.muTrue)
+                minTolerance = "0.001"
+                if args.sanityCheck: 
+                    Type = "Sanity_muTrue%d" % int(args.muTrue)
+                    minTolerance = "0.00001"
+                if args.oppositeFuncs: 
+                    Type = "Opposite_muTrue%d" % int(args.muTrue)
+                    minTolerance = "0.00001"
 
 
                 ###### ATLAS Generate Toys and Fit with Envelope
-                commandlineGenerateToys_ATLAS_Only = "combine %s -M GenerateOnly -t %d --expectSignal %0.3f --freezeParameters pdf_index --setParameters pdf_index=0 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.0001 --cminDefaultMinimizerStrategy 0 --saveToys -n %s" % (inputDataCard, int(args.toys), expSigVal, nTag2)
-                commandlineFitDiagnostic_ATLAS_Envelope = "combine %s -M FitDiagnostics --toysFile higgsCombine%s.GenerateOnly.mH120.123456.root --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 0 -t %d --rMin %.2f --rMax %.2f --saveWithUncertainties -n %s_rMax%.2f --robustFit=1 --setRobustFitTolerance=1.0" % (inputDataCard, nTag2, int(args.toys), math.floor(expSigVal)*0.5, math.ceil(expSigVal)*2, nTag2, float(rMax))
+                commandlineGenerateToys_ATLAS_Only = "combine %s -M GenerateOnly -t %d --expectSignal %0.3f --freezeParameters pdf_index --setParameters pdf_index=0 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance %s --cminDefaultMinimizerStrategy 0 --saveToys -n %s" % (inputDataCard, int(args.toys), expSigVal, minTolerance, nTag2)
+                commandlineFitDiagnostic_ATLAS_Envelope = "combine %s -M FitDiagnostics --toysFile higgsCombine%s.GenerateOnly.mH120.123456.root --cminDefaultMinimizerTolerance %s --cminDefaultMinimizerStrategy 0 -t %d --rMin %.2f --rMax %.2f --saveWithUncertainties --ignoreCovWarning -n %s_rMax%.2f --robustFit=1 --setRobustFitTolerance=1.0" % (inputDataCard, nTag2, minTolerance, int(args.toys), math.floor(expSigVal)*0.5, math.ceil(expSigVal)*2, nTag2, float(rMax))
                 if args.oppositeFuncs: commandlineFitDiagnostic_ATLAS_Envelope = "%s --freezeParameters pdf_index --setParameters pdf_index=1" % (commandlineFitDiagnostic_ATLAS_Envelope)
                 if args.sanityCheck: commandlineFitDiagnostic_ATLAS_Envelope = "%s --freezeParameters pdf_index --setParameters pdf_index=0" % (commandlineFitDiagnostic_ATLAS_Envelope)
+                
 
                 commandlinePlotterATLAS = "python MaxLikelihood_Bias_Plotter.py --signal %s --year %s --mass %s --muTrue %.6f --cfgFile %s --Type ATLAS_%s  --rMax %.2f --inputRoot fitDiagnostics%s_rMax%.2f.root --cFactor %s" % (signalType, year, mass, expSigVal, configFile, Type, math.ceil(expSigVal)*2, nTag2, float(rMax), args.c)
 
@@ -88,15 +96,15 @@ def main():
 
                 os.system("rm higgsCombine%s.GenerateOnly.mH120.123456.root" % (nTag2) )
                 os.system("rm higgsCombine%s_rMax%.2f.FitDiagnostics.mH120.123456.root" % (nTag2, float(rMax)) )
-                os.system("rm fitDiagnostics%s_rMax%.2f.root" % (nTag2, float(rMax)) )
+                #os.system("rm fitDiagnostics%s_rMax%.2f.root" % (nTag2, float(rMax)) )
                 os.system("rm combine_logger.out")
 
                 print("\033[93m-\033[0m" * 50)
 
 
                 ###### CMS Generate Toys and Fit with Envelope
-                commandlineGenerateToys_CMS_Only = "combine %s -M GenerateOnly -t %d --expectSignal %0.3f --freezeParameters pdf_index --setParameters pdf_index=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.0001 --cminDefaultMinimizerStrategy 0 --saveToys -n %s" % (inputDataCard, int(args.toys), expSigVal, nTag1)
-                commandlineFitDiagnostic_CMS_Envelope = "combine %s -M FitDiagnostics --toysFile higgsCombine%s.GenerateOnly.mH120.123456.root --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 0 -t %d --rMin %.2f --rMax %.2f --saveWithUncertainties -n %s_rMax%.2f --robustFit=1 --setRobustFitTolerance=1.0" % (inputDataCard, nTag1, int(args.toys), math.floor(expSigVal)*0.5, math.ceil(expSigVal)*2, nTag1, float(rMax))
+                commandlineGenerateToys_CMS_Only = "combine %s -M GenerateOnly -t %d --expectSignal %0.3f --freezeParameters pdf_index --setParameters pdf_index=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance %s --cminDefaultMinimizerStrategy 0 --saveToys -n %s" % (inputDataCard, int(args.toys), expSigVal, minTolerance, nTag1)
+                commandlineFitDiagnostic_CMS_Envelope = "combine %s -M FitDiagnostics --toysFile higgsCombine%s.GenerateOnly.mH120.123456.root --cminDefaultMinimizerTolerance %s --cminDefaultMinimizerStrategy 0 -t %d --rMin %.2f --rMax %.2f --saveWithUncertainties --ignoreCovWarning -n %s_rMax%.2f --robustFit=1 --setRobustFitTolerance=1.0" % (inputDataCard, nTag1, minTolerance, int(args.toys), math.floor(expSigVal)*0.5, math.ceil(expSigVal)*2, nTag1, float(rMax))
                 if args.oppositeFuncs: commandlineFitDiagnostic_CMS_Envelope = "%s --freezeParameters pdf_index --setParameters pdf_index=0" % (commandlineFitDiagnostic_CMS_Envelope)
                 if args.sanityCheck: commandlineFitDiagnostic_CMS_Envelope = "%s --freezeParameters pdf_index --setParameters pdf_index=1" % (commandlineFitDiagnostic_CMS_Envelope)
 
@@ -114,7 +122,7 @@ def main():
 
                 os.system("rm higgsCombine%s.GenerateOnly.mH120.123456.root" % (nTag1) )
                 os.system("rm higgsCombine%s_rMax%.2f.FitDiagnostics.mH120.123456.root" % (nTag1, float(rMax)) )
-                os.system("rm fitDiagnostics%s_rMax%.2f.root" % (nTag1, float(rMax)) )
+                #os.system("rm fitDiagnostics%s_rMax%.2f.root" % (nTag1, float(rMax)) )
                 os.system("rm combine_logger.out")
 
                 print("\033[93m-\033[0m" * 50)

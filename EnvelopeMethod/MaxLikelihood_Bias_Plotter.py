@@ -183,15 +183,15 @@ def main():
 		histBiasMaxLikelihood.SetXTitle("(#mu - #mu_{True})/#sigma_{#mu}")
 		histBiasMaxLikelihood.SetYTitle("PseudoDatasets")
 		if muTrue != muTrueCut:
-			gaussFit2 = TF1("gaussFit2", "gaus", find_max_bin_in_range(histBiasMaxLikelihood, -0.5, 0.5)-1.0, find_max_bin_in_range(histBiasMaxLikelihood, -0.5, 0.5)+1.0)
+			gaussFit2 = TF1("gaussFit2", "gaus", find_max_bin_in_range(histBiasMaxLikelihood, -1.0, 1.0)-1.0, find_max_bin_in_range(histBiasMaxLikelihood, -1.0, 1.0)+1.0)
 			gaussFit2.SetParameter(0, histBiasMaxLikelihood.GetMaximum())
-			gaussFit2.SetParameter(1, find_max_bin_in_range(histBiasMaxLikelihood, -0.5, 0.5))
-			#gaussFit2.SetParameter(2, biasRms)
+			gaussFit2.SetParameter(1, find_max_bin_in_range(histBiasMaxLikelihood, -1.0, 1.0))
+			gaussFit2.SetParameter(2, 0)
 
 
-			gaussFit2.SetParLimits(1, -0.1, 0.1)
-			#gaussFit2.SetParLimits(2, -1.2, 1.2)
-
+			#gaussFit2.SetParLimits(1, -1.25, 1.25)
+			#gaussFit2.SetParLimits(2, 0, 1.2)
+			gaussFit2.SetRange(-5, 5)
                         histBiasMaxLikelihood.Fit(gaussFit2, "RQ")
                         gaussFit2.SetRange(-5, 5) ## To show the full gaussian shape / line
 
@@ -201,7 +201,7 @@ def main():
 
 		#histBiasMaxLikelihood.SetMarkerColor(kBlack)
 		#histBiasMaxLikelihood.SetMarkerSize(1)
-
+		histBiasMaxLikelihood.GetXaxis().SetNdivisions(505)
 		histBiasMaxLikelihood.Draw("HIST")
 		#histBiasMaxLikelihood.Draw("E1")
 		if muTrue != muTrueCut:
@@ -333,6 +333,7 @@ def main():
 		
 		histBiasDivr.SetMarkerColor(kBlack)
 		histBiasDivr.SetMarkerSize(1)
+		histBiasDivr.GetXaxis().SetNdivisions(505)
 		histBiasDivr.Draw("E1")
 		#histBiasDivr.Draw("HIST")
 		gaussFitDivr.Draw("SAME")
