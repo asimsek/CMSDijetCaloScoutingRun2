@@ -8,7 +8,7 @@
 #include <TVector2.h>
 #include <TVector3.h>
 
-std::string dataYear = "2017";
+std::string dataYear = "2016B";
 
 analysisClass::analysisClass(string * inputList, string * cutFile, string * treeName, string * outputFileName, string * cutEfficFile)
   :baseClass(inputList, cutFile, treeName, outputFileName, cutEfficFile)
@@ -152,6 +152,25 @@ void analysisClass::Loop()
    TH1F* h_mjj_HLTpass_CaloScoutingHT250 = new TH1F("h_mjj_HLTpass_CaloScoutingHT250","",103,massBoundaries);
    TH1F* h_mjj_HLTpass_HTT250AndL1HTT = new TH1F("h_mjj_HLTpass_HTT250AndL1HTT","",103,massBoundaries);
    TH1F* h_mjj_HLTpass_HTT250AndCaloJet40 = new TH1F("h_mjj_HLTpass_HTT250AndCaloJet40","",103,massBoundaries);
+
+   // HT Efficiency
+   TH1F* h_HT_HLTpass_CaloScoutingHT250 = new TH1F("h_HT_HLTpass_CaloScoutingHT250","",103,massBoundaries);
+   TH1F* h_HT_HLTpass_CaloScoutingHT250_1GeVbin = new TH1F("h_HT_HLTpass_CaloScoutingHT250_1GeVbin","",14000,0,14000);
+
+   TH1F* h_HT_HLTpass_L1HTT = new TH1F("h_HT_HLTpass_L1HTT","",103,massBoundaries);
+   TH1F* h_HT_HLTpass_L1HTT_1GeVbin = new TH1F("h_HT_HLTpass_L1HTT_1GeVbin","",14000,0,14000);
+
+   TH1F* h_HT_HLTpass_CaloJet40 = new TH1F("h_HT_HLTpass_CaloJet40","",103,massBoundaries);
+   TH1F* h_HT_HLTpass_CaloJet40_1GeVbin = new TH1F("h_HT_HLTpass_CaloJet40_1GeVbin","",14000,0,14000);
+
+   TH1F* h_HT_HLTpass_CaloJet40AndHT250 = new TH1F("h_HT_HLTpass_CaloJet40AndHT250","",103,massBoundaries);
+   TH1F* h_HT_HLTpass_CaloJet40AndHT250_1GeVbin = new TH1F("h_HT_HLTpass_CaloJet40AndHT250_1GeVbin","",14000,0,14000);
+
+   TH1F* h_HT_HLTpass_L1HTTAndHT250 = new TH1F("h_HT_HLTpass_L1HTTAndHT250","",103,massBoundaries);
+   TH1F* h_HT_HLTpass_L1HTTAndHT250_1GeVbin = new TH1F("h_HT_HLTpass_L1HTTAndHT250_1GeVbin","",14000,0,14000);
+
+   TH1F* h_HT_HLTpass_L1HTTAndCaloJet40 = new TH1F("h_HT_HLTpass_L1HTTAndCaloJet40","",103,massBoundaries);
+   TH1F* h_HT_HLTpass_L1HTTAndCaloJet40_1GeVbin = new TH1F("h_HT_HLTpass_L1HTTAndCaloJet40_1GeVbin","",14000,0,14000);
 
    /////////initialize variables
 
@@ -687,19 +706,25 @@ void analysisClass::Loop()
        if( getVariableValue("passHLT_CaloScoutingHT250") ) { h_mjj_HLTpass_CaloScoutingHT250 -> Fill(MJJWide); }
        if( getVariableValue("passHLT_CaloScoutingHT250") && getVariableValue("passHLT_CaloJet40_CaloScouting_PFScouting") ) { h_mjj_HLTpass_HTT250AndCaloJet40->Fill(MJJWide); }
        if( getVariableValue("passHLT_CaloScoutingHT250") && getVariableValue("passHLT_L1HTT_CaloScouting_PFScouting")  ) { h_mjj_HLTpass_HTT250AndL1HTT->Fill(MJJWide); }
+
+       // Triffer Efficiency as a function of HT
+       // eff1 = CaloJet40 / (CaloJet40 && HT250)
+       // eff2 = L1HTT / (L1HTT && HT250)
+       if( getVariableValue("passHLT_CaloScoutingHT250") ) { h_HT_HLTpass_CaloScoutingHT250->Fill(htAK4); h_HT_HLTpass_CaloScoutingHT250_1GeVbin->Fill(htAK4); }
+       if( getVariableValue("passHLT_L1HTT_CaloScouting_PFScouting") ) { h_HT_HLTpass_L1HTT->Fill(htAK4); h_HT_HLTpass_L1HTT_1GeVbin->Fill(htAK4); }
+       if( getVariableValue("passHLT_CaloJet40_CaloScouting_PFScouting") ) { h_HT_HLTpass_CaloJet40->Fill(htAK4); h_HT_HLTpass_CaloJet40_1GeVbin->Fill(htAK4); }
+
+       if( getVariableValue("passHLT_CaloJet40_CaloScouting_PFScouting") && getVariableValue("passHLT_CaloScoutingHT250")  ) { h_HT_HLTpass_CaloJet40AndHT250->Fill(htAK4); h_HT_HLTpass_CaloJet40AndHT250_1GeVbin->Fill(htAK4); }
+       if( getVariableValue("passHLT_L1HTT_CaloScouting_PFScouting") && getVariableValue("passHLT_CaloScoutingHT250")  ) { h_HT_HLTpass_L1HTTAndHT250->Fill(htAK4); h_HT_HLTpass_L1HTTAndHT250_1GeVbin->Fill(htAK4); }
+       if( getVariableValue("passHLT_L1HTT_CaloScouting_PFScouting") && getVariableValue("passHLT_CaloJet40_CaloScouting_PFScouting")  ) { h_HT_HLTpass_L1HTTAndCaloJet40->Fill(htAK4); h_HT_HLTpass_L1HTTAndCaloJet40_1GeVbin->Fill(htAK4); }
      }
 
      // optional call to fill a skim with a subset of the variables defined in the cutFile (use flag SAVE)
-     if( passedAllPreviousCuts("mjj") && passedCut("mjj") ) 
-       {
-	 fillReducedSkimTree();
-
-       }
+     // if( passedAllPreviousCuts("mjj") && passedCut("mjj") ) { fillReducedSkimTree(); }
 
    } // End loop over events
 
-   //////////write histos 
-
+   //////////write histos
    h_mjj_NoTrigger_1GeVbin->Write();
    h_mjj_NoTrigger->Write();
    h_mjj_HLTpass_CaloJet40_CaloScouting_PFScouting->Write();
@@ -707,6 +732,22 @@ void analysisClass::Loop()
    h_mjj_HLTpass_CaloScoutingHT250->Write();
    h_mjj_HLTpass_HTT250AndCaloJet40->Write();
    h_mjj_HLTpass_HTT250AndL1HTT->Write();
+
+   // HT Trigger Eff
+   h_HT_HLTpass_CaloScoutingHT250->Write();
+   h_HT_HLTpass_CaloScoutingHT250_1GeVbin->Write();
+   h_HT_HLTpass_L1HTT->Write();
+   h_HT_HLTpass_L1HTT_1GeVbin->Write();
+   h_HT_HLTpass_CaloJet40->Write();
+   h_HT_HLTpass_CaloJet40_1GeVbin->Write();
+
+   h_HT_HLTpass_CaloJet40AndHT250->Write();
+   h_HT_HLTpass_CaloJet40AndHT250_1GeVbin->Write();
+   h_HT_HLTpass_L1HTTAndHT250->Write();
+   h_HT_HLTpass_L1HTTAndHT250_1GeVbin->Write();
+   h_HT_HLTpass_L1HTTAndCaloJet40->Write();
+   h_HT_HLTpass_L1HTTAndCaloJet40_1GeVbin->Write();
+
 
    std::cout << "analysisClass::Loop() ends" <<std::endl;   
 }

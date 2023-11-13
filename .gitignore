@@ -97,6 +97,15 @@ scripts/kinem.sh
 EnvelopeMethod/fullLimits
 EnvelopeMethod/tarExtractor.py
 EnvelopeMethod/BiasResuls_cFactor*
+Limits/CompareDMInterpretation_Run3.py
+Limits/DMMediatorQuarkCouplingInputFiles/expected_Run3.txt
+Limits/DMMediatorQuarkCouplingInputFiles/observed_Run3.txt
+Limits/DarkMatterInterpretation_Dijet_NLO_DK_v3_Run3.py
+Limits/compareCouplingwithHEPData_Ratio_Run3.py
+main
+scripts/triggerPlotterHT_fromHisto
+scripts/triggerPlotterHT_fromTree.C
+src/_analysisClass_mainDijetCaloScoutingSelection_RunII.C
 
 
 # Don't ignore #

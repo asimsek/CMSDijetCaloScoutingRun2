@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Sun Jul  2 14:41:18 2023 by ROOT version 6.12/07
+// Sat Nov 11 16:43:28 2023 by ROOT version 6.12/07
 // from TChain dijetscouting/events/
 //////////////////////////////////////////////////////////
 
@@ -138,7 +138,7 @@ rootNtupleClass::rootNtupleClass(TTree *tree) : fChain(0)
       // The following code should be used if you want this class to access a chain
       // of trees.
       TChain * chain = new TChain("dijetscouting/events","");
-      chain->Add("root://cmseos.fnal.gov//store/group/lpcjj/CaloScouting/rootTrees_big/2017/QCD_MC/QCD_Pt_3200toInf_TuneCP5_13TeV_pythia8/QCD_Pt_3200toInf_TuneCP5_13TeV_pythia8__RunIIFall17DRPremix-PU2017_94X_mc2017_realistic_v11-v1__AODSIM_1.root/dijetscouting/events");
+      chain->Add("root://cmseos.fnal.gov//store/group/lpcjj/CaloScouting/rootTrees_big/2016/ScoutingCaloHT/crab_ScoutingCaloHT__Run2016B-v2__RAW/200212_185539/0000/ScoutingCaloHT__Run2016B-v2__RAW_1000.root/dijetscouting/events");
       tree = chain;
 #endif // SINGLE_TREE
 

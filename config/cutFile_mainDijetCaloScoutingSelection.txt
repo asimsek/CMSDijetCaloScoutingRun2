@@ -1,6 +1,6 @@
 ####Golden J-S-O-N - https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM
 #
-JSON data/json/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt
+JSON data/json/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt
 #
 #
 #
