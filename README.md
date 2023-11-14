@@ -769,6 +769,22 @@ This script (`envelopeMethod.py`) initially creates a datacard and workspace roo
 
 Although I have included a section in the `src/WriteDataCard_2J.py` script, I prefered to change the correction factor directly in the Combine Tool (`HiggsAnalysis/CombinedLimit/src/RooMultiPdf.cxx`) in case of a usage of `text2workspace.py` for the workspace creation.
 
+**The correction factor in the `src/WriteDataCard_2J.py` script can be applied by uncommenting these lines:**
+
+```python
+multipdf = rt.RooMultiPdf("roomultipdfAli", "All Pdfs", w.cat(mylist[0]), mypdfs)
+multipdf.setCorrectionFactor(float(0.5))
+rootTools.Utils.importToWS(w, multipdf)
+```
+
+**But please do not forget to comment this line:**
+
+```python
+rootTools.Utils.importToWS(w,mypdfs)
+```
+
+**But these are NOT necessary since we already applying the cFactor inside the combine tool!**
+
 The `envelopeMethod.py` script finds the variable (`double _cFactor=0.5;`) inside the `RooMultiPdf.cxx` script and changes it. Then it perform `scram b` in that directory to activate the changes. To be able to use this function, you should make a small change on your `RooMultiPdf.cxx` script.
 
 
