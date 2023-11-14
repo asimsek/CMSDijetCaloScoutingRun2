@@ -731,11 +731,76 @@ python compare_qg_PublishedAndNew.py
 
 ## Envelope Method
 
-### Overview of Discrepancy in Signal Detection
+### Discrepancy in Signal Detection
 
 In our analysis, we employed two different fit functions: the CMS 4-Parameter Fit and the ATLAS 5-Parameter Fit, each with its own systematics. Therefore, you might see a signal with one of them but not with the other one. In this case you should include the systematics from both function families. 
 
 In our case; while the CMS function indicated a significant peak at 0.8 TeV, the ATLAS function pointed to a peak at 1.2 TeV. Upon narrowing our data range, these peaks diminished noticeably, but this alone isn't sufficient to draw definitive conclusions. To accurately determine the presence or absence of signals around these mass points, we need to apply the **Envelope Method**. This approach accounts for the different systematics inherent in each fit function family, offering a more robust and comprehensive analysis of the potential signals.
+
+
+### Discrete Profiling Method - Correction Factor (Penalty Term)
+
+
+The Discrete Profiling Method is a statistical approach used in physics analyses, particularly when dealing with **Multiple Probability Density Functions (PDFs)** to model a given data distribution.
+
+In scenarios where various pdfs are viable, the `RooMultiPdf` object in the ROOT framework allows for the consolidation of all these pdfs into a single workspace. A key aspect of this method is the application of a penalty term, also known as a correction factor, to the negative log-likelihood (NLL). 
+
+By default, `RooMultiPdf` adds a term of `0.5` to the NLL for each parameter in the pdf. This penalty term plays a crucial role in avoiding overfitting and ensuring that the model complexity is justifiable given the data. It effectively balances the fit quality with the simplicity of the model, penalizing overly complex models (with more parameters) that might fit the data well but lack predictive power. 
+
+In essence, the discrete profiling method with its penalty term provides a more rigorous, unbiased approach to model selection and fitting in the analysis of complex datasets.
+
+```bash
+cd $CMSSW_BASE/src/CMSDIJET/DijetRootTreeAnalyzer/EnvelopeMethod
+```
+
+```bash
+python envelopeMethod.py --limit --signif --nll --inputFile inputFiles/allRunIILimits_cfg.txt --c 0.5
+```
+
+> Here the `--limit --signif --nll` arguments given to perform limit, significance, and DeltaNLL analysis, respectively. This command will perform the envelope method for all the years and signal types (qq, qg, gg) in the given input text file. 
+
+> If you want to perform only one year and signal type, use `--justOne` with the `--year 2018D --sig qq`.
+
+This script (`envelopeMethod.py`) initially creates a datacard and workspace root files for each mass points. In this step you might need to change the location of the mjj root file defined as `inputMjj` variable, and location of the fit results root file defined as `inputFitCMS` variable before running the script. The config file name for the envelope method is pre-defined in the input text file (`inputFiles/allRunIILimits_cfg.txt`) and the name is `dijetSep_multipdf`.
+
+
+> In our analysis, we use the `--snapshotName` feature. This functionality allows us to take a **snapshot** of the model parameters and configurations, preserving their exact values and states. This is particularly useful in complex analyses involving multiple fits or when comparing different model configurations, as it **reduces the risk of errors in manually resetting parameters**, and enhancing the accuracy of our results.
+
+
+Although I have included a section in the `src/WriteDataCard_2J.py` script, I prefered to change the correction factor directly in the Combine Tool (`HiggsAnalysis/CombinedLimit/src/RooMultiPdf.cxx`) in case of a usage of `text2workspace.py` for the workspace creation.
+
+The `envelopeMethod.py` script finds the variable (`double _cFactor=0.5;`) inside the `RooMultiPdf.cxx` script and changes it. Then it perform `scram b` in that directory to activate the changes. To be able to use this function, you should make a small change on your `RooMultiPdf.cxx` script.
+
+
+ - Open `RooMultiPdf.cxx` with your favorite editor (`vi`).
+
+```bash
+cmsenv
+vi $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/src/RooMultiPdf.cxx
+```
+
+ - Add the following variable definition after; `ClassImp(RooMultiPdf)`
+
+```bash
+double _cFactor=0.5;
+```
+
+ - Find `nPdfs=c.getSize();` and `cFactor=0.5;` right below it.
+ - Replace the `cFactor=0.5;` with `cFactor=_cFactor;` and save the script.
+
+Finally perform `scram b` in the `HiggsAnalysis/CombinedLimit/src` area.
+
+>> **You ONLY need to do this variable definition once. After that, the `envelopeMethod.py` script will handle the change on the penalty term. **
+
+You need to perform a bias test to identify the suitable cFactor value.
+
+
+
+
+
+> **For more information (arXiv:1408.6865):**  [Handling uncertainties in background shapes: the discrete profiling method](https://arxiv.org/pdf/1408.6865.pdf "Handling uncertainties in background shapes: the discrete profiling method")
+
+
 
 
 
