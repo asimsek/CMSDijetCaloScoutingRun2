@@ -747,7 +747,10 @@ python compare_qg_PublishedAndNew.py
 - [2018 Golden JSON](https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmV2018Analysis "2018 Golden JSON")
 - [Physics Data And Monte Carlo Validation (PdmV)](https://twiki.cern.ch/twiki/bin/view/CMS/PdmV "Physics Data And Monte Carlo Validation (PdmV)")
 - [Combine Data Cards](https://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/part2/settinguptheanalysis/#combination-of-multiple-datacards "Combine Data Cards")
-
+- [RooMultiPdf conventional bias studies](https://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/part3/nonstandard/#roomultipdf-conventional-bias-studies "RooMultiPdf conventional bias studies")
+- [Fit parameter uncertainties](https://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/part3/nonstandard/#fit-parameter-uncertainties "Fit parameter uncertainties")
+- [Discrete Profiling](https://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/part3/nonstandard/#discrete-profiling "Discrete Profiling")
+- [Discrete Profiling #2](https://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/tutorial2023/parametric_exercise/#part-5-discrete-profiling "Discrete Profiling")
 
 
 
