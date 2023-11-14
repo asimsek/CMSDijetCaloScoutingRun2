@@ -810,8 +810,25 @@ Finally perform `scram b` in the `HiggsAnalysis/CombinedLimit/src` area.
 
 You need to perform a bias test to identify the suitable cFactor value.
 
+### Bias Studies for Envelope Method
+
+Bias studies play a crucial role in fine-tuning the correction factor for our analysis. They enable us to accurately assess and adjust for any systematic biases inherent in our modeling approach. This precise calibration of the correction factor is key to ensuring that our results accurately reflect the true nature of the data, free from distortions introduced by model biases.
+
+```python
+python biasEnvelope.py --inputFile inputFiles/allRunIILimits_cfg.txt --muTrue 1 --c 0.5 --year 2018D --sig gg --toys 1000
+```
+
+This command line basically performs 3-step analysis;
+ - First, it produce the limit results with the envelope method by using the given cFactor, to use dataCards for the bias studies. It also gets the expected limit value for each mass point, from the limit root file.
+ - It generates the toys with the `GenerateOnly` command line (combine tool), by using CMS and ATLAS PDFs separately. (Generate toys for both, separately!)
+ - Perform `FitDiagnostics` for each PDFs, by utilizing the Envelope Method PDF and toys from each functions.
 
 
+This is the optimal case for the bias studies - Generate toys with CMS or ATLAS function, Fit with Envelope. 
+
+For the sanity check, you can include an argument `--sanityCheck` to generate and fit with the same function.
+
+If you want to generate and fit with oposite functions (Gen:CMS - Fit:ATLAS or vice versa), you can include an argument `--oppositeFuncs` to the command line above.
 
 
 > **For more information (arXiv:1408.6865):**  [Handling uncertainties in background shapes: the discrete profiling method](https://arxiv.org/pdf/1408.6865.pdf "Handling uncertainties in background shapes: the discrete profiling method")
