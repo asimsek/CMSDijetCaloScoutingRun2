@@ -727,7 +727,21 @@ python compare_qg_PublishedAndNew.py
 
 ------------
 
+------------
 
+## Envelope Method
+
+### Overview of Discrepancy in Signal Detection
+
+In our analysis, we employed two different fit functions: the CMS 4-Parameter Fit and the ATLAS 5-Parameter Fit, each with its own systematics. Therefore, you might see a signal with one of them but not with the other one. In this case you should include the systematics from both function families. 
+
+In our case; while the CMS function indicated a significant peak at 0.8 TeV, the ATLAS function pointed to a peak at 1.2 TeV. Upon narrowing our data range, these peaks diminished noticeably, but this alone isn't sufficient to draw definitive conclusions. To accurately determine the presence or absence of signals around these mass points, we need to apply the **Envelope Method**. This approach accounts for the different systematics inherent in each fit function family, offering a more robust and comprehensive analysis of the potential signals.
+
+
+
+------------
+
+------------
 
 
 
