@@ -833,7 +833,7 @@ If you want to generate and fit with oposite functions (Gen:CMS - Fit:ATLAS or v
 
 > **For more information (arXiv:1408.6865):**  [Handling uncertainties in background shapes: the discrete profiling method](https://arxiv.org/pdf/1408.6865.pdf "Handling uncertainties in background shapes: the discrete profiling method")
 
-
+> You can also find combine tool web page links for the discrete profiling in the **Usefull Links** section below.
 
 
 
