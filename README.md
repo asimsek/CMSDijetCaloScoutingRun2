@@ -733,9 +733,9 @@ python compare_qg_PublishedAndNew.py
 
 ### Discrepancy in Signal Detection
 
-In our analysis, we employed two different fit functions: the CMS 4-Parameter Fit and the ATLAS 5-Parameter Fit, each with its own systematics. Therefore, you might see a signal with one of them but not with the other one. In this case you should include the systematics from both function families. 
+In our analysis, we employed two different fit functions: the CMS 4-Parameter Fit and the ATLAS 5-Parameter Fit, each with its own systematics. Therefore, you might see a signal with one of them but not with the other one. In this case you should include the systematics from both function families.
 
-In our case; while the CMS function indicated a significant peak at 0.8 TeV, the ATLAS function pointed to a peak at 1.2 TeV. Upon narrowing our data range, these peaks diminished noticeably, but this alone isn't sufficient to draw definitive conclusions. To accurately determine the presence or absence of signals around these mass points, we need to apply the **Envelope Method**. This approach accounts for the different systematics inherent in each fit function family, offering a more robust and comprehensive analysis of the potential signals.
+In our case; while the CMS function indicated a significant peak at 0.8 TeV, the ATLAS function pointed to a peak at 1.2 TeV. Upon narrowing our data range, these peaks diminished noticeably, but this alone is not sufficient to draw definitive conclusions. To accurately determine the presence or absence of signals around these mass points, we need to apply the **Envelope Method**. This approach accounts for the different systematics inherent in each fit function family, offering a more robust and comprehensive analysis of the potential signals.
 
 
 ### Discrete Profiling Method - Correction Factor (Penalty Term)
@@ -743,9 +743,9 @@ In our case; while the CMS function indicated a significant peak at 0.8 TeV, the
 
 The Discrete Profiling Method is a statistical approach used in physics analyses, particularly when dealing with **Multiple Probability Density Functions (PDFs)** to model a given data distribution.
 
-In scenarios where various pdfs are viable, the `RooMultiPdf` object in the ROOT framework allows for the consolidation of all these pdfs into a single workspace. A key aspect of this method is the application of a penalty term, also known as a correction factor, to the negative log-likelihood (NLL). 
+In scenarios where various pdfs are viable, the `RooMultiPdf` object in the ROOT framework allows for the consolidation of all these pdfs into a single workspace. A key aspect of this method is the application of a penalty term, also known as a correction factor, to the negative log-likelihood (NLL).
 
-By default, `RooMultiPdf` adds a term of `0.5` to the NLL for each parameter in the pdf. This penalty term plays a crucial role in avoiding overfitting and ensuring that the model complexity is justifiable given the data. It effectively balances the fit quality with the simplicity of the model, penalizing overly complex models (with more parameters) that might fit the data well but lack predictive power. 
+By default, `RooMultiPdf` adds a term of `0.5` to the NLL for each parameter in the pdf. This penalty term plays a crucial role in avoiding overfitting and ensuring that the model complexity is justifiable given the data. It effectively balances the fit quality with the simplicity of the model, penalizing overly complex models (with more parameters) that might fit the data well but lack predictive power.
 
 In essence, the discrete profiling method with its penalty term provides a more rigorous, unbiased approach to model selection and fitting in the analysis of complex datasets.
 
