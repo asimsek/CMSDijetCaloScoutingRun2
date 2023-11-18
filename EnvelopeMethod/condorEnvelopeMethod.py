@@ -9,6 +9,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--cfgPath', default="inputFiles/allRunIILimits_cfg.txt", help='Path to the config file')
     parser.add_argument('--fromCombined', action='store_true', default=False, help='use this if you are working with combined limits')
+    parser.add_argument('--c', default='2.0', help='set correction factor (penalty term) for the discrete profiling!')
+    parser.add_argument('--year', default='', help='give a year if you want to perform limit only for one year in the input list')
+    parser.add_argument('--sig', default='', help='give a signalType if you want to perform limit only for one year & signalType')
+    parser.add_argument('--justOne', action='store_true', default=False, help='use this if you want to perform limit only for one year in the input list')
     args = parser.parse_args()
 
     if not os.path.isfile(args.cfgPath):
@@ -22,11 +26,12 @@ def main():
 
     with open(args.cfgPath, 'r') as file:
         for line in file:
-            if line.startswith("#") or line.strip() == '':
-                continue
+            if line.startswith("#") or line.strip() == '': continue
 
             rMax, signalType, configFile, date, year, lumi, box = line.strip().split(',')
+            if args.justOne == True and (args.year != year or args.sig != signalType): continue
             print("\033[91mProcessing line: {}\033[0m".format(line))
+
 
             condorDIR = "cjobs_{0}_{1}_MULTI_{2}_{3}".format(year, signalType, box, date)
             condorDIRPath = "{0}/EnvelopeMethod/{1}".format(workDir, condorDIR)
@@ -52,7 +57,7 @@ def main():
 
                 cshFilePath = "{0}/Limits_{1}_{2}_MULTI_n{3}.csh".format(condorDIR, year, signalType, rMaxStart)
                 with open(cshFilePath, 'w') as cshFile:
-                    cshFileContent = create_csh_file_content(year, signalType, rMaxStart, cmssw_Ver, arch, workDir, condorDIR, newInputcfgFile, date, box)
+                    cshFileContent = create_csh_file_content(year, signalType, rMaxStart, cmssw_Ver, arch, workDir, condorDIR, newInputcfgFile, date, box, args.c, args.justOne)
                     cshFile.write(cshFileContent)
 
                 jdlFilePath = "{0}/Limits_{1}_{2}_MULTI_n{3}.jdl".format(condorDIR, year, signalType, rMaxStart)
@@ -65,7 +70,7 @@ def main():
 
             os.chdir("{0}/..".format(cmssw_dir))
             print("Creating tar file for condor jobs. This process might take a while!..")
-            tarCommandLine = 'tar --exclude-vcs -zcf {0}.tar.gz {0} --exclude=tmp --exclude="*.tar.gz" --exclude="*.pdf" --exclude="*.png" --exclude=.git --exclude="probl" --exclude="tarExt" --exclude="Limits_*" --exclude="dijetCondor" --exclude="lists" --exclude="scripts" --exclude="config_backup" --exclude="data/" --exclude="Autumn18_*" --exclude="Fall17_*" --exclude="Summer16_*"'.format(cmssw_Ver)
+            tarCommandLine = 'tar --exclude-vcs -zcf {0}.tar.gz {0} --exclude=tmp --exclude="*.tar.gz" --exclude="*.pdf" --exclude="*.png" --exclude="fullLimits" --exclude="cFactor*" --exclude="BiasResuls_*" --exclude=.git --exclude="probl" --exclude="tarExt" --exclude="Limits_*" --exclude="dijetCondor" --exclude="lists" --exclude="scripts" --exclude="config_backup" --exclude="data/" --exclude="Autumn18_*" --exclude="Fall17_*" --exclude="Summer16_*"'.format(cmssw_Ver)
             os.system(tarCommandLine)
             subprocess.call(['mv', "{0}.tar.gz".format(cmssw_Ver), "{0}/{1}.tar.gz".format(condorDIRPath, cmssw_Ver)])
             os.chdir(workDir+"/EnvelopeMethod")
@@ -89,7 +94,7 @@ def submit_jobs(condorDIR):
     print("Finished running submit script.")
 
 
-def create_csh_file_content(year, signalType, rMaxStart, cmssw_Ver, arch, workDir, condorDIR, newInputcfgFile, date, box):
+def create_csh_file_content(year, signalType, rMaxStart, cmssw_Ver, arch, workDir, condorDIR, newInputcfgFile, date, box, cFactor, justOne_):
     inptCfgFile = os.path.basename(newInputcfgFile)
     csh_content = '''#!/bin/tcsh
 
@@ -110,7 +115,7 @@ pwd
 ls -lhtr
 
 cmsenv
-python envelopeMethod.py --inputFile {2}/{3} --limit
+python envelopeMethod.py --inputFile {2}/{3} --limit --c {9} --year {4} --sig {5} --justOne True
 
 
 
@@ -135,7 +140,7 @@ ls -lhtr AllLimits{4}_{5}_MULTI/
 rm -r AllLimits{4}_{5}_MULTI
 
 echo "DONE!"
-'''.format(cmssw_Ver, arch, condorDIR, inptCfgFile, year, signalType, rMaxStart, date, box)
+'''.format(cmssw_Ver, arch, condorDIR, inptCfgFile, year, signalType, rMaxStart, date, box, cFactor)
     return csh_content
 
 

@@ -47,7 +47,7 @@ def create_data_cards(year, signalType, date, rMax, box, configFile, lumi, fromC
         os.system(t2wCommand)
 
         #saveWSCommand = "combine -M MultiDimFit %s/t2w_dijet_combine_%s_%s_lumi-%.3f_%s.root -n %s_%s_lumi-%.3f_%s --cminDefaultMinimizerStrategy 0 --saveWorkspace --robustFit 1" % (outputDataCardFolder, signalType, str(mass), float(lumi), box, signalType, str(mass), float(lumi), box)
-        saveWSCommand = "combine -M MultiDimFit %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt -n %s_%s_lumi-%.3f_%s --cminDefaultMinimizerStrategy 0 --saveWorkspace --robustFit 1" % (outputDataCardFolder, signalType, str(mass), float(lumi), box, signalType, str(mass), float(lumi), box)
+        saveWSCommand = "combine -M MultiDimFit %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt -n %s_%s_lumi-%.3f_%s --cminDefaultMinimizerStrategy 0 --cminDefaultMinimizerTolerance 0.01 --saveWorkspace --robustFit 1 --setRobustFitTolerance=1.0" % (outputDataCardFolder, signalType, str(mass), float(lumi), box, signalType, str(mass), float(lumi), box)
         os.system(saveWSCommand)
 
         saveWSMoveCommand = "mv higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root" % (signalType, str(mass), float(lumi), box, outputDataCardFolder, signalType, str(mass), float(lumi), box)
@@ -69,9 +69,21 @@ def perform_asymptotic_limits(year, signalType, date, rMax, box, configFile, lum
 
     for mass in range(550, 2150, 50):
     #for mass in range(850, 900, 50):
-        combineCommand = "combine -M AsymptoticLimits %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 0 --setParameterRanges r=0,%s -n %s_%s_lumi-%.3f_%s --saveWorkspace --snapshotName MultiDimFit" % (DataCardFolder, signalType, str(mass), float(lumi), box, rMax, signalType, str(mass), float(lumi)/1000., box)
+        combineCommand_Hint_for_rMax = "combine -H AsymptoticLimits %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 0 --snapshotName MultiDimFit -n %s_%s_lumi-%.3f_%s" % (DataCardFolder, signalType, str(mass), float(lumi), box, signalType, str(mass), float(lumi)/1000., box)
+        process = subprocess.Popen(combineCommand_Hint_for_rMax, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        stdout, stderr = process.communicate()
+        output = stdout.decode('utf-8') if isinstance(stdout, bytes) else stdout
+        match = re.search(r'Observed Limit: r < (\d+\.\d+)', output)
+        if match:
+            value = float(match.group(1))
+            new_rMax_ = value * 4
+            new_rMin_ = value / 4
 
-        #combineCommand = 'combine -M AsymptoticLimits -d %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 0 --setParameterRanges r=0,%s -n %s_%s_lumi-%.3f_%s --saveWorkspace' % (inputToysFolder, signalType, str(mass), float(lumi)/1000., box, rMax, signalType, str(mass), float(lumi)/1000., box)
+        combineCommand = "combine -M AsymptoticLimits %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --cminDefaultMinimizerTolerance 0.0000001 --cminDefaultMinimizerStrategy 0 --setParameterRanges r=-1,%s -n %s_%s_lumi-%.3f_%s --saveWorkspace --snapshotName MultiDimFit" % (DataCardFolder, signalType, str(mass), float(lumi), box, str(new_rMax_), signalType, str(mass), float(lumi)/1000., box)
+
+        #combineCommand = "combine -M AsymptoticLimits %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 0 --setParameterRanges r=0,%s -n %s_%s_lumi-%.3f_%s --saveWorkspace --snapshotName MultiDimFit" % (DataCardFolder, signalType, str(mass), float(lumi), box, rMax, signalType, str(mass), float(lumi)/1000., box)
+
+        #combineCommand = 'combine -M AsymptoticLimits -d %s/dijet_combine_%s_%s_lumi-%.3f_%s.txt --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 0 --setParameterRanges r=0,%s -n %s_%s_lumi-%.3f_%s --saveWorkspace' % (DataCardFolder, signalType, str(mass), float(lumi), box, rMax, signalType, str(mass), float(lumi)/1000., box)
         combineMoveCommand = "mv higgsCombine%s_%s_lumi-%.3f_%s.AsymptoticLimits.mH120.root %s/higgsCombine%s_%s_lumi-%.3f_%s.Asymptotic.mH120.root" % (signalType, str(mass), float(lumi)/1000., box, DataCardFolder, signalType, str(mass), float(lumi)/1000., box)
 
 
@@ -211,7 +223,7 @@ if __name__ == "__main__":
     parser.add_argument('--nll', action='store_true', default=False, help='use this to create DeltaNLL results')
     parser.add_argument('--noDC', action='store_true', default=False, help='use this to prevent recreating data Cards again!')
     parser.add_argument('--fromCombined', action='store_true', default=False, help='use this if you are working with combined limits')
-    parser.add_argument('--c', default='0.5', help='set correction factor (penalty term) for the discrete profiling!')
+    parser.add_argument('--c', default='2.0', help='set correction factor (penalty term) for the discrete profiling!')
     parser.add_argument('--year', default='', help='give a year if you want to perform limit only for one year in the input list')
     parser.add_argument('--sig', default='', help='give a signalType if you want to perform limit only for one year & signalType')
     parser.add_argument('--justOne', action='store_true', default=False, help='use this if you want to perform limit only for one year in the input list')
