@@ -147,7 +147,7 @@ def initializeWorkspace(w,cfg,box,scaleFactor=1.,penalty=False,multi=True,x=None
                 mypdfs = rt.RooArgList('pdf_list')
                 [mypdfs.add(w.pdf(myvar)) for myvar in mylist[1:]]
 
-                ## Following lines are added by Ali Eren for penalty (correction) term
+                ## Following lines are added by Ali Eren for the penalty (correction) term
                 #multipdf = rt.RooMultiPdf("roomultipdfAli", "All Pdfs", w.cat(mylist[0]), mypdfs)
                 #multipdf.setCorrectionFactor(float(0.5))
                 #rootTools.Utils.importToWS(w, multipdf)

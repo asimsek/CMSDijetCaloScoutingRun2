@@ -268,6 +268,12 @@ c3.SaveAs("%s/LimitRatioComparison_%s_%s_FullNuisancesVsStatOnly.pdf" % (str(out
 c3.Close()
 
 
+outHistFile = TFile.Open("%s/LimitRatioComparison_%s_%s_FullNuisancesVsStatOnly.root" % (str(outFolder), str(year), str(signal)), "RECREATE")
+outHistFile.cd()
 
+tdrObsRatio.Write("obs")
+tdrExpRatio.Write("exp")
+
+outHistFile.Close()
 
 
