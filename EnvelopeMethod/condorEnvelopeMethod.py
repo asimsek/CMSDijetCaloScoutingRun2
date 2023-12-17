@@ -9,10 +9,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--cfgPath', default="inputFiles/allRunIILimits_cfg.txt", help='Path to the config file')
     parser.add_argument('--fromCombined', action='store_true', default=False, help='use this if you are working with combined limits')
-    parser.add_argument('--c', default='2.0', help='set correction factor (penalty term) for the discrete profiling!')
+    parser.add_argument('--c', default='', help='set correction factor (penalty term) for the discrete profiling!')
     parser.add_argument('--year', default='', help='give a year if you want to perform limit only for one year in the input list')
     parser.add_argument('--sig', default='', help='give a signalType if you want to perform limit only for one year & signalType')
     parser.add_argument('--justOne', action='store_true', default=False, help='use this if you want to perform limit only for one year in the input list')
+    parser.add_argument('--oneRMax', action='store_true', default=False, help='set this to use the given rMax value in the input config file')
     args = parser.parse_args()
 
     if not os.path.isfile(args.cfgPath):
@@ -28,7 +29,7 @@ def main():
         for line in file:
             if line.startswith("#") or line.strip() == '': continue
 
-            rMax, signalType, configFile, date, year, lumi, box = line.strip().split(',')
+            rMax, signalType, configFile, date, year, lumi, box, cFactor = line.strip().split(',')
             if args.justOne == True and (args.year != year or args.sig != signalType): continue
             print("\033[91mProcessing line: {}\033[0m".format(line))
 
@@ -48,24 +49,42 @@ def main():
             rMaxStep = 0.1
 
             print("Creating all text, csh and jdl files. Please be patient!..")
+            cFac = float(cFactor) if args.c == '' else args.c
 
-            while rMaxStart <= rMaxEnd:
-		print ("\033[91mProcessing rMax=\033[0m%.2f" % (rMaxStart))
-            	newInputcfgFile = "{0}/{1}_cfg_rMax{2}.txt".format(condorDIR, signalType, rMaxStart)
-            	with open(newInputcfgFile, 'w') as newFile:
-                    newFile.write(','.join([str(rMaxStart), signalType, configFile, date, year, lumi, box]))
+            if not args.oneRMax:
+                while rMaxStart <= rMaxEnd:
+                    print ("\033[91mProcessing rMax=\033[0m%.2f" % (rMaxStart))
+                    newInputcfgFile = "{0}/{1}_cfg_rMax{2}.txt".format(condorDIR, signalType, rMaxStart)
+                    with open(newInputcfgFile, 'w') as newFile:
+                        newFile.write(','.join([str(rMaxStart), signalType, configFile, date, year, lumi, box, cFac]))
 
-                cshFilePath = "{0}/Limits_{1}_{2}_MULTI_n{3}.csh".format(condorDIR, year, signalType, rMaxStart)
+                    cshFilePath = "{0}/Limits_{1}_{2}_MULTI_n{3}.csh".format(condorDIR, year, signalType, rMaxStart)
+                    with open(cshFilePath, 'w') as cshFile:
+                        cshFileContent = create_csh_file_content(year, signalType, rMaxStart, cmssw_Ver, arch, workDir, condorDIR, newInputcfgFile, date, box, args.c, args.justOne)
+                        cshFile.write(cshFileContent)
+
+                    jdlFilePath = "{0}/Limits_{1}_{2}_MULTI_n{3}.jdl".format(condorDIR, year, signalType, rMaxStart)
+                    with open(jdlFilePath, 'w') as jdlFile:
+                        jdlFileContent = create_jdl_file_content(year, signalType, rMaxStart, cmssw_Ver)
+                        jdlFile.write(jdlFileContent)
+
+                    rMaxStart += rMaxStep
+
+            else:
+                print ("\033[91mProcessing rMax=\033[0m%.2f" % (rMax))
+                newInputcfgFile = "{0}/{1}_cfg_rMax{2}.txt".format(condorDIR, signalType, rMax)
+                with open(newInputcfgFile, 'w') as newFile:
+                    newFile.write(','.join([str(rMax), signalType, configFile, date, year, lumi, box, cFac]))
+
+                cshFilePath = "{0}/Limits_{1}_{2}_MULTI_n{3}.csh".format(condorDIR, year, signalType, rMax)
                 with open(cshFilePath, 'w') as cshFile:
-                    cshFileContent = create_csh_file_content(year, signalType, rMaxStart, cmssw_Ver, arch, workDir, condorDIR, newInputcfgFile, date, box, args.c, args.justOne)
+                    cshFileContent = create_csh_file_content(year, signalType, rMax, cmssw_Ver, arch, workDir, condorDIR, newInputcfgFile, date, box, args.c, args.justOne)
                     cshFile.write(cshFileContent)
 
-                jdlFilePath = "{0}/Limits_{1}_{2}_MULTI_n{3}.jdl".format(condorDIR, year, signalType, rMaxStart)
+                jdlFilePath = "{0}/Limits_{1}_{2}_MULTI_n{3}.jdl".format(condorDIR, year, signalType, rMax)
                 with open(jdlFilePath, 'w') as jdlFile:
-                    jdlFileContent = create_jdl_file_content(year, signalType, rMaxStart, cmssw_Ver)
+                    jdlFileContent = create_jdl_file_content(year, signalType, rMax, cmssw_Ver)
                     jdlFile.write(jdlFileContent)
-
-                rMaxStart += rMaxStep
 
 
             os.chdir("{0}/..".format(cmssw_dir))
@@ -115,7 +134,7 @@ pwd
 ls -lhtr
 
 cmsenv
-python envelopeMethod.py --inputFile {2}/{3} --limit --c {9} --year {4} --sig {5} --justOne True
+python envelopeMethod.py --inputFile {2}/{3} --limit --c {9} --year {4} --sig {5} --justOne
 
 
 
@@ -175,6 +194,7 @@ for file in os.listdir("."):
 
 if __name__ == "__main__":
     main()
+
 
 
 
