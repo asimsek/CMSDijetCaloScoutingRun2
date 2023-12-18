@@ -44,7 +44,7 @@ def main():
 
 			start_ = -1.0
 			end_ = 1.0
-			step_ = 0.01
+			step_ = 0.1
 
 			while start_ <= end_:
 				if start_ == 0: continue
@@ -76,7 +76,7 @@ def main():
 
 			print("Created submit file: zz_submitJobs.py")
 			print("Done!")
-			submit_jobs(condorDIR)
+			#submit_jobs(condorDIR)
 			print("-" * 50)
 
 
