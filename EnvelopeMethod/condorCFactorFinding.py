@@ -76,7 +76,7 @@ def main():
 
 			print("Created submit file: zz_submitJobs.py")
 			print("Done!")
-			#submit_jobs(condorDIR)
+			submit_jobs(condorDIR)
 			print("-" * 50)
 
 
