@@ -13,7 +13,7 @@ def main():
     parser = argparse.ArgumentParser(description="")
     parser.add_argument("--inputFile", default="inputFiles/allRunIILimits_cfg.txt", help="Path to the input configuration file")
     parser.add_argument("--muTrue", type=str, help="[0: BgOnly, 1: ExpectedSignal, 2: 2*ExpectedSignal]", default="1")
-    parser.add_argument('--c', default='2.0', help='set correction factor (penalty term) for the discrete profiling!')
+    parser.add_argument('--c', default='0.5', help='set correction factor (penalty term) for the discrete profiling!')
     parser.add_argument("--year", type=str, help="Dataset Year [2018D]", default="2018D")
     parser.add_argument("--sig", type=str, help="Signal Type [gg, qg, qq]", default="gg")
     parser.add_argument("--toys", type=int, help="how many toys?", default="1000")

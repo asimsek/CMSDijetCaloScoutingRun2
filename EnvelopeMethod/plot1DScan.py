@@ -119,7 +119,7 @@ parser.add_argument(
 )
 parser.add_argument("--breakdown", help="do quadratic error subtraction using --others")
 parser.add_argument("--logo", default="CMS")
-parser.add_argument("--logo-sub", default="Internal")
+parser.add_argument("--logo-sub", default="Supplementary")
 args = parser.parse_args()
 
 print("--------------------------------------")
@@ -164,6 +164,7 @@ main_scan["graph"].Draw("AP")
 axishist = plot.GetAxisHist(pads[0])
 
 axishist.SetMaximum(args.y_max)
+#axishist.SetMinimum(-1)
 axishist.GetYaxis().SetTitle("- 2 #Delta ln L")
 axishist.GetXaxis().SetTitle("%s" % fixed_name)
 

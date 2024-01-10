@@ -63,8 +63,8 @@ def combineDataCards(year, signalType, date, rMax, inputFile, lumi, box):
     outputDataCardFolder = "AllLimits{1}Combined_{0}_MULTI/cards_{0}_w2016Sig_DE13_M526_{2}_rmax{3}/".format(signalType, year, date, rMax)
     if not os.path.exists(outputDataCardFolder): os.makedirs(outputDataCardFolder)
 
-    for mass in range(850, 900, 50):
-    #for mass in range(550, 2150, 50):
+    #for mass in range(850, 900, 50):
+    for mass in range(550, 2150, 50):
         dataCards = []
         with open(inputFile, 'r') as file:
             for line in file:
@@ -207,13 +207,13 @@ def create_deltaNLL_toys(year, signalType, date, rMax, box, configFile, lumi, co
     #for mass in range(550, 2150, 50):
     for mass in range(850, 900, 50):
     #for mass in range(1200, 1250, 50):
-        combineCommandEnvelope = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n Envelope --points 1000 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.001 --robustFit 1 --setRobustFitTolerance=1.0" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
+        combineCommandEnvelope = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n Envelope --points 1000 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.0001 --robustFit 1 --setRobustFitTolerance=1.0" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
         combineMoveCommandEnvelope = "mv higgsCombineEnvelope.MultiDimFit.mH120.root %s/higgsCombineEnvelope_%s_%d_lumi-%.3f_%s.MultiDimFit.mH120.root" % (outputToysFolder, signalType, mass, float(lumi)/1000., box)
 
-        combineCommandATLAS = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n ATLAS --freezeParameters pdf_index --setParameters pdf_index=0 --points 1000 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.0001 --robustFit 1 --setRobustFitTolerance=1.0" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
+        combineCommandATLAS = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n ATLAS --freezeParameters pdf_index --setParameters pdf_index=0 --points 4000 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.00001 --robustFit 1 --setRobustFitTolerance=1.0" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
         combineMoveCommandATLAS = "mv higgsCombineATLAS.MultiDimFit.mH120.root %s/higgsCombineATLAS_%s_%d_lumi-%.3f_%s.MultiDimFit.mH120.root" % (outputToysFolder, signalType, mass, float(lumi)/1000., box)
 
-        combineCommandCMS = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n CMS --freezeParameters pdf_index --setParameters pdf_index=1 --points 500 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.0001 --robustFit 1 --setRobustFitTolerance=1.0" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
+        combineCommandCMS = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n CMS --freezeParameters pdf_index --setParameters pdf_index=1 --points 3000 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.00001 --robustFit 1 --setRobustFitTolerance=1.0" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
         combineMoveCommandCMS = "mv higgsCombineCMS.MultiDimFit.mH120.root %s/higgsCombineCMS_%s_%d_lumi-%.3f_%s.MultiDimFit.mH120.root" % (outputToysFolder, signalType, mass, float(lumi)/1000., box)
 
         print("\033[91mProcessing DeltaNLL for mass point: {0}\033[0m".format(mass))
@@ -288,9 +288,6 @@ if __name__ == "__main__":
         if not args.noDC and args.combine:
             combineDataCards(params['year'], params['signalType'], params['date'], params['rMax'], args.inputFile, params['lumi'], params['box'])
 
-        if args.nll:
-            create_deltaNLL_toys(params['year'], params['signalType'], params['date'], params['rMax'], params['box'], params['configFile'], params['lumi'], args.combine)
-
         if args.limit:
             perform_asymptotic_limits(params['year'], params['signalType'], params['date'], params['rMax'], params['box'], params['configFile'], params['lumi'], args.combine)
             combine_and_plot_limits(params['year'], params['signalType'], params['date'], params['rMax'], params['box'], params['configFile'], params['lumi'], args.combine)
@@ -298,6 +295,8 @@ if __name__ == "__main__":
         if args.signif:
             combine_and_plot_significance(params['year'], params['signalType'], params['date'], params['rMax'], params['box'], params['configFile'], params['lumi'], args.combine)
 
+        if args.nll:
+            create_deltaNLL_toys(params['year'], params['signalType'], params['date'], params['rMax'], params['box'], params['configFile'], params['lumi'], args.combine)
         
 
     os.system("rm roostats-*.root")

@@ -28,6 +28,7 @@ def read_root_data(filename):
         if entry.quantileExpected > -1.5:
             r_values.append(entry.r)
             y_values.append(2 * (entry.deltaNLL + entry.nll + entry.nll0))
+            #y_values.append(2 * (entry.deltaNLL))
 
     return r_values, y_values
 
