@@ -68,6 +68,10 @@ inputs/old
 
 # User Init #
 #############
+test
+test_fit
+doc
+fit
 nameChange.py
 dijetCondor/a.sh
 inputs/*/*.C
@@ -97,6 +101,7 @@ scripts/kinem.sh
 EnvelopeMethod/fullLimits
 EnvelopeMethod/tarExtractor.py
 EnvelopeMethod/BiasResuls_cFactor*
+EnvelopeMethod/cFactor*
 Limits/CompareDMInterpretation_Run3.py
 Limits/DMMediatorQuarkCouplingInputFiles/expected_Run3.txt
 Limits/DMMediatorQuarkCouplingInputFiles/observed_Run3.txt

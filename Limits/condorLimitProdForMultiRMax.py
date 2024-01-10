@@ -61,7 +61,7 @@ def main():
 
             os.chdir("{0}/..".format(cmssw_dir))
             print("Creating tar file for condor jobs. This process might take a while!..")
-            tarCommandLine = 'tar --exclude-vcs -zcf {0}.tar.gz {0} --exclude=tmp --exclude="*.tar.gz" --exclude="*.tar.gz" --exclude="*.pdf" --exclude="*.png" --exclude=.git'.format(cmssw_Ver)
+            tarCommandLine = 'tar --exclude-vcs -zcf {0}.tar.gz {0} --exclude=tmp --exclude="*.tar.gz" --exclude="*.pdf" --exclude="AllLimits*" --exclude="*.png" --exclude=.git --exclude="cFactor*" --exclude="DeltaNLLPlots" --exclude="Limits_*" --exclude="dijetCondor" --exclude="EnvelopeMethod" --exclude="lists" --exclude="scripts" --exclude="config_backup" --exclude="Autumn18_*" --exclude="Fall17_*" --exclude="Summer16_*"'.format(cmssw_Ver)
             os.system(tarCommandLine)
             subprocess.call(['mv', "{0}.tar.gz".format(cmssw_Ver), "{0}/{1}.tar.gz".format(condorDIRPath, cmssw_Ver)])
             os.chdir(workDir+"/Limits")
@@ -109,11 +109,11 @@ python calibrateDatasetsToSmoothFit.py --cfgPath {2}/{3} {10} {11}
 
 tar --exclude-vcs -zcf AllLimits{4}_{5}_{6}.tar.gz AllLimits{4}_{5}_{6} --exclude=tmp --exclude="*.tar.gz" 
 
-xrdcp AllLimits{4}_{5}_{6}/cards_{5}_w2016Sig_DE13_M526_{8}_rmax{7}/limits_freq_{5}_{9}.pdf root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{4}_{5}_{6}/PDFs/limits_freq_{5}_{9}_M526_rMax{7}.pdf
+xrdcp AllLimits{4}_{5}_{6}/cards_{5}_w2016Sig_DE13_M526_{8}_rmax{7}/limits_freq_{5}_{9}.pdf root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2024/AllLimits{4}_{5}_{6}/PDFs/limits_freq_{5}_{9}_M526_rMax{7}.pdf
 
-xrdcp AllLimits{4}_{5}_{6}/cards_{5}_w2016Sig_DE13_M526_{8}_rmax{7}/limits_freq_{5}_{9}.root root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{4}_{5}_{6}/Roots/limits_freq_{5}_{9}_M526_rMax{7}.root
+xrdcp AllLimits{4}_{5}_{6}/cards_{5}_w2016Sig_DE13_M526_{8}_rmax{7}/limits_freq_{5}_{9}.root root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2024/AllLimits{4}_{5}_{6}/Roots/limits_freq_{5}_{9}_M526_rMax{7}.root
 
-xrdcp AllLimits{4}_{5}_{6}.tar.gz root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{4}_{5}_{6}/tarFiles/AllLimits{4}_{5}_{6}_rMax{7}.tar.gz
+xrdcp AllLimits{4}_{5}_{6}.tar.gz root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2024/AllLimits{4}_{5}_{6}/tarFiles/AllLimits{4}_{5}_{6}_rMax{7}.tar.gz
 
 echo "starting cleanup..."
 ls -lhtr AllLimits{4}_{5}_{6}/
