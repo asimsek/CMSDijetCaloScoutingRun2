@@ -1,0 +1,3 @@
+#rMax,signalType,configFile,date,year,lumi,config,inputmjj
+#2016
+3.4,gg,ModDijetSep_6param,17June2023,2016B,5704.216707,CaloDijetSep2016B,CaloScoutingHT2016B_DatavsQDCMC_11June2023_2245

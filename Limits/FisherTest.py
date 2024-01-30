@@ -7,7 +7,7 @@ def FisherTest(RSS_1, RSS_2, dof_1, dof_2, N):
     n1 = N - dof_1 - 1
     n2 = N - dof_2 - 1
     print("n1 = {0}    n2 = {1}".format(n1, n2))
-    F = ((RSS1 - RSS2) / (n2 - n1)) / (RSS2 / (N - n2))
+    F = abs(((RSS1 - RSS2) / (n2 - n1)) / (RSS2 / (N - n2)))
     print("d1 = {0}    d2 = {1}".format(n2-n1, N-n2))
 
     # Calculating the p-value

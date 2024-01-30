@@ -230,7 +230,7 @@ textfit = "%s = %.3f{}^{#plus %.3f}_{#minus %.3f}" % (
 )
 
 
-pt = ROOT.TPaveText(0.59, 0.82 - len(other_scans) * 0.08, 0.95, 0.91, "NDCNB")
+pt = ROOT.TPaveText(0.71, 0.82 - len(other_scans) * 0.05, 0.96, 0.92, "NDCNB")
 pt.AddText(textfit)
 
 if args.breakdown is None:
@@ -290,7 +290,8 @@ if len(other_scans) > 0:
     legend_l = legend_l - len(other_scans) * 0.04
 legend = ROOT.TLegend(0.15, legend_l, 0.45, 0.78, "", "NBNDC")
 if len(other_scans) >= 3:
-    legend = ROOT.TLegend(0.46, 0.83, 0.95, 0.93, "", "NBNDC")
+    #legend = ROOT.TLegend(0.46, 0.83, 0.95, 0.93, "", "NBNDC")
+    legend = ROOT.TLegend(0.15, 0.65, 0.50, 0.78, "", "NBNDC")
     legend.SetNColumns(2)
 
 legend.AddEntry(main_scan["func"], args.main_label, "L")

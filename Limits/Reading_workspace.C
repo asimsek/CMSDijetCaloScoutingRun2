@@ -31,12 +31,15 @@ double massBoundaries[nMassBins+1] = {1, 3, 6, 10, 16, 23, 31, 40, 50, 61, 74, 8
 
 //std::string year = "2016B";
 std::string sepText = "Sep";
+//std::string boxText = "_ModExp4param";
+std::string boxText = "";
 std::stringstream ss0;
 ss0 << "CaloDijet" << sepText << year;
 std::cout << ss0.str() << std::endl;
 
+
 std::stringstream ss1;
-ss1 << "fits_17June2023_" << year << "_DE13_M526_w2016Signals/CaloDijet" << sepText << year << "_dijet" << sepText << "/DijetFitResults_CaloDijet" << sepText << year << ".root";
+ss1 << "fits_17June2023_" << year << "_DE13_M526_w2016Signals/CaloDijet" << sepText << year << "_dijet" << sepText << boxText << "/DijetFitResults_CaloDijet" << sepText << year << ".root";
 std::cout << ss1.str() << std::endl;
 TFile *f = new TFile(ss1.str().c_str());
 

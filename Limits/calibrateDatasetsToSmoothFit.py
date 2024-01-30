@@ -183,10 +183,13 @@ if __name__ == "__main__":
     freezeString = "--freezeParameters" if args.freezeParameters else ""
     # define paths and reference values here
     script_path = "createFitsAndLimits.py"
-    refConfigFile = "inputFiles/ref2016All_cfg.txt"
+    #refConfigFile = "inputFiles/ref2016All_cfg.txt"
     #refConfigFile = "inputFiles/ref2016All_ATLAS_cfg.txt"
-    #refConfigFile = "inputFiles/ref2016_All_ModExp4Param_cfg.txt"
+    refConfigFile = "inputFiles/ref2016_All_ModExp4Param_cfg.txt"
+    #refConfigFile = "inputFiles/ref2016_All_ModExp5Param_cfg.txt"
     #refConfigFile = "inputFiles/ref2016_All_PolyExt5Param_cfg.txt"
+    #refConfigFile = "inputFiles/ref2016_All_PolyExt6Param_cfg.txt"
+    #refConfigFile = "inputFiles/ref2016_ModDijet4Param_cfg.txt"
     refLumi = 27.224973278
     ## ref fit prediction comes from python/BinnedFit.py outputs (print)
     print (" -> Collecting reference values!")

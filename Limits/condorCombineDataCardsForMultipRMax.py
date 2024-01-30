@@ -27,12 +27,13 @@ def main(cfgPath, total_cfgFile, fromCombined, freezeParameters):
             print("Created directory: {}".format(condorDIR))
 
 
-        rMaxStart = 0.5
-        rMaxEnd = 20.0
+        rMaxStart = 0.3
+        rMaxEnd = 5.0
         rMaxStep = 0.1
 
         print("Creating all text, csh and jdl files. Please be patient!..")
         while rMaxStart <= rMaxEnd:
+            #rMaxStart = new_rMax1
             newInput_totalcfgFile = "{0}/{1}_{2}_cfg_rMax{3}.txt".format(condorDIRPath, total_year, signal, rMaxStart)
             with open(newInput_totalcfgFile, 'w') as newFile:
                 newFile.write(','.join([total_year, total_lumi, box, date, new_confFile, signal, str(rMaxStart)]))
@@ -51,7 +52,7 @@ def main(cfgPath, total_cfgFile, fromCombined, freezeParameters):
 
         os.chdir("{0}/..".format(cmssw_dir))
         print("Creating tar file for condor jobs. This process might take a while!..")
-        tarCommandLine = 'tar --exclude-vcs -zcf {0}.tar.gz {0} --exclude=tmp --exclude="*.tar.gz" --exclude="*.pdf" --exclude="*.png" --exclude="scripts" --exclude=.git'.format(cmssw_Ver)
+        tarCommandLine = 'tar --exclude-vcs -zcf {0}.tar.gz {0} --exclude=tmp --exclude="*.tar.gz" --exclude="*.pdf" --exclude="config_backup" --exclude="SignificanceResults" --exclude="combinedFitResults_*" --exclude="Fits_*" --exclude="Limits_*" --exclude="*.png" --exclude="scripts" --exclude=.git --exclude="EnvelopeMethod*" --exclude="fits_*"'.format(cmssw_Ver)
         os.system(tarCommandLine)
 
         subprocess.call(['mv', "{0}.tar.gz".format(cmssw_Ver), "{0}/{1}.tar.gz".format(condorDIRPath, cmssw_Ver)])
@@ -89,8 +90,12 @@ cmsenv
 
 python combineDataCardsFromSplitDatasets.py --cfgFile {3} --total_cfgFile {2}/{5}_{6}_cfg_rMax{9}.txt {11} {12}
 
-xrdcp AllLimits{5}Combined_{6}_{7}/cards_{6}_w2016Sig_DE13_M526_{8}_rmax{9}/limits_freq_{6}_{10}.pdf root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{5}_{6}_{7}/limits_freq_{6}_{10}_M526_rMax{9}.pdf
-xrdcp AllLimits{5}Combined_{6}_{7}/cards_{6}_w2016Sig_DE13_M526_{8}_rmax{9}/limits_freq_{6}_{10}.root root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2023/AllLimits{5}_{6}_{7}/limits_freq_{6}_{10}_M526_rMax{9}.root
+xrdcp AllLimits{5}Combined_{6}_{7}/cards_{6}_w2016Sig_DE13_M526_{8}_rmax{9}/limits_freq_{6}_{10}.pdf root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2024/AllLimits{5}Combined_{6}_{7}/PDFs/limits_freq_{6}_{10}_M526_rMax{9}.pdf
+xrdcp AllLimits{5}Combined_{6}_{7}/cards_{6}_w2016Sig_DE13_M526_{8}_rmax{9}/limits_freq_{6}_{10}.root root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2024/AllLimits{5}Combined_{6}_{7}/Roots/limits_freq_{6}_{10}_M526_rMax{9}.root
+
+tar --exclude-vcs -zcf AllLimits{5}Combined_{6}_{7}.tar.gz AllLimits{5}Combined_{6}_{7} --exclude=tmp --exclude="*.tar.gz"
+xrdcp AllLimits{5}Combined_{6}_{7}.tar.gz root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/Limits_2024/AllLimits{5}Combined_{6}_{7}/tarFiles/AllLimits{5}Combined_{6}_{7}_rMax{9}.tar.gz
+
 
 echo "starting cleanup..."
 ls -lhtr AllLimits{5}Combined_{6}_{7}/

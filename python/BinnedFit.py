@@ -691,7 +691,6 @@ if __name__ == '__main__':
         effGraph.SetLineColor(rt.kBlack)
         effGraph.Draw('pezsame')
 
-    
         effTF1 = w.function('effFunc').asTF(rt.RooArgList(w.var('mjj')))
         if options.doTriggerFit or options.doSimultaneousFit:
             effTF1.Draw("lsame")

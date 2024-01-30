@@ -210,11 +210,17 @@ def create_deltaNLL_toys(year, signalType, date, rMax, box, configFile, lumi, co
         combineCommandEnvelope = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n Envelope --points 1000 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.0001 --robustFit 1 --setRobustFitTolerance=1.0" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
         combineMoveCommandEnvelope = "mv higgsCombineEnvelope.MultiDimFit.mH120.root %s/higgsCombineEnvelope_%s_%d_lumi-%.3f_%s.MultiDimFit.mH120.root" % (outputToysFolder, signalType, mass, float(lumi)/1000., box)
 
-        combineCommandATLAS = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n ATLAS --freezeParameters pdf_index --setParameters pdf_index=0 --points 4000 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.00001 --robustFit 1 --setRobustFitTolerance=1.0" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
+        combineCommandATLAS = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n ATLAS --freezeParameters pdf_index --setParameters pdf_index=0 --points 1000 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.0001 --robustFit 1 --setRobustFitTolerance=1.0" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
         combineMoveCommandATLAS = "mv higgsCombineATLAS.MultiDimFit.mH120.root %s/higgsCombineATLAS_%s_%d_lumi-%.3f_%s.MultiDimFit.mH120.root" % (outputToysFolder, signalType, mass, float(lumi)/1000., box)
 
-        combineCommandCMS = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n CMS --freezeParameters pdf_index --setParameters pdf_index=1 --points 3000 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.00001 --robustFit 1 --setRobustFitTolerance=1.0" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
-        combineMoveCommandCMS = "mv higgsCombineCMS.MultiDimFit.mH120.root %s/higgsCombineCMS_%s_%d_lumi-%.3f_%s.MultiDimFit.mH120.root" % (outputToysFolder, signalType, mass, float(lumi)/1000., box)
+        #combineCommandCMS = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n CMS --freezeParameters pdf_index --setParameters pdf_index=1 --points 1000 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.00001 --robustFit 1 --setRobustFitTolerance=1.0" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
+        #combineMoveCommandCMS = "mv higgsCombineCMS.MultiDimFit.mH120.root %s/higgsCombineCMS_%s_%d_lumi-%.3f_%s.MultiDimFit.mH120.root" % (outputToysFolder, signalType, mass, float(lumi)/1000., box)
+
+        #combineCommandModExp = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n ModExp --freezeParameters pdf_index --setParameters pdf_index=2 --points 1000 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.0001 --robustFit 1 --setRobustFitTolerance=1.0" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
+        #combineMoveCommandModExp = "mv higgsCombineModExp.MultiDimFit.mH120.root %s/higgsCombineModExp_%s_%d_lumi-%.3f_%s.MultiDimFit.mH120.root" % (outputToysFolder, signalType, mass, float(lumi)/1000., box)
+
+        #combineCommandPolyExt = "combine -M MultiDimFit %s/t2w_higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n PolyExt --freezeParameters pdf_index --setParameters pdf_index=3 --points 1000 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.00001 --robustFit 1 --setRobustFitTolerance=1.0" % (inputDataCardFolder, signalType, str(mass), float(lumi), box, str(rRange_min), str(rRange_max))
+        #combineMoveCommandPolyExt = "mv higgsCombinePolyExt.MultiDimFit.mH120.root %s/higgsCombinePolyExt_%s_%d_lumi-%.3f_%s.MultiDimFit.mH120.root" % (outputToysFolder, signalType, mass, float(lumi)/1000., box)
 
         print("\033[91mProcessing DeltaNLL for mass point: {0}\033[0m".format(mass))
 
@@ -222,20 +228,30 @@ def create_deltaNLL_toys(year, signalType, date, rMax, box, configFile, lumi, co
         os.system(combineMoveCommandEnvelope)
         os.system(combineCommandATLAS)
         os.system(combineMoveCommandATLAS)
-        os.system(combineCommandCMS)
-        os.system(combineMoveCommandCMS)
+        #os.system(combineCommandCMS)
+        #os.system(combineMoveCommandCMS)
+        #os.system(combineCommandModExp)
+        #os.system(combineMoveCommandModExp)
+        #os.system(combineCommandPolyExt)
+        #os.system(combineMoveCommandPolyExt)
 
         #print (combineCommandEnvelope)
         #print (combineCommandATLAS)
         #print (combineCommandCMS)
+        #print (combineCommandModExp)
 
 
     mass_ = "850"
-    plottingCommand = 'python plot1DScan.py {0}/higgsCombineEnvelope_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root --main-label "Envelope" --main-color 1 --others {0}/higgsCombineATLAS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root:"ATLAS":7 {0}/higgsCombineCMS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root:"CMS":6 -o DeltaNLL_{5}{6}_{1}_{2}GeV'.format(outputToysFolder, signalType, str(mass_), float(lumi)/1000., box, year, combineText)
-    #plottingCommand = 'python plot1DScan.py {0}/higgsCombineEnvelope_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root --main-label "Envelope" --main-color 1 --others {0}/higgsCombineATLAS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root:"ATLAS":7 {0}/higgsCombineCMS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root:"CMS":6 --output breakdown --breakdown "Envelope,ATLAS,CMS" -o DeltaNLL_{5}{6}_{1}_{2}GeV'.format(outputToysFolder, signalType, str(mass_), float(lumi)/1000., box, year, combineText)
+    #plottingCommand = 'python plot1DScan.py {0}/higgsCombineEnvelope_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root --main-label "Envelope" --main-color 1 --others {0}/higgsCombineATLAS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root:"ATLAS":7 {0}/higgsCombineCMS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root:"CMS":46 {0}/higgsCombineModExp_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root:"ModExp":8 {0}/higgsCombinePolyExt_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root:"PolyExt":6 -o DeltaNLL_{5}{6}_{1}_{2}GeV'.format(outputToysFolder, signalType, str(mass_), float(lumi)/1000., box, year, combineText)
+    plottingCommand = 'python plot1DScan.py {0}/higgsCombineEnvelope_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root --main-label "Envelope" --main-color 1 --others {0}/higgsCombineATLAS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root:"ATLAS":7 {0}/higgsCombineCMS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root:"CMS":807 -o DeltaNLL_{5}{6}_{1}_{2}GeV'.format(outputToysFolder, signalType, str(mass_), float(lumi)/1000., box, year, combineText)
+    #plottingCommand = 'python plot1DScan.py {0}/higgsCombineEnvelope_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root --main-label "Envelope" --main-color 1 --others {0}/higgsCombineATLAS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root:"ATLAS":7 {0}/higgsCombinePolyExt_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root:"PolyExt":6 -o DeltaNLL_{5}{6}_{1}_{2}GeV'.format(outputToysFolder, signalType, str(mass_), float(lumi)/1000., box, year, combineText)
+    print (plottingCommand)
     os.system(plottingCommand)
 
-    plottingScanCommand = 'python plot1DEnvelopeScan.py --f {0}/higgsCombineATLAS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root,{0}/higgsCombineCMS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root,{0}/higgsCombineEnvelope_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root --l "ATLAS-5Param,CMS-4Param,Envelope" --c "#d62728,#FF7F0E,c" --o DeltaNLL_Scan_{5}{6}_{1}_{2}GeV.pdf'.format(outputToysFolder, signalType, str(mass_), float(lumi)/1000., box, year, combineText)
+    #plottingScanCommand = 'python plot1DEnvelopeScan.py --f {0}/higgsCombineATLAS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root,{0}/higgsCombineCMS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root,{0}/higgsCombineModExp_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root,{0}/higgsCombinePolyExt_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root,{0}/higgsCombineEnvelope_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root --l "ATLAS-5Param,CMS-4Param,ModExp,PolyExt,Envelope" --c "#d62728,#FF7F0E,#27FF00,#F10D8C,c" --o DeltaNLL_Scan_{5}{6}_{1}_{2}GeV.pdf'.format(outputToysFolder, signalType, str(mass_), float(lumi)/1000., box, year, combineText)
+    plottingScanCommand = 'python plot1DEnvelopeScan.py --f {0}/higgsCombineATLAS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root,{0}/higgsCombineCMS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root,{0}/higgsCombineEnvelope_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root --l "ATLAS-5Param,CMS-4Param,Envelope" --c "#d62728,#FF7518,c" --o DeltaNLL_Scan_{5}{6}_{1}_{2}GeV.pdf'.format(outputToysFolder, signalType, str(mass_), float(lumi)/1000., box, year, combineText)
+    #plottingScanCommand = 'python plot1DEnvelopeScan.py --f {0}/higgsCombineATLAS_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root,{0}/higgsCombinePolyExt_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root,{0}/higgsCombineEnvelope_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root --l "ATLAS-5Param,PolyExt,Envelope" --c "#d62728,#F10D8C,c" --o DeltaNLL_Scan_{5}{6}_{1}_{2}GeV.pdf'.format(outputToysFolder, signalType, str(mass_), float(lumi)/1000., box, year, combineText)
+    print (plottingScanCommand)
     os.system(plottingScanCommand)
 
     outDeltaNLLFolder = "DeltaNLLPlots"
@@ -301,6 +317,7 @@ if __name__ == "__main__":
 
     os.system("rm roostats-*.root")
     os.system("rm combine_logger.out")
+
 
 
 
