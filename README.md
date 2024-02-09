@@ -693,11 +693,8 @@ root -l -b -q 'Compare_XsecFits.C("RunII")'
 
 ```sh
 python makeTableofLimitResults.py --year 2016 --rootgg AllLimits2016Combined_gg_dijet_ModExp4Param/cards_gg_w2016Sig_DE13_M526_17June2023_rmax1.1/limits_freq_gg_CaloDijet2016.root --rootqg AllLimits2016Combined_qg_dijet_ModExp4Param/cards_qg_w2016Sig_DE13_M526_17June2023_rmax1.1/limits_freq_qg_CaloDijet2016.root --rootqq AllLimits2016Combined_qq_dijet_ModExp4Param/cards_qq_w2016Sig_DE13_M526_17June2023_rmax1.2/limits_freq_qq_CaloDijet2016.root
-
 python makeTableofLimitResults.py --year 2017 --rootgg AllLimits2017Combined_gg_dijet_ModExp4Param/cards_gg_w2016Sig_DE13_M526_17June2023_rmax0.8/limits_freq_gg_CaloDijet2017.root --rootqg AllLimits2017Combined_qg_dijet_ModExp4Param/cards_qg_w2016Sig_DE13_M526_17June2023_rmax1.0/limits_freq_qg_CaloDijet2017.root --rootqq AllLimits2017Combined_qq_dijet_ModExp4Param/cards_qq_w2016Sig_DE13_M526_17June2023_rmax1.1/limits_freq_qq_CaloDijet2017.root
-
 python makeTableofLimitResults.py --year 2018 --rootgg AllLimits2018Combined_gg_dijet_ModExp4Param/cards_gg_w2016Sig_DE13_M526_17June2023_rmax1.1/limits_freq_gg_CaloDijet2018.root --rootqg AllLimits2018Combined_qg_dijet_ModExp4Param/cards_qg_w2016Sig_DE13_M526_17June2023_rmax1.0/limits_freq_qg_CaloDijet2018.root --rootqq AllLimits2018Combined_qq_dijet_ModExp4Param/cards_qq_w2016Sig_DE13_M526_17June2023_rmax1.3/limits_freq_qq_CaloDijet2018.root
-
 python makeTableofLimitResults.py --year RunII --rootgg AllLimitsRunIICombined_gg_dijet_ModExp4Param/cards_gg_w2016Sig_DE13_M526_17June2023_rmax0.8/limits_freq_gg_CaloDijet2016p2017p2018.root --rootqg AllLimitsRunIICombined_qg_dijet_ModExp4Param/cards_qg_w2016Sig_DE13_M526_17June2023_rmax0.6/limits_freq_qg_CaloDijet2016p2017p2018.root --rootqq AllLimitsRunIICombined_qq_dijet_ModExp4Param/cards_qq_w2016Sig_DE13_M526_17June2023_rmax0.8/limits_freq_qq_CaloDijet2016p2017p2018.root
 ```
 
@@ -707,10 +704,10 @@ python makeTableofLimitResults.py --year RunII --rootgg AllLimitsRunIICombined_g
 ### Dark Matter Quark Coupling (Interpretation)
 
 ```sh
-python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2016 --inputLimitRoot AllLimits2016Combined_qq_dijet/cards_qq_w2016Sig_DE13_M526_17June2023_rmax9.2/limits_freq_qq_CaloDijet2016.root
-python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2017 --inputLimitRoot AllLimits2017Combined_qq_dijet/cards_qq_w2016Sig_DE13_M526_17June2023_rmax1.5/limits_freq_qq_CaloDijet2017.root
-python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2018 --inputLimitRoot AllLimits2018Combined_qq_dijet/cards_qq_w2016Sig_DE13_M526_17June2023_rmax0.9/limits_freq_qq_CaloDijet2018.root
-python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2016p2017p2018 --inputLimitRoot AllLimitsRunIICombined_qq_dijet/cards_qq_w2016Sig_DE13_M526_17June2023_rmax0.8/limits_freq_qq_CaloDijet2016p2017p2018.root
+python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2016 --inputLimitRoot AllLimits2016Combined_qq_dijet_ModExp4Param/cards_qq_w2016Sig_DE13_M526_17June2023_rmax1.2/limits_freq_qq_CaloDijet2016.root
+python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2017 --inputLimitRoot AllLimits2017Combined_qq_dijet_ModExp4Param/cards_qq_w2016Sig_DE13_M526_17June2023_rmax1.1/limits_freq_qq_CaloDijet2017.root
+python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2018 --inputLimitRoot AllLimits2018Combined_qq_dijet_ModExp4Param/cards_qq_w2016Sig_DE13_M526_17June2023_rmax1.3/limits_freq_qq_CaloDijet2018.root
+python DarkMatterInterpretation_Dijet_NLO_DK_v3.py --kFactorFile zp_k_factor_v2.txt --dijetxSecFile dijetxSecFile.txt --box CaloDijet2016p2017p2018 --inputLimitRoot AllLimitsRunIICombined_qq_dijet_ModExp4Param/cards_qq_w2016Sig_DE13_M526_17June2023_rmax0.8/limits_freq_qq_CaloDijet2016p2017p2018.root
 ```
 
 #### Compare DM Quark Coupling Results with Previous Publications
