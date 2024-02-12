@@ -546,36 +546,22 @@ python condorCombineDataCardsForMultipRMax.py --cfgPath combineInputFiles/combin
 
 ### Comparison Stat.+Syst. / Stat.-Only
 
-#### 2016
-
 ```sh
-python compareFullNuisancesVsStatOnly.py --config dijet --year 2016 --signal gg
-python compareFullNuisancesVsStatOnly.py --config dijet --year 2016 --signal qg
-python compareFullNuisancesVsStatOnly.py --config dijet --year 2016 --signal qq
-```
+python compareFullNuisancesVsStatOnly.py --config dijet_ModExp4Param --year 2016 --signal gg
+python compareFullNuisancesVsStatOnly.py --config dijet_ModExp4Param --year 2016 --signal qg
+python compareFullNuisancesVsStatOnly.py --config dijet_ModExp4Param --year 2016 --signal qq
 
-#### 2017
+python compareFullNuisancesVsStatOnly.py --config dijet_ModExp4Param --year 2017 --signal gg
+python compareFullNuisancesVsStatOnly.py --config dijet_ModExp4Param --year 2017 --signal qg
+python compareFullNuisancesVsStatOnly.py --config dijet_ModExp4Param --year 2017 --signal qq
 
-```sh
-python compareFullNuisancesVsStatOnly.py --config dijet --year 2017 --signal gg
-python compareFullNuisancesVsStatOnly.py --config dijet --year 2017 --signal qg
-python compareFullNuisancesVsStatOnly.py --config dijet --year 2017 --signal qq
-```
+python compareFullNuisancesVsStatOnly.py --config dijet_ModExp4Param --year 2018 --signal gg
+python compareFullNuisancesVsStatOnly.py --config dijet_ModExp4Param --year 2018 --signal qg
+python compareFullNuisancesVsStatOnly.py --config dijet_ModExp4Param --year 2018 --signal qq
 
-#### 2018
-
-```sh
-python compareFullNuisancesVsStatOnly.py --config dijet --year 2018 --signal gg
-python compareFullNuisancesVsStatOnly.py --config dijet --year 2018 --signal qg
-python compareFullNuisancesVsStatOnly.py --config dijet --year 2018 --signal qq
-```
-
-#### Run II
-
-```sh
-python compareFullNuisancesVsStatOnly.py --config dijet --year RunII --signal gg
-python compareFullNuisancesVsStatOnly.py --config dijet --year RunII --signal qg
-python compareFullNuisancesVsStatOnly.py --config dijet --year RunII --signal qq
+python compareFullNuisancesVsStatOnly.py --config dijet_ModExp4Param --year RunII --signal gg
+python compareFullNuisancesVsStatOnly.py --config dijet_ModExp4Param --year RunII --signal qg
+python compareFullNuisancesVsStatOnly.py --config dijet_ModExp4Param --year RunII --signal qq
 ```
 
 
