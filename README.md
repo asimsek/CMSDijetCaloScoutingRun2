@@ -600,6 +600,23 @@ python createSignificancePlots.py --fromCombined --year RunII --cfgFile combineI
 ```
 
 
+## Bias
+
+```sh
+python biasResults.py --inputFile inputFiles/allRunIILimits_cfg_ModExp_4Param.txt --inputFile2 inputFiles/allRunIILimits_cfg.txt --muTrue 1 --year 2018D --sig qq --toys 400 --oppositeFuncs
+```
+
+`--oppositeFuncs` argument will perform the bias test in two stage! The first one is generating the toys with CMS dijet 4-Param function (`--inputFile2`) and the 2nd stage is performing a `FitDiagnostics` by using these generated toys and the ModExp 4- Param function (`--inputFile`). If you need to generate and fit with the same function (`--inputFile`), use `--sanityCheck` instead of `--oppositeFuncs`.
+
+
+```sh
+python biasSummaryPlotter.py --oppositeFuncs --muTrue 1 --year 2018D --signalType gg
+```
+
+
+
+
+
 ------------
 
 #### Combine Fit results from all data eras
