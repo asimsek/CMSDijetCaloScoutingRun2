@@ -1094,6 +1094,9 @@ if __name__ == '__main__':
         h_background.SetLineColor(rt.kRed)
         h_background.SetLineWidth(2)
         h_background.Draw("histsame")
+    #h_background.SetLineColor(rt.kRed)
+    #h_background.SetLineWidth(2)
+    #h_background.Draw("HIST csame")
     g_data_clone.Draw("zpsame")
     g_data.Draw("zpsame")
 
@@ -1337,6 +1340,9 @@ if __name__ == '__main__':
         	c.Print(options.outDir+"/fit_mjj_%s_%s_linearX.C"%(fitRegion.replace(',','_'),box))
         
     	tdirectory.cd()
+        h_background.Write()
+        g_data.Write()
+        background.Write()
     	c.Write()
     
 

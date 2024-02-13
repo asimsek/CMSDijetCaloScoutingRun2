@@ -32,13 +32,13 @@ verbose = args.verbose
 massRange = [600, 650, 700, 750, 800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200, 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1700, 1800]
 massBins = array("d", massRange)
 
-config = "dijet"
+config = "dijet_ModExp4Param"
 box = "CaloDijet%s" % (year)
 inputFolder = "../Limits/"
 outputFolder = "HEPDataComparison"
 signalTypes = {"gg": 0, "qg": 1, "qq": 2}
 lumiList = {"2016": 27, "2017": 35, "2018": 54, "RunII": 117}
-JsonFileURL = "https://www.hepdata.net/record/data/80166/297014/1"
+JsonFileURL = "https://www.hepdata.net/record/data/80166/297014/1/1"
 minYRange = 1e-2
 maxYRange = 5e2
 
@@ -59,39 +59,55 @@ expPubLimits2016_qq = array("d", expPubLimits2016_qq_)
 ############# Read Data from HEPData JSON File ##############
 if verbose == True: print ("\033[91m -> Reading data from JSON file: \033[0m" + str(JsonFileURL))
 
-headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3' }
-request = urllib2.Request(JsonFileURL, headers=headers)
-response = urllib2.urlopen(request)
-data = json.loads(response.read())
-
-
-
-################ Get data size from HEPData #################
-minMassHepData = int(float(data["values"][0]['x'][0]['value']))
-maxMassHepData = int(float(data["values"][-1]['x'][0]['value']))
-HEPDataMass = []
-x = -1
-mass_ = ""
-while mass_ != maxMassHepData:
-	x+=1
-	mass_ = int(float(data["values"][x]['x'][0]['value']))
-	HEPDataMass.append(mass_)
-#############################################################
-
-if verbose == True:
-	print ("\033[93m#\033[0m"*66)
-	print ("\033[93m" + data["headers"][0]['name'] + "	| " + data["headers"][signalTypes[signal]+1]['name'] + "\033[0m")
-
-####### Collecting Data from Cross-Section Limit Tab! #######
 HEPData2016 = {}
-for x in range(len(HEPDataMass)):
-	mass = int(float(data["values"][x]['x'][0]['value']))
-	limitData = float(data["values"][x]['y'][signalTypes[signal]]['value'])
-	HEPData2016.update({mass: limitData})
-	if verbose == True: print "	%d		| 		%0.8f" % (mass, limitData)
+try:
+	headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3' }
+	request = urllib2.Request(JsonFileURL, headers=headers)
+	response = urllib2.urlopen(request)
+	data = json.loads(response.read())
 
-if verbose == True: print ("\033[93m#\033[0m"*66)
-#############################################################
+	################ Get data size from HEPData #################
+	minMassHepData = int(float(data["values"][0]['x'][0]['value']))
+	maxMassHepData = int(float(data["values"][-1]['x'][0]['value']))
+	HEPDataMass = []
+	x = -1
+	mass_ = ""
+	while mass_ != maxMassHepData:
+		x+=1
+		mass_ = int(float(data["values"][x]['x'][0]['value']))
+		HEPDataMass.append(mass_)
+	#############################################################
+
+	if verbose == True:
+		print ("\033[93m#\033[0m"*66)
+		print ("\033[93m" + data["headers"][0]['name'] + "	| " + data["headers"][signalTypes[signal]+1]['name'] + "\033[0m")
+
+	####### Collecting Data from Cross-Section Limit Tab! #######
+	for x in range(len(HEPDataMass)):
+		mass = int(float(data["values"][x]['x'][0]['value']))
+		limitData = float(data["values"][x]['y'][signalTypes[signal]]['value'])
+		HEPData2016.update({mass: limitData})
+		if verbose == True: print "	%d		| 		%0.8f" % (mass, limitData)
+
+	if verbose == True: print ("\033[93m#\033[0m"*66)
+	#############################################################
+
+except Exception as e:
+	limit_obs_gg = [39.308, 15.463, 6.1409, 5.4964, 10.196, 11.321, 7.5573, 3.2251, 1.6586, 1.411, 2.0614, 3.9035, 4.4868, 3.4792, 3.582, 1.9593, 1.1413, 0.63196, 0.41953, 0.35694, 0.33655, 0.64953, 0.617]
+	limit_obs_qg = [33.678, 10.063, 4.7325, 3.8242, 5.7272, 5.4486, 3.2056, 1.4034, 0.96703, 1.1145, 1.898, 2.5754, 2.7401, 2.0426, 1.9978, 1.0076, 0.55581, 0.35242, 0.26561, 0.19331, 0.18659, 0.4329, 0.38587]
+	limit_obs_qq = [13.843, 4.9152, 2.4671, 2.6361, 3.1364, 2.4565, 1.1657, 0.73037, 0.57163, 0.91097, 1.5127, 1.7373, 1.3754, 1.2262, 0.86104, 0.48456, 0.29967, 0.18619, 0.14549, 0.14441, 0.20736, 0.29864, 0.26229]
+
+	signal_to_limit_obs = {
+		"gg": limit_obs_gg,
+		"qg": limit_obs_qg,
+		"qq": limit_obs_qq
+	}
+
+	if signal in signal_to_limit_obs:
+		HEPData2016 = {massBins[i]: signal_to_limit_obs[signal][i] for i in range(len(massBins))}
+	else:
+		print("\033[93mSignal {0} not recognized!\033[0m".format(signal))
+
 
 
 ##################### Find Root File Path ###################
@@ -111,12 +127,12 @@ root1 = TFile.Open(rootFile)
 
 ############### Get Histograms From Root File ###############
 if verbose == True: print ("\033[91m -> Loading histograms and collecting data from: \033[0m" + str(rootFile.split("/")[-1]))
-histSplitRootObs = root1.Get('obs_%s_%s' % (signal.lower(), box.lower()))
+histSplitRootObs = root1.Get('obs_%s_%s' % (signal.lower(), box))
 Obs1X = histSplitRootObs.GetX()
 Obs1Y = histSplitRootObs.GetY()
 
 
-histSplitRootExp = root1.Get('exp_%s_%s' % (signal.lower(), box.lower()))
+histSplitRootExp = root1.Get('exp_%s_%s' % (signal.lower(), box))
 Exp1X = histSplitRootExp.GetX()
 Exp1Y = histSplitRootExp.GetY()
 
