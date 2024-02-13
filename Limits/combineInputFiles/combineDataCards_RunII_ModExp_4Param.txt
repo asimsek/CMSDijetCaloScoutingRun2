@@ -1,4 +1,4 @@
 #total_year,total_lumi,box,date,new_confFile,signal,new_rMax
 RunII,117.126617407,CaloDijet2016p2017p2018,17June2023,dijet_ModExp4Param,gg,0.8
-RunII,117.126617407,CaloDijet2016p2017p2018,17June2023,dijet_ModExp4Param,qg,0.6
-RunII,117.126617407,CaloDijet2016p2017p2018,17June2023,dijet_ModExp4Param,qq,0.8
+#RunII,117.126617407,CaloDijet2016p2017p2018,17June2023,dijet_ModExp4Param,qg,0.6
+#RunII,117.126617407,CaloDijet2016p2017p2018,17June2023,dijet_ModExp4Param,qq,0.8

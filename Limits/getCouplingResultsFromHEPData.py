@@ -4,7 +4,7 @@ import os, urllib2, json
 mass_range = [600, 650, 700, 750, 800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200, 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600]
 
 # Define the URL for the JSON file
-json_file_url = "https://www.hepdata.net/record/data/80166/297016/1"
+json_file_url = "https://www.hepdata.net/record/data/80166/297016/1/1"
 
 # Load the data from the JSON file
 headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3' }

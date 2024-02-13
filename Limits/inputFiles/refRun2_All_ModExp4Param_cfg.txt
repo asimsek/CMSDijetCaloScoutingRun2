@@ -1,0 +1,1 @@
+2.0,gg,dijet_ModExp4Param,17June2023,RunII,117126.617407,CaloDijet2016p2017p2018,CaloScoutingHTRun2ALL_DatavsQDCMC_11June2023_2245

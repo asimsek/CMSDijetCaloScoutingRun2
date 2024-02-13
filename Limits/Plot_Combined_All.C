@@ -25,6 +25,7 @@ void Plot_Combined_All(const std::string& Fullyear){
 //void Plot_Combined_All(){
     setTDRStyle();
 
+    int    NDF_SF        =-4; // Change this NDF according to the parameter size of your function
     std::map<std::string, std::pair<std::vector<std::string>, std::vector<double>>> data = {
         {"2016", {{"2016B", "2016C", "2016D", "2016E", "2016F", "2016G"}, 
                   {5704.216707, 2572.903489, 4242.291557, 4025.228137, 3104.509132, 7575.824256}}},
@@ -106,7 +107,7 @@ void Plot_Combined_All(const std::string& Fullyear){
 	
 		//creating pulls and calculate chi square for the two methods: 
 	 double chi_square_SF = 0;
-	 int    NDF_SF        =-4;  // four parameter function is used for Standard Fit	  
+	 //int    NDF_SF        =-4;  // four parameter function is used for Standard Fit	  
 	 double chi_square_RM = 0;
 	 int	NDF_RM 	      = 0;  //  linear Fit parametrization for Ratio Method   
 		

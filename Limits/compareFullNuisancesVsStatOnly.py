@@ -69,21 +69,21 @@ root2 = TFile.Open(rootFile2)
 ########## Get Histograms from Root Files ##############
 year = "2016p2017p2018" if "RunII" in args.year else args.year
 print ("\033[1;31m -> Collecting histograms from Root #1: \033[0;0m%s" % (rootFile1) )
-histObs1_ = root1.Get('obs_' + str(signal) + '_calodijet' + str(year))
+histObs1_ = root1.Get('obs_' + str(signal) + '_CaloDijet' + str(year))
 ObsX1 = histObs1_.GetX()
 ObsY1 = histObs1_.GetY()
 
-histExp1_ = root1.Get('exp_' + str(signal) + '_calodijet' + str(year))
+histExp1_ = root1.Get('exp_' + str(signal) + '_CaloDijet' + str(year))
 ExpX1 = histExp1_.GetX()
 ExpY1 = histExp1_.GetY()
 
 
 print ("\033[1;31m -> Collecting histograms from Root #2: \033[0;0m%s" % (rootFile2) )
-histObs2_ = root2.Get('obs_' + str(signal) + '_calodijet' + str(year))
+histObs2_ = root2.Get('obs_' + str(signal) + '_CaloDijet' + str(year))
 ObsX2 = histObs2_.GetX()
 ObsY2 = histObs2_.GetY()
 
-histExp2_ = root2.Get('exp_' + str(signal) + '_calodijet' + str(year))
+histExp2_ = root2.Get('exp_' + str(signal) + '_CaloDijet' + str(year))
 ExpX2 = histExp2_.GetX()
 ExpY2 = histExp2_.GetY()
 

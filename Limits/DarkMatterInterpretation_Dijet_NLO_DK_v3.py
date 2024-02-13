@@ -88,10 +88,13 @@ def main():
 	################### Open Root File #####################
 	fin1 = ROOT.TFile(str(inputLimitRoot))
 
-	obslo  = fin1.Get("obs_qq_" + box.lower())
-	explo1 = fin1.Get("exp1sigma_qq_" + box.lower())
-	explo2 = fin1.Get("exp2sigma_qq_" + box.lower())
+	#obslo  = fin1.Get("obs_qq_" + box.lower())
+	#explo1 = fin1.Get("exp1sigma_qq_" + box.lower())
+	#explo2 = fin1.Get("exp2sigma_qq_" + box.lower())
 
+        obslo  = fin1.Get("obs_qq_" + box)
+        explo1 = fin1.Get("exp1sigma_qq_" + box)
+        explo2 = fin1.Get("exp2sigma_qq_" + box)
 
 	xs = dijetxs()
 	obs_gq = getobs(obslo,xs,med_min,med_max)

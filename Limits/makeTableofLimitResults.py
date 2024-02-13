@@ -55,29 +55,29 @@ rootqq = TFile.Open(RootFile_qq)
 
 ########## Get histograms From Root Files ##############
 
-histObsgg_ = rootgg.Get('obs_gg_calodijet' + str(yearOfDataset.lower()))
+histObsgg_ = rootgg.Get('obs_gg_CaloDijet' + str(yearOfDataset.lower()))
 Obs1X_gg = histObsgg_.GetX()
 Obs1Y_gg = histObsgg_.GetY()
 
-histObsqg_ = rootqg.Get('obs_qg_calodijet' + str(yearOfDataset.lower()))
+histObsqg_ = rootqg.Get('obs_qg_CaloDijet' + str(yearOfDataset.lower()))
 Obs1X_qg = histObsqg_.GetX()
 Obs1Y_qg = histObsqg_.GetY()
 
-histObsqq_ = rootqq.Get('obs_qq_calodijet' + str(yearOfDataset.lower()))
+histObsqq_ = rootqq.Get('obs_qq_CaloDijet' + str(yearOfDataset.lower()))
 Obs1X_qq = histObsqq_.GetX()
 Obs1Y_qq = histObsqq_.GetY()
 
 
 
-histExpgg_ = rootgg.Get('exp_gg_calodijet' + str(yearOfDataset.lower()))
+histExpgg_ = rootgg.Get('exp_gg_CaloDijet' + str(yearOfDataset.lower()))
 Exp1X_gg = histExpgg_.GetX()
 Exp1Y_gg = histExpgg_.GetY()
 
-histExpqg_ = rootqg.Get('exp_qg_calodijet' + str(yearOfDataset.lower()))
+histExpqg_ = rootqg.Get('exp_qg_CaloDijet' + str(yearOfDataset.lower()))
 Exp1X_qg = histExpqg_.GetX()
 Exp1Y_qg = histExpqg_.GetY()
 
-histExpqq_ = rootqq.Get('exp_qq_calodijet' + str(yearOfDataset.lower()))
+histExpqq_ = rootqq.Get('exp_qq_CaloDijet' + str(yearOfDataset.lower()))
 Exp1X_qq = histExpqq_.GetX()
 Exp1Y_qq = histExpqq_.GetY()
 

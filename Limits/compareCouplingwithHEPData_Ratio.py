@@ -37,7 +37,7 @@ verbose = args.verbose
 ####################### Variables ###########################
 massRange = [600, 650, 700, 750, 800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200, 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600]
 massBins = array("d", massRange)
-JsonFileURL = "https://www.hepdata.net/record/data/80166/297016/1"
+JsonFileURL = "https://www.hepdata.net/record/data/80166/297016/1/1"
 #############################################################
 
 
@@ -112,23 +112,35 @@ Exp1X_RunII, Exp1Y_RunII = histRootExpRunII_.GetX(), histRootExpRunII_.GetY()
 if verbose:
 	print ("\033[91m -> Reading data from JSON File: \033[0m" + str(JsonFileURL))
 
-headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3' }
-request = urllib2.Request(JsonFileURL, headers=headers)
-response = urllib2.urlopen(request)
-data = json.loads(response.read())
+
 
 obsHEPData2016_ = []
 expHEPData2016_ = []
-for x in range(len(massRange)):
-	obsHEPData2016_.append(float(data["values"][x]['y'][0]['value'])) ## Observed Results from HEPData directly!
-	expHEPData2016_.append(float(data["values"][x]['y'][1]['value'])) ## Expected Results from HEPData directly!
+try:
+	headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3' }
+	request = urllib2.Request(JsonFileURL, headers=headers)
+	response = urllib2.urlopen(request)
+	data = json.loads(response.read())
 
-if verbose:
-	print ("\033[93m -> " + data["headers"][1]['name'].split(" ", 1)[0] + "\033[0m")
+	for x in range(len(massRange)):
+		obsHEPData2016_.append(float(data["values"][x]['y'][0]['value'])) ## Observed Results from HEPData directly!
+		expHEPData2016_.append(float(data["values"][x]['y'][1]['value'])) ## Expected Results from HEPData directly!
+
+	if verbose:
+		print ("\033[93m -> " + data["headers"][1]['name'].split(" ", 1)[0] + "\033[0m")
+		print obsHEPData2016_
+
+		print ("\033[96m -> " + data["headers"][2]['name'].split(" ", 1)[0] + "\033[0m")
+		print expHEPData2016_
+
+except Exception as e:
+        obsHEPData2016_ = [0.12186, 0.08797, 0.069369, 0.082047, 0.1062, 0.10197, 0.077388, 0.069033, 0.06887, 0.094657, 0.1351, 0.16456, 0.16109, 0.16415, 0.15048, 0.12308, 0.10289, 0.086944, 0.083318, 0.091384, 0.10606]
+        expHEPData2016_ = [0.10612, 0.090058, 0.078528, 0.079818, 0.087767, 0.087116, 0.083646, 0.084548, 0.086721, 0.088171, 0.092622, 0.10102, 0.10636, 0.10895, 0.11297, 0.11516, 0.11422, 0.11514, 0.11637, 0.12248, 0.12702]
+
 	print obsHEPData2016_
-
-	print ("\033[96m -> " + data["headers"][2]['name'].split(" ", 1)[0] + "\033[0m")
 	print expHEPData2016_
+
+
 #############################################################
 
 

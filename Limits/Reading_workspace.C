@@ -31,8 +31,10 @@ double massBoundaries[nMassBins+1] = {1, 3, 6, 10, 16, 23, 31, 40, 50, 61, 74, 8
 
 //std::string year = "2016B";
 std::string sepText = "Sep";
-//std::string boxText = "_ModExp4param";
-std::string boxText = "";
+//std::string boxText = "_PolyExt5param";
+std::string boxText = "_ModExp4param";
+//std::string boxText = "_PolyPow5Param";
+//std::string boxText = "";
 std::stringstream ss0;
 ss0 << "CaloDijet" << sepText << year;
 std::cout << ss0.str() << std::endl;

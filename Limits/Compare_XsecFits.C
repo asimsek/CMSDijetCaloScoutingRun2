@@ -24,6 +24,8 @@ void Compare_XsecFits(const std::string& Fullyear){
 
     setTDRStyle();
 
+    int NDF_SF           =-5;  // Change this NDF according to the parameter size of your function
+
     std::map<std::string, std::pair<std::vector<std::string>, std::vector<double>>> data = {
         {"2016", {{"2016B", "2016C", "2016D", "2016E", "2016F", "2016G"},
                   {5704.216707, 2572.903489, 4242.291557, 4025.228137, 3104.509132, 7575.824256}}},
@@ -121,7 +123,7 @@ void Compare_XsecFits(const std::string& Fullyear){
 	
     //creating pulls and calculate chi square for the two methods: 
     double chi_square_SF = 0;
-    int NDF_SF           =-4;  // four parameter function is used for Standard Fit	  
+    //int NDF_SF           =-4;  // four parameter function is used for Standard Fit	  
     double chi_square_RM = 0;
     int	NDF_RM 	         = 0;  //  linear Fit parametrization for Ratio Method   
 		
@@ -190,7 +192,7 @@ void Compare_XsecFits(const std::string& Fullyear){
         pull_SFs[x]->SetMarkerColor(colors[x]);
         pull_SFs[x]->SetLineWidth(2); 
         pull_SFs[x]->GetXaxis()->SetRangeUser(startit,endit);
-        pull_SFs[x]->GetYaxis()->SetRangeUser(-0.045,0.045);
+        pull_SFs[x]->GetYaxis()->SetRangeUser(-0.045,0.045); // 0.045
     }
 
 
@@ -282,7 +284,7 @@ void Compare_XsecFits(const std::string& Fullyear){
     xLab->SetTextAlign(22);
     xLab->SetTextFont(42);
     xLab->SetTextSize(2*0.05);
-    double xLab_vert = -0.055;
+    double xLab_vert = -0.055; //-0.055
     xLab->DrawLatex(600, xLab_vert, "0.6");
     xLab->DrawLatex(800, xLab_vert, "0.8");
     xLab->DrawLatex(1000, xLab_vert, "1");

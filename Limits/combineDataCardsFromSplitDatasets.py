@@ -21,20 +21,18 @@ def main(args):
     workDir = cmssw_dir + "/src/CMSDIJET/DijetRootTreeAnalyzer"
 
     txtFreeze = '_statOnly' if args.freezeParameters else ''
-
     # Load the config file into a dataframe
     df = pd.read_csv(args.cfgFile, comment='#', header=None)
-    df.columns = ["rMax","signalType","configFile","date","year","lumi","config","inputmjj"] if not args.fromCombined else ["year","lumi","config","date","configFile","signalType","rMax"] 
+    df.columns = ["rMax","signalType","configFile","date","year","lumi","config","inputmjj"] if not args.fromCombined or args.total_year == "RunII" else ["year","lumi","config","date","configFile","signalType","rMax"] 
 
     # Filter based on the year and signal type
-    df_filtered = df[df['year'].str.startswith(str(args.total_year)) & (df['signalType'] == args.signal)] if not args.fromCombined else df[(df['signalType'] == args.signal)]
-
+    df_filtered = df[df['year'].str.startswith(str(args.total_year)) & (df['signalType'] == args.signal)] if not args.fromCombined or args.total_year != "RunII" else df[(df['signalType'] == args.signal)]
 
     # Create new folder for new dataCards
     FolderNew="AllLimits%sCombined_%s_%s%s/cards_%s_w2016Sig_DE13_M526_%s_rmax%s/" % (args.total_year, args.signal, args.new_confFile, txtFreeze, args.signal, args.date, args.new_rMax)
     os.system("mkdir -p %s" % (FolderNew))
 
-    combined = "Combined" if (args.fromCombined) else ""
+    combined = "" if not args.fromCombined or args.total_year == "RunII" else "Combined"
     freezeString = ""
     # Iterate over the mass range
     for mass in range(550, 2150, 50):
@@ -42,8 +40,9 @@ def main(args):
         nuisances = ""
         # Iterate over the rows of the filtered dataframe
         for index, row in df_filtered.iterrows():
-            lumii = float(row['lumi']/1000.) if not args.fromCombined else float(row['lumi'])
-            cardPath = "AllLimits%s%s_%s_%s/cards_%s_w2016Sig_DE13_M526_%s_rmax%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (row['year'], combined, row['signalType'], row['configFile'], row['signalType'], row['date'], row['rMax'], row['signalType'], mass, lumii, row['config'] )
+            freezeString = "--freezeParameters=shapeBkg_{0}_bkg_{0}__norm,".format(row['config'])
+            lumii = float(row['lumi']/1000.) if not args.fromCombined or args.total_year == "RunII" else float(row['lumi'])
+            cardPath = "AllLimits%s%s_%s_%s%s/cards_%s_w2016Sig_DE13_M526_%s_rmax%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (row['year'], combined, row['signalType'], row['configFile'], "", row['signalType'], row['date'], row['rMax'], row['signalType'], mass, lumii, row['config'] )
             #cardPath = "AllLimits%s%s_%s_%s%s/cards_%s_w2016Sig_DE13_M526_%s_rmax%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (row['year'], combined, row['signalType'], row['configFile'], txtFreeze, row['signalType'], row['date'], row['rMax'], row['signalType'], mass, lumii, row['config'] )
             dataCards.append("Year%s=%s" % (row['year'], cardPath))
             print("\033[91m DataCard: [%d] - %s \033[0m" % (mass, cardPath))
@@ -51,20 +50,25 @@ def main(args):
                 cmdParam = 'cat %s | grep -A 100 -ws "flatParam"' % (cardPath)
                 outputParam = commands.getstatusoutput(cmdParam)
 		outLines = outputParam[1].split("\n")
-                for ij, cParam in enumerate(outLines):
-                    foocParam = cParam.split()[0]
-                    seperatorNuis = "," if not ij == 0 else ""
-                    nuisances += "%s%s" % (seperatorNuis, str(foocParam))
-                freezeString = '--freezeParameters lumi,jer,jes,%s' % (nuisances) if args.freezeParameters else ''
+                if len(outLines) > 1:
+                    for ij, cParam in enumerate(outLines):
+                        foocParam = cParam.split()[0]
+                        seperatorNuis = "," #if not ij == 0 else ""
+                        #nuisances += "%s%s" % (seperatorNuis, str(foocParam))
+                        nuisances += "%s," % (str(foocParam))
+                freezeString = '%s%s' % (freezeString, nuisances) if args.freezeParameters else ''
+                freezeString = "{0}lumi,jer,jes".format(freezeString)
 
+        #freezeString = ""
+        #freezeString = freezeString.rstrip(',')
         print ("\033[93m%s\033[0m" % (freezeString))
         dataC = " ".join(dataCards)
 
         # Execute the combineCards.py command
         NewDataCard = "%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (FolderNew, args.signal, mass, args.total_lumi, args.box)
+        #cardFreezeText = "--stat" if args.freezeParameters else ""
         combineCommand = "python combineCards.py %s > %s" % (dataC, NewDataCard)
         os.system("%s" % (combineCommand))
-
 
         cmdCombine = "combine -M AsymptoticLimits -d %s -n %s_%d_lumi-%.3f_%s --cminDefaultMinimizerTolerance 0.00001 --cminDefaultMinimizerStrategy 2 --setParameterRanges r=0,%s --saveWorkspace %s" % (NewDataCard, args.signal, mass, args.total_lumi, args.box, args.new_rMax, freezeString)
         cmdMoveCombinedRoot = "mv higgsCombine%s_%d_lumi-%.3f_%s.AsymptoticLimits.mH120.root %s/higgsCombine%s_%d_lumi-%.3f_%s.Asymptotic.mH120.root" % (args.signal, mass, args.total_lumi, args.box, FolderNew, args.signal, mass, args.total_lumi, args.box)

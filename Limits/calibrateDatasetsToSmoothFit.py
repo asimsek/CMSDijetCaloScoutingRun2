@@ -177,6 +177,9 @@ if __name__ == "__main__":
     parser.add_argument('--bf', action='store_true', help='Produce ONLY fit results if this argument is given.')
     parser.add_argument('--scaled', action='store_true', help='Use scaled inputmjj if this argument is given! if not it will use given mjj root file from cfg file')
     parser.add_argument('--freezeParameters', action='store_true', default=False, help='Stat. Only. Limits')
+    parser.add_argument('--justOne', action='store_true', default=False, help='use this if you want to perform limit only for one year in the input list')
+    parser.add_argument('--year', default='', help='give a year if you want to perform limit only for one year in the input list')
+    parser.add_argument('--sig', default='', help='give a signalType if you want to perform limit only for one year & signalType')
     args = parser.parse_args()
     cfgPath = args.cfgPath 
  
@@ -190,6 +193,7 @@ if __name__ == "__main__":
     #refConfigFile = "inputFiles/ref2016_All_PolyExt5Param_cfg.txt"
     #refConfigFile = "inputFiles/ref2016_All_PolyExt6Param_cfg.txt"
     #refConfigFile = "inputFiles/ref2016_ModDijet4Param_cfg.txt"
+    #refConfigFile = "inputFiles/ref2016_All_PolyPow5Param_cfg.txt"
     refLumi = 27.224973278
     ## ref fit prediction comes from python/BinnedFit.py outputs (print)
     print (" -> Collecting reference values!")
@@ -199,8 +203,10 @@ if __name__ == "__main__":
         for line in f:
             line = line.strip()
             if line == "" or line[0] == "#": continue
-        
+            
             rMax, signalType, configFile, date, year, lumi, config, inputmjj = parse_config(line)
+
+            if (args.justOne) and (args.year != year) and (args.sig != signalType): continue
 
             # read the input mjj root file
             inputmjjNoCalib = str("../inputs/" + inputmjj + "/histo_data_mjj_fromTree.root")
