@@ -14,6 +14,8 @@ def main():
     parser = argparse.ArgumentParser(description="")
     parser.add_argument("--inputFile", default="inputFiles/allRunIILimits_cfg_ModExp_4Param.txt", help="Path to the 1st function input configuration file")
     parser.add_argument("--inputFile2", default="inputFiles/allRunIILimits_cfg.txt", help="Path to the 2nd function input configuration file")
+    parser.add_argument("--cfgFile1", type=str, help="", default="dijetSep_ModExp4Param")
+    parser.add_argument("--cfgFile2", type=str, help="", default="dijetSep")
     parser.add_argument("--muTrue", type=str, help="[0: BgOnly, 1: ExpectedSignal, 2: 2*ExpectedSignal]", default="1")
     parser.add_argument("--year", type=str, help="Dataset Year [2018D]", default="2016B")
     parser.add_argument("--sig", type=str, help="Signal Type [gg, qg, qq]", default="gg")
@@ -41,7 +43,7 @@ def main():
 
     cshFilePath = "{0}/Bias_{1}_{2}_{3}_muTrue{4}.csh".format(condorDIR, args.year, args.sig, typeText, args.muTrue)
     with open(cshFilePath, 'w') as cshFile:
-        cshFileContent = create_csh_file_content(cmssw_Ver, arch, suffix_text, typeArgs, args.toys, args.muTrue, args.year, args.sig, typeText, args.inputFile, args.inputFile2)
+        cshFileContent = create_csh_file_content(cmssw_Ver, arch, suffix_text, typeArgs, args.toys, args.muTrue, args.year, args.sig, typeText, args.inputFile, args.inputFile2, args.cfgFile1, args.cfgFile2)
         cshFile.write(cshFileContent)
 
     jdlFilePath = "{0}/Bias_{1}_{2}_{3}_muTrue{4}.jdl".format(condorDIR, args.year, args.sig, typeText, args.muTrue)
@@ -49,10 +51,12 @@ def main():
         jdlFileContent = create_jdl_file_content(cmssw_Ver, os.path.basename(cshFilePath))
         jdlFile.write(jdlFileContent)
 
+    os.system("cp -r AllLimits{0}_{1}_{2} foo_allLimits{0}_{1}_{2}".format(args.year, args.sig, args.cfgFile1))
+    os.system("cp -r AllLimits{0}_{1}_{2} foo_allLimits{0}_{1}_{2}".format(args.year, args.sig, args.cfgFile2))
 
     os.chdir("{0}/..".format(cmssw_dir))
     print("Creating tar file for condor jobs. This process might take a while!..")
-    tarCommandLine = 'tar --exclude-vcs -zcf {0}.tar.gz {0} --exclude=tmp --exclude="*.tar.gz" --exclude="AllLimits*" --exclude="*.pdf" --exclude="*.png" --exclude=.git --exclude="fullLimits" --exclude="Limits_*" --exclude="EnvelopeMethod*" --exclude="Fits_*" --exclude="fits_*" --exclude="stat_Only_modExp" --exclude="dijetCondor" --exclude="lists" --exclude="scripts" --exclude="config_backup" --exclude="data" --exclude="Autumn18_*" --exclude="Fall17_*" --exclude="Summer16_*" --exclude="SignificanceResults*" --exclude="combinedFitResults*" --exclude="biasSummaryPlots" --exclude="BiasResuls"'.format(cmssw_Ver)
+    tarCommandLine = 'tar --exclude-vcs -zcf {0}.tar.gz {0} --exclude=tmp --exclude="*.tar.gz" --exclude="AllLimits*" --exclude="*.pdf" --exclude="*.png" --exclude=.git --exclude="fullLimits" --exclude="Limits_*" --exclude="EnvelopeMethod*" --exclude="Fits_*" --exclude="fits_*" --exclude="stat_Only_modExp" --exclude="dijetCondor" --exclude="lists" --exclude="scripts" --exclude="config_backup" --exclude="Autumn18_*" --exclude="Fall17_*" --exclude="Summer16_*" --exclude="SignificanceResults*" --exclude="combinedFitResults*" --exclude="biasSummaryPlots" --exclude="BiasResuls"'.format(cmssw_Ver)
     os.system(tarCommandLine)
     os.system("pwd")
     subprocess.call(['mv', "{0}.tar.gz".format(cmssw_Ver), "{0}/{1}/{2}.tar.gz".format(workDir, condorDIR, cmssw_Ver)])
@@ -66,6 +70,10 @@ def main():
     print("Created submit file: zz_submitJobs.py")
     print("Done!")
     submit_jobs(condorDIR)
+    
+    os.system("rm -r foo_allLimits{0}_{1}_{2}".format(args.year, args.sig, args.cfgFile1))
+    os.system("rm -r foo_allLimits{0}_{1}_{2}".format(args.year, args.sig, args.cfgFile2))
+
     print("-" * 50)
 
 
@@ -78,7 +86,7 @@ def submit_jobs(condorDIR):
 
 
 
-def create_csh_file_content(cmssw_Ver, arch, suffix_text, typeArgs, toys, muTrue, year, signal, typeText, inputFile, inputFile2):
+def create_csh_file_content(cmssw_Ver, arch, suffix_text, typeArgs, toys, muTrue, year, signal, typeText, inputFile, inputFile2, cfgFile1, cfgFile2):
 
     csh_content = '''#!/bin/tcsh
 
@@ -96,11 +104,14 @@ eval `scramv1 runtime -csh`
 
 cd CMSDIJET/DijetRootTreeAnalyzer/Limits/
 pwd
-ls -lhtr
-
 cmsenv
 
-python biasResults.py {3} --condor --toys {4} --muTrue {5} --year {6} --sig {7} --inputFile {9} --inputFile2 {10}
+mv foo_allLimits{6}_{7}_{11} AllLimits{6}_{7}_{11}
+mv foo_allLimits{6}_{7}_{12} AllLimits{6}_{7}_{12}
+
+ls -lhtr
+
+python biasResults.py {3} --noAsk --toys {4} --muTrue {5} --year {6} --sig {7} --inputFile {9} --inputFile2 {10}
 
 
 foreach file (biasSummaryPlots/bias_plot*{2}_{6}_{7}_muTrue*.pdf)
@@ -113,7 +124,7 @@ end
 
 
 echo "DONE!"
-'''.format(cmssw_Ver, arch, suffix_text, typeArgs, toys, muTrue, year, signal, typeText, inputFile, inputFile2)
+'''.format(cmssw_Ver, arch, suffix_text, typeArgs, toys, muTrue, year, signal, typeText, inputFile, inputFile2, cfgFile1, cfgFile2)
     return csh_content
 
 

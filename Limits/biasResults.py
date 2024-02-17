@@ -35,13 +35,13 @@ def main():
     args = parser.parse_args()
 
 
-    if args.condor or args.mass != 0:
+    if args.mass != 0:
         massRange = []
         massRange.append(args.mass)
     else:
         #massRange = ["800"]
         #massRange = ["900", "1000", "1100", "1200", "1300", "1400", "1500", "1600"]
-        massRange = ["800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600"]
+        massRange = ["800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600", "1700"]
 
 
     for input_file in [args.inputFile, args.inputFile2]:
