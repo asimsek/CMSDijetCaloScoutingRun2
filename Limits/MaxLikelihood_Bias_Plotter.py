@@ -111,7 +111,7 @@ def main():
 		sigmaMaxCut = sigmaAuxMean + (0.5*sigmaAuxRms)
 
 
-		histBiasMaxLikelihood = TH1D("histBiasMaxLikelihood", "Pull Histogram", 10, -5, 5)
+		histBiasMaxLikelihood = TH1D("histBiasMaxLikelihood", "Pull Histogram", 20, -5, 5)
 		histLowHalf = TH1D("histLowHalf", "Pull Histogram", nBins*2, -5, 5)
 		histHighHalf = TH1D("histHighHalf", "Pull Histogram", nBins*2, -5, 5)
 		histBiasDivr = TH1D("histBiasDivr", "Pull Histogram", divrBins, divrMean-5*divrRms, divrMean+5*divrRms)
@@ -184,7 +184,7 @@ def main():
 			gaussFit2.SetParameter(2, 0)
 
 
-			#gaussFit2.SetParLimits(1, -1.25, 1.25)
+			#gaussFit2.SetParLimits(1, -0.01, 0.01)
 			#gaussFit2.SetParLimits(2, 0, 1.2)
 			gaussFit2.SetRange(-5, 5)
                         histBiasMaxLikelihood.Fit(gaussFit2, "RQ")
