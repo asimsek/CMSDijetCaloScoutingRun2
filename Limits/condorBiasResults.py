@@ -30,6 +30,7 @@ def main():
 
 
     typeText = "Opposite" if args.oppositeFuncs else "Sanity" if args.sanityCheck else ""
+    typeArgs = "--oppositeFuncs" if args.oppositeFuncs else "--sanityCheck" if args.sanityCheck else ""
     suffix_text = "GenCMSFitModExp" if args.oppositeFuncs else "GenModExpFitModExp" if args.sanityCheck else ""
     condorDIR="cjobs_%s_%s_%s_muTrue%s" % (args.year, args.sig, typeText, args.muTrue)
 
@@ -40,12 +41,12 @@ def main():
 
     cshFilePath = "{0}/Bias_{1}_{2}_{3}_muTrue{4}.csh".format(condorDIR, args.year, args.sig, typeText, args.muTrue)
     with open(cshFilePath, 'w') as cshFile:
-        cshFileContent = create_csh_file_content(cmssw_Ver, arch, suffix_text, args.sanityCheck, args.oppositeFuncs, args.toys, args.muTrue, args.year, args.sig, typeText, args.inputFile, args.inputFile2)
+        cshFileContent = create_csh_file_content(cmssw_Ver, arch, suffix_text, typeArgs, args.toys, args.muTrue, args.year, args.sig, typeText, args.inputFile, args.inputFile2)
         cshFile.write(cshFileContent)
 
     jdlFilePath = "{0}/Bias_{1}_{2}_{3}_muTrue{4}.jdl".format(condorDIR, args.year, args.sig, typeText, args.muTrue)
     with open(jdlFilePath, 'w') as jdlFile:
-        jdlFileContent = create_jdl_file_content(cmssw_Ver, cshFilePath)
+        jdlFileContent = create_jdl_file_content(cmssw_Ver, os.path.basename(cshFilePath))
         jdlFile.write(jdlFileContent)
 
 
@@ -77,7 +78,7 @@ def submit_jobs(condorDIR):
 
 
 
-def create_csh_file_content(cmssw_Ver, arch, suffix_text, sanityCheck, oppositeFuncs, toys, muTrue, year, signal, typeText, inputFile, inputFile2):
+def create_csh_file_content(cmssw_Ver, arch, suffix_text, typeArgs, toys, muTrue, year, signal, typeText, inputFile, inputFile2):
 
     csh_content = '''#!/bin/tcsh
 
@@ -99,20 +100,20 @@ ls -lhtr
 
 cmsenv
 
-python condorBiasResults.py --condor --sanityCheck {3} --oppositeFuncs {4} --toys {5} --muTrue {6} --year {7} --sig {8} --inputFile {10} --inputFile2 {11}
+python biasResults.py {3} --condor --toys {4} --muTrue {5} --year {6} --sig {7} --inputFile {9} --inputFile2 {10}
 
 
-foreach file (biasSummaryPlots/bias_plot*{2}_{7}_{8}_muTrue*.pdf)
+foreach file (biasSummaryPlots/bias_plot*{2}_{6}_{7}_muTrue*.pdf)
     xrdcp -f "$file" root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/BiasResuls_2024/$file
 end
 
-foreach file (BiasResuls/{7}_{8}_{9}_muTrue{6}/bias_plot*{8}_{7}_M*GeV_MaxLikelihood_muTrue*.pdf)
+foreach file (BiasResuls/{6}_{7}_{8}_muTrue{5}/bias_plot*{7}_{6}_M*GeV_MaxLikelihood_muTrue*.pdf)
     xrdcp -f $file root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/BiasResuls_2024/$file
 end
 
 
 echo "DONE!"
-'''.format(cmssw_Ver, arch, suffix_text, sanityCheck, oppositeFuncs, toys, muTrue, year, signal, typeText, inputFile, inputFile2)
+'''.format(cmssw_Ver, arch, suffix_text, typeArgs, toys, muTrue, year, signal, typeText, inputFile, inputFile2)
     return csh_content
 
 
