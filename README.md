@@ -544,6 +544,15 @@ python condorCombineDataCardsForMultipRMax.py --cfgPath combineInputFiles/combin
 
 
 
+### DeltaNLL
+
+```sh
+python createDeltaNLL.py --fromCombined --signal gg --toys 1000 --tolerence 0.0001 --mass 800
+python createDeltaNLL.py --fromCombined --signal qg --toys 1000 --tolerence 0.0001 --mass 800
+python createDeltaNLL.py --fromCombined --signal qq --toys 200 --tolerence 0.001
+```
+
+
 ### Comparison Stat.+Syst. / Stat.-Only
 
 ```sh
