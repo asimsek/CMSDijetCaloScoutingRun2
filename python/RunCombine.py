@@ -217,8 +217,10 @@ def main(options,args):
 			    #'CaloDijetSep2018':"inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_17June2021_1130/histo_data_mjj_fromTree.root"%options.yr,
                             }
 
+        print (backgroundDsName)
 	#backgroundDsName['CaloDijetSep2016']="inputs/CaloScoutingHT%s_DatavsQDCMC_DE13_M489_wL2L3Residual_12March2021_1930/histo_data_mjj_fromTree.root"%options.yr
-	print ( " ->> BackgroundDsName: %s" % (backgroundDsName[box]) )
+        foo1 = 'CaloDijet{0}'.format(options.yr) if options.yr == "RunII" else '{0}'.format(box)
+	print ( " ->> BackgroundDsName: %s" % (backgroundDsName[foo1]) )
 
         blindString = ''
         if options.blind:
@@ -252,7 +254,7 @@ def main(options,args):
 
         for massPoint in massIterable(options.mass):
             workDir = os.environ['CMSSW_BASE'] + "/src/CMSDIJET/DijetRootTreeAnalyzer"
-            exec_me('python %s/python/WriteDataCard.py -m %s --mass %s -i %s -l %f -c %s -b %s -d %s %s %s %s %s %s %s %s'%(workDir, model, massPoint, options.inputFitFile,1000*lumi,options.config,box,options.outDir,signalDsName,backgroundDsName[box],penaltyString,signalSys,xsecString,decoString,multiString),options.dryRun)    
+            exec_me('python %s/python/WriteDataCard.py -m %s --mass %s -i %s -l %f -c %s -b %s -d %s %s %s %s %s %s %s %s'%(workDir, model, massPoint, options.inputFitFile,1000*lumi,options.config,box,options.outDir,signalDsName,backgroundDsName[foo1],penaltyString,signalSys,xsecString,decoString,multiString),options.dryRun)    
             if options.bayes:
                 #rRangeString =  '--setPhysicsModelParameterRanges '
 		rRangeString =  '--setParameterRanges '

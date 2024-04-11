@@ -1,7 +1,7 @@
 import sys
 from scipy.stats import f
 
-def FisherTest(RSS_1, RSS_2, dof_1, dof_2, N):
+def FisherTest(RSS_1, RSS_2, dof_1, dof_2, N=25):
     RSS1 = float(RSS_1)
     RSS2 = float(RSS_2)
     n1 = N - dof_1 - 1

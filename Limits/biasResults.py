@@ -40,7 +40,7 @@ def main():
         massRange.append(args.mass)
     else:
         #massRange = ["800"]
-        #massRange = ["900", "1000", "1100", "1200", "1300", "1400", "1500", "1600"]
+        #massRange = ["900", "1000", "1100", "1200", "1300", "1400", "1500", "1600", "1700"]
         massRange = ["800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600", "1700"]
 
 
@@ -99,6 +99,9 @@ def main():
         rMin_ = math.floor(expSigVal)*0.5 if args.muTrue != "0" else math.floor(val1)*-2
         rMax_ = math.ceil(expSigVal)*2 if args.muTrue != "0" else math.floor(val1)*2
 
+        if rMin_ == 0: rMin_ = -2.0
+        if rMax_ == 0: rMax_ = 2.0
+
         nTag1 = "_%s_%s_M%sGeV_ModExp_expSig%.3f" % (args.year, args.sig, mass, expSigVal)
         nTag2 = "_%s_%s_M%sGeV_CMS_expSig%.3f" % (args.year, args.sig, mass, expSigVal2)
 
@@ -115,8 +118,8 @@ def main():
             commandlineFitDiagnostic_ModExp = "combine %s -M FitDiagnostics --toysFile higgsCombine%s.GenerateOnly.mH120.123456.root --cminDefaultMinimizerStrategy 0 -t %d --rMin %.2f --rMax %.2f --saveWithUncertainties --ignoreCovWarning -n %s_rMax%.2f --robustFit=1 --setRobustFitTolerance=1.0" % (inputDataCard, nTag2, int(args.toys), rMin_, rMax_, nTag1, float(filtered_df1['rMax'].values[0]))
 
             commandlinePlotterOpposite = "python MaxLikelihood_Bias_Plotter.py --signal %s --year %s --mass %s --muTrue %.6f --cfgFile %s --Type Opposite_muTrue%s  --rMax %.2f --inputRoot fitDiagnostics%s_rMax%.2f.root" % (args.sig, args.year, mass, float(expSigVal), filtered_df1['configFile'].values[0], args.muTrue, rMax_, nTag1, float(filtered_df1['rMax'].values[0]))
-            moveCommand = "rm fitDiagnostics_*.root"
-            moveCommand2 = "rm higgsCombine_*.root"
+            #moveCommand = "rm fitDiagnostics_*.root"
+            #moveCommand2 = "rm higgsCombine_*.root"
 
             print (commandlineGenerateToys_CMS_Only)
             print (commandlineFitDiagnostic_ModExp)
@@ -126,8 +129,8 @@ def main():
             os.system(commandlineGenerateToys_CMS_Only)
             os.system(commandlineFitDiagnostic_ModExp)
             os.system(commandlinePlotterOpposite)
-            os.system(moveCommand)
-            os.system(moveCommand2)
+            #os.system(moveCommand)
+            #os.system(moveCommand2)
 
 
         if args.sanityCheck:

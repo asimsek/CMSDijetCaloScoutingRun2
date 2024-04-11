@@ -1,1 +1,6 @@
-2.6,gg,dijetSep_ModExp5Param,17June2023,2018D,26524.906306,CaloDijetSep2018D,CaloScoutingHT2018D_DatavsQDCMC_11June2023_2245
+#rMax,signalType,configFile,date,year,lumi,config,inputmjj
+#2017
+1.1,qq,dijetSep_ModExp5Param,17June2023,2017C,8377.067561,CaloDijetSep2017C,CaloScoutingHT2017C_DatavsQDCMC_11June2023_2245
+2.7,qq,dijetSep_ModExp5Param,17June2023,2017D,4247.682094,CaloDijetSep2017D,CaloScoutingHT2017D_DatavsQDCMC_11June2023_2245
+2.7,qq,dijetSep_ModExp5Param,17June2023,2017E,9285.786621,CaloDijetSep2017E,CaloScoutingHT2017E_DatavsQDCMC_11June2023_2245
+1.0,qq,dijetSep_ModExp5Param,17June2023,2017F,13539.378492,CaloDijetSep2017F,CaloScoutingHT2017F_DatavsQDCMC_11June2023_2245

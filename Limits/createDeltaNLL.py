@@ -6,9 +6,9 @@ import re
 import pandas as pd
 from ROOT import *
 
+gROOT.SetBatch(True)
 
-
-def createDeltaNLL(cfgFile, year, signal, fromCombined, mass_org):
+def createDeltaNLL(cfgFile, year, signal, fromCombined, mass_org, toys, tolerance):
     # Variables
     outputFolder = "DeltaNLLPlots"
     begin, end, step = 550, 2100, 50
@@ -20,6 +20,7 @@ def createDeltaNLL(cfgFile, year, signal, fromCombined, mass_org):
     # Load the config file into a dataframe
     df = pd.read_csv(cfgFile, comment='#', header=None)
     df.columns = ["rMax","signalType","configFile","date","year","lumi","config","inputmjj"] if not fromCombined else ["year","lumi","config","date","configFile","signalType","rMax"]
+    print ("%s ------- %s" % (df['year'].iloc[0], str(year)))
 
     # Filter based on the year and signal type
     df_filtered = df[df['year'].astype(str).str.startswith(str(year)) & (df['signalType'] == signal)]
@@ -34,6 +35,7 @@ def createDeltaNLL(cfgFile, year, signal, fromCombined, mass_org):
     inputDataCard = ""
     outputSubFolder = ""
     for index, row in df_filtered.iterrows():
+        year_ind = str(row['year'])
         lumi = float(row['lumi']/1000.) if not fromCombined else float(row['lumi'])
         configFile = row['configFile']
         date = row['date']
@@ -41,11 +43,11 @@ def createDeltaNLL(cfgFile, year, signal, fromCombined, mass_org):
         rMax = str(row['rMax'])
 
         ## Input Data Card
-        inputLimitFolder="AllLimits%s%s_%s_%s/cards_%s_w2016Sig_DE13_M526_%s_rmax%s/" % (year, combineText, signal, configFile, signal, date, rMax)
-        inputDataCard = "%s/dijet_combine_%s_%d_lumi-%.3f_%s.txt" % (inputLimitFolder, signal, mass_org, lumi, box)
+        inputLimitFolder="AllLimits%s%s_%s_%s/cards_%s_w2016Sig_DE13_M526_%s_rmax%s/" % (year_ind, combineText, signal, configFile, signal, date, rMax)
+        inputDataCard = "%s/dijet_combine_%s_%s_lumi-%.3f_%s.txt" % (inputLimitFolder, signal, mass_org, lumi, box)
         print ("\033[1;31m -> %s\033[0;0m" % (inputDataCard))
 
-        outputToysFolder="AllLimits%s%s_%s_%s/toys_%s_w2016Sig_DE13_M526_%s_rmax%s/" % (year, combineText, signal, configFile, signal, date, rMax)
+        outputToysFolder="AllLimits%s%s_%s_%s/toys_%s_w2016Sig_DE13_M526_%s_rmax%s/" % (year_ind, combineText, signal, configFile, signal, date, rMax)
         os.system("mkdir -p %s" % (outputToysFolder))
 
         rRange_min = -1.0
@@ -56,24 +58,22 @@ def createDeltaNLL(cfgFile, year, signal, fromCombined, mass_org):
         saveWSMoveCommand = "mv higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root %s/higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root" % (signal, str(mass_org), float(lumi), box, outputToysFolder, signal, str(mass_org), float(lumi), box)
         os.system(saveWSMoveCommand)
 
+        combineCommandLimit = "combine -M MultiDimFit %s/higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --saveNLL -n _%s --points %d --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --cminDefaultMinimizerStrategy 0 --cminDefaultMinimizerTolerance %s" % (outputToysFolder, signal, str(mass_org), float(lumi), box, str(rRange_min), str(rRange_max), configFile, toys, tolerance)
+        combineMoveCommandLimit = "mv higgsCombine_%s.MultiDimFit.mH120.root %s/higgsCombine_%s_%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root" % (configFile, outputToysFolder, configFile, signal, mass_org, float(lumi), box)
 
-        combineCommandEnvelope = "combine -M MultiDimFit %s/higgsCombine%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root --algo grid --setParameterRanges r=%s,%s --cminDefaultMinimizerStrategy 0 --saveNLL -n _%s --points 50 --saveWorkspace --X-rtd REMOVE_CONSTANT_ZERO_POINT=1 --snapshotName MultiDimFit --cminDefaultMinimizerTolerance 0.001" % (outputToysFolder, signal, str(mass_org), float(lumi), box, str(rRange_min), str(rRange_max), configFile)
-        combineMoveCommandEnvelope = "mv higgsCombine_%s.MultiDimFit.mH120.root %s/higgsCombine_%s_%s_%s_lumi-%.3f_%s.MultiDimFit.mH120.root" % (configFile, outputToysFolder, configFile, signal, mass_org, float(lumi), box)
+        os.system(combineCommandLimit)
+        os.system(combineMoveCommandLimit)
 
-        os.system(combineCommandEnvelope)
-        os.system(combineMoveCommandEnvelope)
-
-        plottingCommand = 'python plot1DScan.py {0}/higgsCombine_{7}_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root --main-label "ModExp_4Param" --main-color 6 -o DeltaNLL_{7}_{5}{6}_{1}_{2}GeV'.format(outputToysFolder, signal, mass_org, float(lumi), box, year, combineText, configFile)
+        plottingCommand = 'python plot1DScan.py {0}/higgsCombine_{7}_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root --main-label "ModExp_4Param" --main-color 6 -o DeltaNLL_{7}_{5}{6}_{1}_{2}GeV'.format(outputToysFolder, signal, mass_org, float(lumi), box, year_ind, combineText, configFile)
         os.system(plottingCommand)
 
-        plottingScanCommand = 'python plot1DEnvelopeScan.py --f {0}/higgsCombine_{7}_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root --l "ModExp-4Param" --c "#F10D8C" --o DeltaNLL_Scan_{7}_{5}{6}_{1}_{2}GeV.pdf'.format(outputToysFolder, signal, mass_org, float(lumi), box, year, combineText, configFile)
+        plottingScanCommand = 'python plot1DLimitScan.py --f {0}/higgsCombine_{7}_{1}_{2}_lumi-{3:.3f}_{4}.MultiDimFit.mH120.root --l "ModExp-5Param" --c "#F10D8C" --o DeltaNLL_Scan_{7}_{5}{6}_{1}_{2}GeV.pdf'.format(outputToysFolder, signal, mass_org, float(lumi), box, year_ind, combineText, configFile)
         os.system(plottingScanCommand)
 
-        outDeltaNLLFolder = "DeltaNLLPlots"
-        os.system("mkdir -p %s" % (outDeltaNLLFolder))
-        plottingMoveCommand = "mv DeltaNLL_{5}_{0}{1}_{2}_{3}GeV.pdf {4}/DeltaNLL_{5}_{0}{1}_{2}_{3}GeV.pdf".format(year, combineText, signal, str(mass_org), outDeltaNLLFolder, configFile)
-        plottingMoveCommandScan = "mv DeltaNLL_Scan_{5}_{0}{1}_{2}_{3}GeV.pdf {4}/DeltaNLL_Scan_{5}_{0}{1}_{2}_{3}GeV.pdf".format(year, combineText, signal, str(mass_org), outDeltaNLLFolder, configFile)
-        plottingMoveCommandRoot = "mv DeltaNLL_{5}_{0}{1}_{2}_{3}GeV.root {4}/DeltaNLL_{5}_{0}{1}_{2}_{3}GeV.root".format(year, combineText, signal, str(mass_org), outDeltaNLLFolder, configFile)
+        os.system("mkdir -p %s" % (outputFolder))
+        plottingMoveCommand = "mv DeltaNLL_{5}_{0}{1}_{2}_{3}GeV.pdf {4}/DeltaNLL_{5}_{0}{1}_{2}_{3}GeV.pdf".format(year_ind, combineText, signal, str(mass_org), outputFolder, configFile)
+        plottingMoveCommandScan = "mv DeltaNLL_Scan_{5}_{0}{1}_{2}_{3}GeV.pdf {4}/DeltaNLL_Scan_{5}_{0}{1}_{2}_{3}GeV.pdf".format(year_ind, combineText, signal, str(mass_org), outputFolder, configFile)
+        plottingMoveCommandRoot = "mv DeltaNLL_{5}_{0}{1}_{2}_{3}GeV.root {4}/DeltaNLL_{5}_{0}{1}_{2}_{3}GeV.root".format(year_ind, combineText, signal, str(mass_org), outputFolder, configFile)
         os.system(plottingMoveCommand)
         os.system(plottingMoveCommandScan)
         os.system(plottingMoveCommandRoot)
@@ -81,8 +81,8 @@ def createDeltaNLL(cfgFile, year, signal, fromCombined, mass_org):
 
         print (saveWSCommand)
         print (saveWSMoveCommand)
-        print (combineCommandEnvelope)
-        print (combineMoveCommandEnvelope)
+        print (combineCommandLimit)
+        print (combineMoveCommandLimit)
         print (plottingCommand)
         print (plottingScanCommand)
 
@@ -90,13 +90,15 @@ def createDeltaNLL(cfgFile, year, signal, fromCombined, mass_org):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Create significance plots')
+    parser = argparse.ArgumentParser(description='Create DeltaNLL plots')
     parser.add_argument('--cfgFile', type=str, help='config file', default='combineInputFiles/combineDataCards_RunII_ModExp_4Param.txt')
-    parser.add_argument('--year', type=str, help='year for significance [2016, 2017, 2018, RunII]', default='RunII')
-    parser.add_argument('--mass', type=float, help='Mass [0.80, 1.20, 1.60]', default=800)
-    parser.add_argument('--signal', type=str, help='signal type for significance [gg, qg, qq]', default='qq')
+    parser.add_argument('--year', type=str, help='year for DeltaNLL [2016, 2017, 2018, RunII]', default='RunII')
+    parser.add_argument('--mass', type=str, help='Mass [0.80, 1.20, 1.60]', default="800")
+    parser.add_argument('--tolerance', type=str, help='toy size to be created', default='0.001')
+    parser.add_argument('--toys', type=float, help='toy size to be created', default=100)
+    parser.add_argument('--signal', type=str, help='signal type for DeltaNLL [gg, qg, qq]', default='qq')
     parser.add_argument('--fromCombined', action='store_true', default=False, help='use this if you are working with combined limits')
     args = parser.parse_args()
 
-    createDeltaNLL(args.cfgFile, args.year, args.signal, args.fromCombined, args.mass)
+    createDeltaNLL(args.cfgFile, args.year, args.signal, args.fromCombined, args.mass, args.toys, args.tolerance)
 

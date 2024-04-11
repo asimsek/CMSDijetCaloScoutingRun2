@@ -122,6 +122,10 @@ foreach file (BiasResuls/{6}_{7}_{8}_muTrue{5}/bias_plot*{7}_{6}_M*GeV_MaxLikeli
     xrdcp -f $file root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/BiasResuls_2024/$file
 end
 
+foreach file (BiasResuls/{6}_{7}_{8}_muTrue{5}/Roots/*.root)
+    xrdcp -f $file root://cmseos.fnal.gov//store/user/lpcjj/CaloScouting/BiasResuls_2024/$file
+end
+
 
 echo "DONE!"
 '''.format(cmssw_Ver, arch, suffix_text, typeArgs, toys, muTrue, year, signal, typeText, inputFile, inputFile2, cfgFile1, cfgFile2)

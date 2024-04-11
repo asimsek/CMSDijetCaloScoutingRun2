@@ -23,14 +23,14 @@ execfile('tdrStyle.py')
 ################# Arguments ###############
 parser = argparse.ArgumentParser()
 parser.add_argument("--signal", type=str, help="Signal Type [gg, qg, qq]", default="gg")
-parser.add_argument("--year", type=str, help="Year of the dataCard [2016, 2017, 2018, RunII]", default="2016Combined")
+parser.add_argument("--year", type=str, help="Year of the dataCard [2016, 2017, 2018, RunII]", default="2016B")
 parser.add_argument("--Type", type=str, help="Type of the fitDiagnostics results [Full, BGOnlyToys]", default="BGOnlyToys")
 parser.add_argument("--mass", type=str, help="Mass point in /pb [800, 1200, 1600]", default="800")
 parser.add_argument("--cfgFile", type=str, help="Config file [dijetSep, dijetSep_5param, dijetSep_Atlas6Param]", default="dijetSep")
-parser.add_argument("--muTrue", type=float, help="Expected Signal", default="1.95")
+parser.add_argument("--muTrue", type=float, help="Expected Signal", default=0.0)
 parser.add_argument("--inputRoot", type=str, help="Root File from FitDiagnostic CommandLine", default="fitDiagnostics_test_name.root")
-parser.add_argument("--rMax", type=float, help="Signal Strengh rMax [0 -> given rMax]", default="3.5")
-parser.add_argument("--lumi", type=float, help="Lumi value of the dataset", default="4.242")
+parser.add_argument("--rMax", type=float, help="Signal Strengh rMax [0 -> given rMax]", default=0.0)
+parser.add_argument("--lumi", type=float, help="Lumi value of the dataset", default=5.71078)
 
 args = parser.parse_args()
 signal = args.signal
@@ -62,7 +62,8 @@ outputFolder = "BiasResuls/{0}_{1}_{2}".format(year, signal, Type)
 muTrueCut = -1
 ############################################
 
-
+muTrueText = args.muTrue
+#muTrue = 18.356251 if args.muTrue > 25.5 and args.mass == "800" and args.year == "2016B" and args.signal == "gg" and "Opposite" in args.Type else args.muTrue
 
 def main():
 	inputRootFile = TFile.Open(inputRoot, 'READ')
@@ -206,7 +207,7 @@ def main():
 		leg.SetBorderSize(5)
 		leg.SetTextSize(0.022)
 		leg.AddEntry(histSigma, "Pseudodata", "p")
-                leg.AddEntry(histSigma, "#mu_{True}= %0.3f" % (muTrue), "")
+                leg.AddEntry(histSigma, "#mu_{True}= %0.3f" % (muTrueText), "")
 		if muTrue != muTrueCut:
                 	leg.AddEntry(histSigma, "-----------------------", "")
 			leg.AddEntry(gaussFit2, "Gaussian Fit", "l")
@@ -266,11 +267,11 @@ def main():
 		#paveType.AddText("#it{%s}" % (Type))
 		#paveType.Draw()
 
-		c1.SaveAs("%s/bias_plot_%s_%s_M%sGeV_MaxLikelihood_muTrue%.3f.pdf" % (outputFolder, signal, year, mass, muTrue) )
+		c1.SaveAs("%s/bias_plot_%s_%s_M%sGeV_MaxLikelihood_muTrue%.3f.pdf" % (outputFolder, signal, year, mass, muTrueText) )
 		c1.Close()
 
 
-		outHistFile = TFile.Open("%s/bias_plot_%s_%s_M%sGeV_MaxLikelihood_muTrue%.3f.root" % (outputFolder, signal, year, mass, muTrue), "RECREATE")
+		outHistFile = TFile.Open("%s/bias_plot_%s_%s_M%sGeV_MaxLikelihood_muTrue%.3f.root" % (outputFolder, signal, year, mass, muTrueText), "RECREATE")
 		outHistFile.cd()
 
 		n = 1;
@@ -338,7 +339,7 @@ def main():
 		leg.SetBorderSize(5)
 		leg.SetTextSize(0.022)
 		leg.AddEntry(histBiasDivr, "Pseudodata", "p")
-		leg.AddEntry(histBiasDivr, "#mu_{True}= %0.3f" % (muTrue), "")
+		leg.AddEntry(histBiasDivr, "#mu_{True}= %0.3f" % (muTrueText), "")
 		leg.AddEntry(histBiasDivr, "-----------------------", "")
 		leg.AddEntry(gaussFitDivr, "Gaussian Fit", "l")
 		leg.AddEntry(gaussFitDivr, "Mean: %0.3f" % (par1) , "")
@@ -393,12 +394,12 @@ def main():
 
 
 
-		c2.SaveAs("%s/bias_plot_divr_%s_%s_M%sGeV_MaxLikelihood_muTrue%.3f.pdf" % (outputFolder, signal, year, mass, muTrue) )
+		c2.SaveAs("%s/bias_plot_divr_%s_%s_M%sGeV_MaxLikelihood_muTrue%.3f.pdf" % (outputFolder, signal, year, mass, muTrueText) )
 		c2.Close()
 
 
 
-		outHistFile2 = TFile.Open("%s/bias_plot_divr_%s_%s_M%sGeV_MaxLikelihood_muTrue%.3f.root" % (outputFolder, signal, year, mass, muTrue), "RECREATE")
+		outHistFile2 = TFile.Open("%s/bias_plot_divr_%s_%s_M%sGeV_MaxLikelihood_muTrue%.3f.root" % (outputFolder, signal, year, mass, muTrueText), "RECREATE")
                 outHistFile2.cd()
 
                 n = 1;
@@ -462,7 +463,7 @@ def main():
 		leg.SetBorderSize(5)
 		leg.SetTextSize(0.022)
 		leg.AddEntry(histSigma, "Pseudodata", "p")
-		leg.AddEntry(histSigma, "#mu_{True}= %0.3f" % (muTrue), "")
+		leg.AddEntry(histSigma, "#mu_{True}= %0.3f" % (muTrueText), "")
 		leg.AddEntry(histSigma, "-----------------------", "")
 		leg.AddEntry(gaussFitSigma, "Gaussian Fit", "l")
 		leg.AddEntry(gaussFitSigma, "Mean: %0.3f" % (par1) , "")
@@ -517,13 +518,16 @@ def main():
 		#paveType.Draw()
 
 
-		c3.SaveAs("%s/bias_plot_sigma_%s_%s_M%sGeV_MaxLikelihood_muTrue%.3f.pdf" % (outputFolder, signal, year, mass, muTrue) )
+		c3.SaveAs("%s/bias_plot_sigma_%s_%s_M%sGeV_MaxLikelihood_muTrue%.3f.pdf" % (outputFolder, signal, year, mass, muTrueText) )
 		c3.Close()
 
 		
 
 		#os.system("mv %s %s/Roots/" % (inputRoot, outputFolder))
-		#os.system("mv higgsCombine%s_%s_M%sGeV_expectSignal%.3f_rMax%.3f.FitDiagnostics.mH120.123456.root %s//Roots/" % (year, signal, mass, muTrue, rMax, outputFolder))
+		#os.system("mv higgsCombine%s_%s_M%sGeV_expectSignal%.3f_rMax%.3f.FitDiagnostics.mH120.123456.root %s//Roots/" % (year, signal, mass, muTrueText, rMax, outputFolder))
+                os.system("mv fitDiagnostics_*.root {0}/Roots/".format(outputFolder))
+                os.system("mv higgsCombine_*.root {0}/Roots/".format(outputFolder))
+
 		print ("\033[1;31m ->> Finished! \033[0;0m")
 
 

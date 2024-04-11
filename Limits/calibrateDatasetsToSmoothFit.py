@@ -186,9 +186,10 @@ if __name__ == "__main__":
     freezeString = "--freezeParameters" if args.freezeParameters else ""
     # define paths and reference values here
     script_path = "createFitsAndLimits.py"
+    refConfigFile = "inputFiles/ref2016_All_ModExp4Param_cfg.txt" if "modexp" in args.cfgPath.lower() else "inputFiles/ref2016All_cfg.txt"
     #refConfigFile = "inputFiles/ref2016All_cfg.txt"
     #refConfigFile = "inputFiles/ref2016All_ATLAS_cfg.txt"
-    refConfigFile = "inputFiles/ref2016_All_ModExp4Param_cfg.txt"
+    #refConfigFile = "inputFiles/ref2016_All_ModExp4Param_cfg.txt"
     #refConfigFile = "inputFiles/ref2016_All_ModExp5Param_cfg.txt"
     #refConfigFile = "inputFiles/ref2016_All_PolyExt5Param_cfg.txt"
     #refConfigFile = "inputFiles/ref2016_All_PolyExt6Param_cfg.txt"
@@ -206,8 +207,7 @@ if __name__ == "__main__":
             
             rMax, signalType, configFile, date, year, lumi, config, inputmjj = parse_config(line)
 
-            if (args.justOne) and (args.year != year) and (args.sig != signalType): continue
-
+            if args.justOne and (str(args.year) != str(year) or str(args.sig) != str(signalType)): continue
             # read the input mjj root file
             inputmjjNoCalib = str("../inputs/" + inputmjj + "/histo_data_mjj_fromTree.root")
             File1 = TFile.Open(inputmjjNoCalib)
@@ -221,6 +221,7 @@ if __name__ == "__main__":
 
             # create output folder
             outFolder = "scaledDijetMassHistoRoots"
+            #outRootFile = "histo_data_mjj_scaled_2016p2017p2018.root" if year == "RunII" else "histo_data_mjj_scaled_" + str(year) + ".root"
             outRootFile = "histo_data_mjj_scaled_" + str(year) + ".root"
             if not os.path.exists(outFolder): os.makedirs(outFolder)
             outRootFilePath = "%s/%s" % (outFolder, outRootFile)

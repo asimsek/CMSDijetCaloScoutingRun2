@@ -17,7 +17,8 @@ def execute_commands(args, rMax, signalType, configFile, date, year, lumi, confi
     scaledtxt = "--scaled" if scaled else ""
     txtFreeze = '_statOnly' if args.freezeParameters else ''
     freezeString = '--no-sys' if args.freezeParameters else ''
-    outputLimitFolder = f"{workDir}/Limits/AllLimits{year}_{signalType}_{cfg_foo}{txtFreeze}"
+    #outputLimitFolder = f"{workDir}/Limits/AllLimits{year}_{signalType}_{cfg_foo}{txtFreeze}"
+    outputLimitFolder = f"AllLimits{year}_{signalType}_{cfg_foo}{txtFreeze}"
     signalShapes = f"{workDir}/inputs/ResonanceShapes_gg_13TeV_CaloScouting_Spring16.root,{workDir}/inputs/ResonanceShapes_qg_13TeV_CaloScouting_Spring16.root,{workDir}/inputs/ResonanceShapes_qq_13TeV_CaloScouting_Spring16.root"
     cfgFilePath = workDir+"/config/"+configFile+".config" if not scaled else configFile+".config"
 
